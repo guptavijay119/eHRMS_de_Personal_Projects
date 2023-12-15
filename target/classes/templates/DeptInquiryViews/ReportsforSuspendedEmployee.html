@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+<title>Suspended Employees Pending Cases</title>
+<style>
+.ui-menu .ui-menu-item-wrapper {
+	color: #303030 !important;
+	background-color: #fff !important;
+}
+
+.ui-menu .ui-menu-item-wrapper:hover {
+	color: #303030 !important;
+	background-color: rgb(192, 192, 192) !important;
+	border: #fff 1px solid !important;
+}
+
+.ui-widget-content {
+	border: 1px solid #ddd;
+	background: rgb(192, 192, 192) !important;
+	color: #333 !important;
+}
+
+@media print {
+  body {
+ zoom: 80% !important;
+  }	
+</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()"  id="viewtop">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"
+				aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3>
+							<strong> <span th:text="#{de.suspendedemployee.pending.cases.label}"></span>
+							</strong>
+						</h3>
+						<a href="#gridview" class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.scroll.down.AllBtn}"></span></a>	
+					</div>
+					
+					<button href="javascript:void(0);" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" th:text="#{dashboard.viewgraph}">View Graph</button>
+					<br><br>
+					
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div class="row"></div>
+									<br> <br> <br>
+									<div>
+										 <button class="btn btn-info"onclick="printDiv('downloadreport')"  id="downloadpdfbtn"
+											style="margin-left: 4px;"><span th:text="#{de.decasesinitiated.pdf.download}"></span></button>
+							
+										
+										<span>&nbsp;&nbsp;</span>
+										<button class="btn btn-info" id="downloadexcelsss"  onclick="downloadexcelfucn()"
+											style="margin-left: 4px;">
+											<span th:text="#{de.decasesinitiated.excel.download}"></span></button>
+									</div>
+
+									<br>
+									<hr>
+									<div>
+										<a class="btn" style="color: blue;" href="javascript:void(0);"><h4>
+												<span><span th:text="#{de.total.cases.lbl}"></span></span> <span
+													th:text="${totalItems}"></span>
+											</h4></a> <a class="btn" style="color: blue; float: right"
+											href="javascript:void(0);"><h4>
+												<span th:text="#{de.totalno.ofsuspended.employee.label}"></span> <span
+													th:text="${empCount}"></span>
+											</h4></a>
+									</div>
+
+
+									<div class="table-responsive">
+										<table class="table table-bordered dark table-sm">
+											<thead>
+												<tr>
+													<th width="5%" class="text-wrap">
+													<center>
+													<center><span th:text="#{de.enquiry.srno}"></span></center></center></th>
+												
+													<th class="text-wrap" style="width: 90px;">
+													 <center><span th:text="#{de.enquiry.caseno}"></span></center>
+													</th>
+
+													<th class="text-wrap">
+													   <center><span th:text="#{de.casesdetails.fileSubject}"></span></center>
+													</th>
+
+													  <th class="text-wrap" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+														<center><span th:text="#{de.department.name.labels}"></span></center>
+														</a>
+													</th>
+													
+													 <th class="text-wrap" sec:authorize="hasAnyRole('ROLE_DEPARTMENTADMIN','ROLE_SUPERADMIN')">
+											       <span th:text="#{de.inbox.subdepartment}">Sub Department</span>
+											       </th>
+													
+													<th class="text-wrap">
+													   <center><span th:text="#{de.employeedetails.label}"></span></center>
+													</th>
+
+														<th class="text-wrap">
+														<span th:text="#{de.casesdetails.misconduct}">Type of Misconduct</span>
+													</th>
+													
+													<th></th>
+
+												</tr>
+
+
+
+
+
+
+
+
+
+
+											</thead>
+											<tbody>
+												<tr th:each="article,iStat:${caseDetailsAllRecords}" th:if="${!article.employeeList.isEmpty()}">
+													<td th:text="${pageIndex+iStat.index}" class="text-wrap"></td>
+													<!-- <td> <span th:text="${iStat.index}"></span></td> -->
+
+													<td class="text-wrap"><a data-toggle="tooltip"
+														 th:attr="title=${isAdmin}?'Click for view':'Click for update'"
+														th:href="@{| /departmentalEnquiry/fetchcaseDetails/${article.id} |}"><span
+															th:text="${article.caseNo}"></span></a></td>
+
+
+													<td class="text-wrap"><span
+														th:text="${article.fileSubject}"></span></td>
+
+													<td class="text-wrap"  sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+														style="overflow-wrap: anywhere !important;"><span
+														th:if="article.globalorg ne null"
+														th:text="${article.globalorg.globalOrgName}"></span>
+														</td>
+														
+														 <td sec:authorize="hasAnyRole('ROLE_DEPARTMENTADMIN','ROLE_SUPERADMIN')">
+												   <span th:if="${article.subDepartment ne null}" th:text="${article.subDepartment.subdepartmentNameEn}"></span>
+												  </td>												
+													
+
+													<td class="text-wrap" style="vertical-align: top;">
+														<!-- <span th:if="${!article.employeeNames.isEmpty()}" 
+														th:each="arti,istate:${article.employeeNames}"
+														><span th:text="${istate.index+1}"></span>.<span th:text="${arti}"></span> <br>
+														</span> -->
+														<table class="table table-sm table-reponsive">
+															<caption></caption>
+															<thead>
+																<tr>
+																	<th width="5%"><center><span th:text="#{de.enquiry.srno}"></span></center></th>
+																	<th><center><span th:text="#{de.enquiry.name}"></span></center></th>
+																	<th><center><span th:text="#{de.empdetails.genders}"></span></center></th>
+																	<th class="text-wrap"><center><span th:text="#{de.actual.dateofsuspension}"></span></center></th>
+																	<th class="text-wrap"><center><span th:text="#{de.deemed.dateofsuspension}"></span></center></th>
+																	<th class="text-wrap"><center><span th:text="#{de.SuspensionDetails.Currentstatuss}"></span></center></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr th:each="emp,iStatein:${article.employeeList}"
+																	>
+																	<td th:text="${iStatein.index+1}"></td>
+																	<td class="text-wrap"
+																		th:text="${emp.firstName+' '+emp.middleName+' '+emp.lastName}"></td>
+																	<td class="text-wrap"><span
+																		th:if="${emp.gender ne null}"
+																		th:text="${emp.gender.genderName}"></span></td>
+																	<td class="text-wrap"><span
+																		th:if="${emp.suspensionDetails ne null and emp.suspensionDetails.dateofActualSuspension ne null}"
+																		th:text="${#temporals.format(emp.suspensionDetails.dateofActualSuspension, 'dd-MM-yyyy')}"></span>
+																	</td>
+																	<td class="text-wrap"><span
+																		th:if="${emp.suspensionDetails ne null and emp.suspensionDetails.dateofDeemedSuspension ne null}"
+																		th:text="${#temporals.format(emp.suspensionDetails.dateofDeemedSuspension, 'dd-MM-yyyy')}"></span>
+																	</td>
+																	<td class="text-wrap"><span
+																		th:if="${emp.suspensionDetails ne null and emp.suspensionDetails.currentStatus ne null}"
+																		th:text="${emp.suspensionDetails.currentStatus}"></span>
+																	</td>
+																</tr>
+
+															</tbody>
+														</table>
+													</td>
+
+
+
+													<td class="text-wrap"><span
+														th:if="${article.misConductType}"
+														th:text="${article.misConductType.misconductName}"></span></td>
+
+
+													<td>
+														<button type="button" class="btn btn-primary btn-sm"
+															id="preview" data-toggle="modal"
+															th:attrappend="data-target='#myModalCompact'+${article.id}">
+															<span th:text="#{casedetails.preview.button}"> Preview</span></button>
+													</td>
+
+												</tr>
+
+											</tbody>	
+										</table>
+									</div>
+<br>
+					
+									
+									<div style="float: right;" id="gridview"><a href="#viewtop"  class="btn btn-info btn-sm"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+								
+									<div class="row" th:fragment="pagination">
+										<div>
+											<b style="color: blue"><h4>
+													<span><span th:text="#{de.total.cases.lbl}"></span></span>  <span
+														th:text="${totalItems}"></span>
+												</h4></b> 
+										</div>
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+											
+													<ul class="pagination justify-content-center">
+														<li class="page-item" th:if="${currentPage > 1}"><a
+															class="page-link"
+															th:href="@{|/departmentalEnquiry/suspendedEmployeesReportsController/1?sort-field=${sortField}&sort-dir=${sortDir}|}"
+															th:text="#{pages.first}">First</a> <span
+															th:unless="${currentPage > 1}" th:text="#{pages.first}">First</span>
+														</li>
+
+														<li class="page-item"><a class="page-link"
+															th:if="${currentPage > 1}"
+															th:href="@{|/departmentalEnquiry/suspendedEmployeesReportsController/${currentPage - 1}?sort-field=${sortField}&sort-dir=${sortDir}|}"
+															th:text="#{pages.previous}">Previous</a> <span
+															th:unless="${currentPage > 1}"
+															th:text="#{pages.previous}">Previous</span></li>
+
+														<li class="page-item"
+															th:each="i: ${#numbers.sequence(begin, end)}"
+															th:if="${begin<end}"><a
+															th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}"
+															th:href="@{|/departmentalEnquiry/suspendedEmployeesReportsController/${i}?sort-field=${sortField}&sort-dir=${sortDir}|}"
+															th:text="${i}"></a></li>
+
+														<li class="page-item"><a class="page-link"
+															th:if="${currentPage < totalPages}"
+															th:href="@{|/departmentalEnquiry/suspendedEmployeesReportsController/${currentPage + 1}?sort-field=${sortField}&sort-dir=${sortDir}|}"
+															th:text="#{pages.next}">Next</a> <span
+															th:unless="${currentPage < totalPages}"
+															th:text="#{pages.next}">Next</span></li>
+
+														<li class="page-item"><a class="page-link"
+															th:if="${currentPage < totalPages}"
+															th:href="@{|/departmentalEnquiry/suspendedEmployeesReportsController/${totalPages}?sort-field=${sortField}&sort-dir=${sortDir}|}"
+															th:text="#{pages.last}">Last</a> <span
+															th:unless="${currentPage < totalPages}"
+															th:text="#{pages.last}">Last</span></li>
+
+													</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+									<!-- ending pagination -->
+									<div></div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<th:block
+		th:include="DeptInquiryViews/Fragments/completecasedetailspreview.html:: completecasedetailspreview" 
+		th:each="article,iStat:${caseDetailsAllRecords}">
+	</th:block>
+	<th:block
+		th:include="DeptInquiryViews/Fragments/SinglePageCaseView.html:: singlepagecaseview"
+		th:each="article,iStat:${caseDetailsAllRecords}">
+
+	</th:block>
+	<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+					<button type="button" class="close" data-dismiss="modal" onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%"
+								height="500" style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+	<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%"
+								height="500" style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="table-responsive" style="display: none;"
+		id="downloadreport">
+		<center>
+			<h3 style="margin-top: 4px;"><span th:text="#{de.suspendedemployee.pending.cases.label}"></span></h3>
+		</center>
+		<br>
+		<table class="table table-bordered dark table  table2excel"
+			id="tableexcelretired">
+			<thead>
+				<tr>
+					<th width="5%" class="text-wrap" style="color: black;">
+					<center><center><span th:text="#{de.enquiry.srno}"></span></center></center></th>
+				
+					<th class="text-wrap" style="width: 90px;color: black;">
+						 <center><span th:text="#{de.enquiry.caseno}"></span></center>
+					</th>
+
+					<th class="text-wrap"style="color: black;">
+						  <center><span th:text="#{de.casesdetails.fileSubject}"></span></center>
+					</th>
+
+					                      <th class="text-wrap" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"style="color: black;">
+														<center><span th:text="#{de.department.name.labels}"></span></center>
+														</a>
+													</th>
+					
+					 <th class="text-wrap" sec:authorize="hasAnyRole('ROLE_DEPARTMENTADMIN','ROLE_SUPERADMIN')"style="color: black;">
+											<span th:text="#{de.inbox.subdepartment}">Sub Department</span>
+											</th>
+													
+
+					<th class="text-wrap"style="color: black;">
+						    <center><span th:text="#{de.employeedetails.label}"></span></center>
+					</th>
+					
+					                   <th class="text-wrap"style="color: black;">
+														<span th:text="#{de.casesdetails.misconduct}">Type of Misconduct</span>
+													</th>
+					<!-- <th></th> -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="article,iStat:${caseDetailsAllRecordsreport}">
+					
+					<td th:text="${iStat.index+1}" class="text-wrap"></td>
+					<td class="text-wrap"><span th:text="${article.caseNo}"></span></td>
+					<td class="text-wrap"><span th:text="${article.fileSubject}"></span></td>
+					
+					
+					<td class="text-wrap" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+					<span
+						th:if="article.globalorg ne null"
+						th:text="${article.globalorg.globalOrgName}"></span>
+						</td>
+						
+						 <td sec:authorize="hasAnyRole('ROLE_DEPARTMENTADMIN','ROLE_SUPERADMIN')">
+												<span th:if="${article.subDepartment ne null}" th:text="${article.subDepartment.subdepartmentNameEn}"></span>
+												</td>												
+													
+						
+			
+					
+					<td class="text-wrap" style="vertical-align: top;">
+						<div th:each="emp,iStatein:${article.employeeList}" th:if="${gender ne null and gender == '1' and emp.gender ne null and emp.gender.id == 1}">
+							<span th:text="${iStatein.index+1}"></span> <span
+								class="text-wrap"
+								th:text="${emp.firstName+' '+emp.middleName+' '+emp.lastName}"></span>
+								<span th:if="${emp.gender ne null}">(<span th:text="${emp.gender.genderName}"></span>)</span>
+						</div>
+						<div th:each="emp,iStatein:${article.employeeList}" th:if="${gender ne null and gender == '2' and emp.gender ne null and emp.gender.id == 2}">
+							<span th:text="${iStatein.index+1}"></span> <span
+								class="text-wrap"
+								th:text="${emp.firstName+' '+emp.middleName+' '+emp.lastName}"></span>
+								<span th:if="${emp.gender ne null}">(<span th:text="${emp.gender.genderName}"></span>)</span>
+						</div>
+						<div th:each="emp,iStatein:${article.employeeList}" th:if="${gender ne null and gender == '4' and emp.gender ne null and emp.gender.id == 4}">
+							<span th:text="${iStatein.index+1}"></span> <span
+								class="text-wrap"
+								th:text="${emp.firstName+' '+emp.middleName+' '+emp.lastName}"></span>
+								<span th:if="${emp.gender ne null}">(<span th:text="${emp.gender.genderName}"></span>)</span>
+						</div>
+						<div th:each="emp,iStatein:${article.employeeList}" th:if="${gender == null or gender == ''}">
+							<span th:text="${iStatein.index+1}"></span> <span
+								class="text-wrap"
+								th:text="${emp.firstName+' '+emp.middleName+' '+emp.lastName}"></span>
+								<span th:if="${emp.gender ne null}">(<span th:text="${emp.gender.genderName}"></span>)</span>
+						</div>
+					</td>
+
+
+					<td class="text-wrap"><span th:if="${article.misConductType}"
+						th:text="${article.misConductType.misconductName}"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<div th:replace="fragments/ehrms_footer.html :: footer"></div> 
+	
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><span th:text="#{Reports of Suspended Employees Pending Cases}"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+<!--       	<hr> -->
+<div  id="myChartforCircleGraphDivforGender"style="display: block;width: 748px !important; height: 360px !important;margin-bottom: 56px;margin-left: -31%;margin-top: -40px;">
+         <canvas id="myChart"  ></canvas> 
+  
+  </div>
+       
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      
+      </div>
+    </div>
+  </div>
+</div>
+	
+	<script th:inline="javascript">
+
+$(document).ready(function(){
+	
+	var totalItems = [[${totalItems}]];	
+	var empCount = [[${empCount}]];		
+		
+	
+	Chart.defaults.global.defaultFontStyle = 'Bold';
+
+	new Chart(document.getElementById("myChart"), {
+	    type: 'pie',
+	    data: {
+	      labels: ["Total Cases", "Total Employees"],
+	      	      
+	      datasets: [{
+	        label: "Total Cases",
+	        backgroundColor: ["#3e95cd", "#FFA500"],
+	        data: [totalItems,empCount]
+	      }]
+	    },
+	    options: {
+// 	    	scales: {
+// 	            yAxes: [{
+// 	                ticks: {
+// 	                    beginAtZero: true
+// 	                }
+// 	            }]
+// 	        },
+	    	 title: {
+	 	        display: true,
+	 	        text: ''
+	 	      },
+	 	      animations: {
+	 	          tension: {
+	 	            duration: 1000,
+	 	            easing: 'linear',
+	 	            from: 1,
+	 	            to: 0,
+	 	            loop: true
+	 	          }
+	 	        },
+	    	responsive: true,	    	
+	    	
+            legend: {
+                position: 'top',
+                display: true,
+ 
+            },
+            "hover": {
+              "animationDuration": 0
+            },
+             "animation": {
+                "duration": 1,
+              "onComplete": function() {
+                var chartInstance = this.chart,
+                  ctx = chartInstance.ctx;
+ 
+                ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+ 
+//                 Chart.Legend.prototype.afterFit = function() {
+//                     this.height = this.height + 20;
+//                 };
+                
+                this.data.datasets.forEach(function(dataset, i) {
+
+			        for (var i = 0; i < dataset.data.length; i++) {
+			          var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+			              total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+			              mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
+			              start_angle = model.startAngle,
+			              end_angle = model.endAngle,
+			              mid_angle = start_angle + (end_angle - start_angle)/2;
+			
+			          var x = mid_radius * Math.cos(mid_angle);
+			          var y = mid_radius * Math.sin(mid_angle);
+			          
+			          ctx.fillStyle = '#fff';
+			          ctx.fillText(dataset.data[i], model.x + x, model.y + y);
+			
+			        }
+			        
+                });
+              }
+            }
+	     
+	    }
+	       
+	});
+
+});
+
+
+
+
+      </script> 
+      
+	<script th:inline="javascript">
+	
+	// added on 16/01/2023 as per DE Requirements
+	function closeModalForce(id){		 
+	   	var modalid = "#"+id;
+			$(modalid).hide();
+			$('.modal-backdrop').remove();
+		}
+	function printDivforInsidePreview(downloadreportsforall) {	 
+			    var printContents = document.getElementById(downloadreportsforall).innerHTML;
+			       jQuery.noConflict();
+			    var originalContents = document.body.innerHTML;
+			    document.body.innerHTML = printContents;
+			    window.print(); 
+				    document.body.innerHTML = originalContents;
+				    location.reload();
+				    var loading=new Loading();
+				    
+		
+		}
+	
+	
+		var mess = [[${{message}}]];
+		if (mess != null) {
+			swal(mess);
+		}
+		
+		
+		var sortfield = [[${{sortField}}]];
+		var sortdire = 	[[${{sortDir}}]];
+		
+		var casenolabel = '';
+		var rulelabel = '';
+		var misconductlabel='';
+		
+		
+		
+		$("#caseno").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getCaseListjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+//				var filter = ui.item.label;
+	             casenolabel = ui.item.label;
+             	
+//				window.location.href = '/de/departmentalEnquiry/reportsforAllFields/1?caseno='+filter+'&viewreport=true';
+		    
+		
+		    }
+        });
+		
+		$("#rule").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getRuleListjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+//				var filter = ui.item.label;
+             	
+//				window.location.href = '/de/departmentalEnquiry/reportsforAllFields/1?rule='+filter+'&viewreport=true';
+				rulelabel = ui.item.label;
+		    
+		
+		    }
+        });
+		
+		
+		  /* Added on  12-10-2022  for misconduct auto complete   */
+		  
+		  $("#misconduct").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getMisconductListjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+//				var filter = ui.item.label;
+             	
+//				window.location.href = '/de/departmentalEnquiry/reportsforAllFields/1?rule='+filter+'&viewreport=true';
+				misconductlabel = ui.item.label;
+		    
+		
+		    }
+        });
+		
+		//commented on 13-10-2022
+		
+		/* $('#filterbutton').click(function(){
+			window.location.href = '/de/departmentalEnquiry/reportsforAllFields/1?rule='+rulelabel+'&viewreport=true'+
+					'&caseno='+casenolabel+'&gender='+misconductlabel;
+		}); */
+		
+		
+		$('#filterbutton').click(function(){
+         	console.log("this is for testing fn..");
+         	casenolabel=$('#searchbtn').val();
+         	var fromdate  = "";
+         	var todate = "";
+         	fromdate = $('#fromdate').val();
+         	todate = $('#todate').val();
+			window.location.href = '/de/departmentalEnquiry/reportsforAllFields/1?search='+casenolabel+'&viewreport=true&fromdate='+fromdate+'&todate='+todate+'&sort-field='+sortfield+'&sort-dir='+sortdire;
+			
+			
+		/* 	window.location.href = '/de/departmentalEnquiry/reportsforAllFields/1?rule='+rulelabel+'&viewreport=true'+
+					'&caseno='+casenolabel+'&gender='+misconductlabel; */
+					
+					
+		});
+		
+	/* 	$('#downloadpdf').click(function(){ 
+			var ff = new FormData();
+			ff.append('html1', $('#downloadreport').html());
+			$('#embedPDF').attr('data', '');
+			//	ff.append('html2',$('#link-list').html()); 
+			postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+				jQuery.noConflict();
+				$('#embedPDF').attr('data', data);
+				$('#myModalprint').modal();
+			});
+		}); */
+		
+		
+		function printDiv(downloadreport) {
+		    var printContents = document.getElementById(downloadreport).innerHTML;
+		       jQuery.noConflict();
+		    var originalContents = document.body.innerHTML;
+		    document.body.innerHTML = printContents;
+
+		    window.print(); 
+			    document.body.innerHTML = originalContents;
+			    location.reload();
+			    var loading=new Loading();
+			  	   
+		}
+		
+		
+// 		function printDiv(downloadreport) {
+// 			var mywindow = window.open('', 'PRINT','height=auto,width=auto');
+// 			mywindow.document.write('<html><head><title>' + "Reports of Suspended Employees Pending Cases" + '</title>');
+// 			mywindow.document.write('</head><body >');
+// 			mywindow.document.write(document.getElementById(downloadreport).innerHTML);
+// 			mywindow.document.write('</body></html>');
+// 			mywindow.document.close();
+// 			mywindow.focus();
+// 			mywindow.print();
+// 			mywindow.close();
+// 			return true;
+// 		}
+
+		
+		
+		function downloadexcelfucn(){
+			var table = $('#tableexcelretired');
+			if(table && table.length){
+				var preserveColors = false;	jQuery.noConflict();
+				$(table).table2excel({
+					exclude: ".noExl",
+					name: "report",
+					filename: "Reports of Suspended Employees Pending Cases " + moment(new Date().toISOString().split('T')[0]).format('DD/MM/YYYY') + ".xls",
+					fileext: ".xls",
+					exclude_img: true,
+					exclude_links: true,
+					exclude_inputs: true,
+					preserveColors: preserveColors
+				});
+			}
+		}
+		
+		
+	</script>
+
+	<script th:inline="javascript">
+	var modalid = null;
+	
+	
+	function downloadlist(id) {
+		modalid = '#myModal'+id;
+		var ff = new FormData();
+		var printdata = '#printdata'+id;
+		var mymodal = '#myModal'+id;
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	function downloadlistCompact(id) {
+		modalid = '#myModalCompact'+id;
+		var ff = new FormData();
+		var printdata = '#printdataCompact'+id;
+		var mymodal = '#myModalCompact'+id;
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	
+	
+	
+	
+	</script>
+	<script th:inline="javascript">
+	function previewdetail(id) {
+		modaliddetail = '#myModal'+id;
+		modalidcompq = '#myModalCompact'+id;
+		$(modaliddetail).modal();
+		$(modalidcompq).modal('hide');
+	}
+
+
+</script>
+	<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="fragments/ehrms_headerlib.html :: headerlib">
+<title>e-HRMS : Edit Candidate Details</title>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+      <!-- partial:partials/_sidebar.html -->
+      
+       <!-- ========== Left Sidebar Start ========== -->
+				 <nav th:insert="ehrms_sidebar3_2_5.html :: ehrms_sidebar3_2_5"> </nav> 
+       <!-- Left Sidebar End -->
+      
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+         
+        <div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+        
+        <!-- partial -->
+        <!-- partial:partials/_navbar.html -->
+        <nav th:insert="fragments/ehrms_navbar.html :: navbar"> </nav> 
+        
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title"><b><span th:text="#{CandidateDetails}"></span></b></h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+<!--                   <li class="breadcrumb-item"><a href="#">Tables</a></li> -->
+<!--                   <li class="breadcrumb-item active" aria-current="page"> Basic tables </li> -->
+                  
+                 	  <li class="breadcrumb-item"><a href="#"><span th:text="#{CandidateDetails.Recruitment Module}"></span></a></li>
+					  <li class="breadcrumb-item"><a href="#"><span th:text="#{inbox.Recruitment of Group D posts}"></span></a></li>
+					  <li class="breadcrumb-item"><a href="#"><span th:text="#{CandidateDetails.Group D Candidates List}"></span></a></li>
+                </ol>
+              </nav>
+              
+            </div>
+            
+            <div class="row">
+				
+	              <div class="col-md-10 offset-md-1 grid-margin stretch-card">
+	                <div class="card">
+	                  <div class="card-body" th:object="${candidate}">
+	                  	
+	                  	<div class="form-group">
+							<p th:text="${message}" th:if="${message ne null}" id="testingxyz"
+								class="alert alert-primary"></p>							
+						</div>
+	                  	
+	                  	<form th:action="@{/editcandidategroupd}" method="post"
+							enctype="multipart/form-data" id="noticeregisterid"
+							onsubmit="return candidateValid()">
+							
+						<div class="row">
+							<div class="form-group col-sm-8">
+								<label for="candidatename"><span
+									th:text="#{CandidateDetails.Candidate name}">Candidate Name:</span></label> <input
+									type="text" id="candidatename" th:field="*{candidatename}"
+									class="form-control" placeholder="100" readonly="readonly">
+	
+								<input type="hidden" id="id" th:field="*{id}"
+									class="form-control" readonly="readonly"> <input
+									type="hidden" id="mpsccandidatenumber"
+									th:field="*{mpsccandidatenumber}" class="form-control"
+									readonly="readonly"> <input type="hidden"
+									id="rollnumber" th:field="*{rollnumber}" class="form-control"
+									readonly="readonly"> <input type="hidden"
+									id="candidatename" th:field="*{id}" class="form-control"
+									readonly="readonly"> <input type="hidden"
+									id="designation" th:field="*{designation}" class="form-control"
+									readonly="readonly"> <input type="hidden"
+									id="apporoveddocument" th:field="*{apporoveddocument}"
+									class="form-control" readonly="readonly"> <input
+									type="hidden" id="city" th:field="*{city}" class="form-control"
+									readonly="readonly"> <input type="hidden"
+									id="identitynumber" th:field="*{identitynumber}"
+									class="form-control" readonly="readonly"> <input
+									type="hidden" id="offerletter" th:field="*{offerletter}"
+									class="form-control" readonly="readonly"><input
+									type="hidden" id="processType" th:field="*{processType}"
+									class="form-control" readonly="readonly">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4 form-group">
+								<label><span th:text="#{CandidateDetails.Documents}"></span>:</label> <select
+									class="form-control" id="language_selection"
+									th:field="${candidate.fileName}" name="language_selection[]" required>
+									<option value="">Select</option>
+									<option th:each="cand:${candDocs}" th:value="${cand.name}"
+										th:text="${cand.name}"></option>
+								</select>
+							</div>
+							<div class="col-sm-4 form-group">
+								<label for="file"><span th:text=#{CandidateDetails.FileUpload}></span></label> <input
+									type="file" name="file" accept=".pdf" class="form-control"
+									id="FileUpload" required>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-sm-4">
+								<label for="date"><span th:text="#{CandidateDetails.Applied Date}">Applied
+										Date:</span></label> <input id="applieddate" min="1900-01-01" class="form-control"
+									max="2099-09-13" type="date" th:field=*{appliedDate} />
+								<p class="alert alert-danger"
+									th:if="${#fields.hasErrors('appliedDate')}"
+									th:errors="*{appliedDate}" id="appliedDate">Designation
+									Error</p>
+							</div>
+							<div class="form-group col-sm-4">
+								<label for="date"><span th:text="#{CandidateDetails.Joining Date}">Joining
+										Date:</span></label> <input id="joiningdate" min="1900-01-01" class="form-control"
+									max="2099-09-13" type="date" th:field=*{joiningDate} />
+								<p class="alert alert-danger"
+									th:if="${#fields.hasErrors('joiningDate')}"
+									th:errors="*{joiningDate}" id="joiningDate">Designation
+									Error</p>
+							</div>
+
+						</div>
+						<div class="row">
+						<div class="form-group col-sm-8">
+							<label for="date"><span th:text="#{CandidateDetails.Doc ID}">Doc
+									Id:</span></label> <input id="docId" type="text" class="form-control"
+								placeholder="Please provice manual Doc Id" th:field=*{docId}
+								required="required" />
+							<p class="alert alert-danger"
+								th:if="${#fields.hasErrors('docId')}" th:errors="*{docId}"
+								id="docId">Designation Error</p>
+						</div>
+						</div>
+						<div class="form-group checkbox">
+							<label th:text="#{CandidateDetails.Verified}"></label> <input type="checkbox"
+								value="" th:field=*{verified}>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary">
+								<span th:text=#{CandidateDetails.Save}></span>
+							</button>
+						</div>
+
+						<!-- 					</form> -->
+					
+					<div class="form-group border border-dark p-3">
+						
+						<div class="table-responsive">
+						<table id="link-list" class="table table-striped table-bordered"
+							style="width: 90%">
+							<thead>
+								<tr>
+									<th th:text="#{CandidateDetails.index}">Index</th>
+									<th th:text="#{CandidateDetails.Group D candidate name}">Group D candidate name</th>
+									<th th:text="#{CandidateDetails.Documents}">Documents</th>
+									<th th:text="#{CandidateDetails.Verified}">Verified</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td th:text="${candidate.candidatename}"></td>
+									<td>
+										
+										<table>
+											<tr th:each="f,iState : ${candidate.files}">
+												<td><a href="javascript:void(0)" th:data1="${f.id}"
+													th:data2="${f.fileName}"
+													th:onclick="downloadCandiDoc(this.getAttribute('data1'),this.getAttribute('data2'))">
+														<span
+														th:text="${{iState.index+1}} + ': ' + ${{f.fileName}}"></span>
+												</a></td>
+												<td><span> <input type="checkbox"
+														th:field="${candidate.files[__${iState.index}__].verified}"
+														th:value="${candidate.files[__${iState.index}__].verified}">
+														<input type="hidden"
+														th:field="${candidate.files[__${iState.index}__].fileName}"
+														th:value="${candidate.files[__${iState.index}__].fileName}">
+														<input type="hidden"
+														th:field="${candidate.files[__${iState.index}__].data}"
+														th:value="${candidate.files[__${iState.index}__].data}">
+														<input type="hidden"
+														th:field="${candidate.files[__${iState.index}__].AuthorityEmail}"
+														th:value="${candidate.files[__${iState.index}__].AuthorityEmail}">
+														<input type="hidden"
+														th:field="${candidate.files[__${iState.index}__].sent}"
+														th:value="${candidate.files[__${iState.index}__].sent}">
+														<input type="hidden"
+														th:field="${candidate.files[__${iState.index}__].District}"
+														th:value="${candidate.files[__${iState.index}__].District}">
+														<span th:text="#{CandidateDetails.Verified}"></span>
+												</span></td>
+												<td><a href="javascript:void(0);" th:if="${f.AuthorityEmail ne null}" 
+												th:href="@{|/sendRemindergrpd/${f.id}/${f.fileName}/${candidate.id}|}"
+													class="btn btn-primary"><span th:text="#{CandidateDetails.SendReminder}"></span></a>
+													</td>
+												<td><span th:if="${f.reminder and f.AuthorityEmail ne null}" 
+												th:text="#{CandidateDetails.Please send reminder}">
+												Please send reminder</span>
+												<span th:if="${!f.reminder}">NA</span></td>	
+											</tr>
+										</table>
+									</td>
+									<td><input type="checkbox" th:id = "candidateVerify" th:field="${candidate.verified}" 
+									th:value="${{candidate.verified}}" onclick="return false"
+									></td>
+								</tr>
+							</tbody>
+						</table>
+						
+						</div>
+						
+						</div>	
+							
+						</form>
+	                  
+	                  
+		                  </div>
+	            		</div>
+	            </div>
+            	
+            </div>
+            
+            </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+           <!-- remove from footer -->
+			    <div th:replace="fragments/ehrms_footer.html :: footer"></div>
+		    <!-- remove from footer -->
+
+       <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+        
+ <!-- container-scroller -->
+    <div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+            
+	<script>
+		$(function() {
+			$("#datepicker").datepicker({
+				changeYear : true,
+			});
+		});
+	</script>
+</body>
+</html>

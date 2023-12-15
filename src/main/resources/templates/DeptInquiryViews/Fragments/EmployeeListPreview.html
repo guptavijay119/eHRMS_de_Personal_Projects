@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+
+<div th:fragment="EmployeePreviewlist">
+	<div class="modal fade" id="myModal2" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div class="container">
+						<button type="button" class="close" data-dismiss="modal"
+							th:id="myModal2"  onclick="closeModalForce()">&times;</button>
+							
+						<br><br>
+						<button type="button" class="btn btn-primary"  id="myModal29"   onclick="printDivforInsidePreview('printdata')" 
+							style="float: right;">	
+							<span th:text="#{view.pdf.label}">View PDF</span>
+						</button>
+						
+						
+<br>
+						<div class="table-responsive" id="printdata">
+							<h3 style="margin-top: 4px;"><span th:text="#{view.empdetails.label.name}"></span></h3>
+							<div><br></div>
+							<table class="table table-bordered table-sm"
+								style="border: 1px solid black !important; border-collapse: collapse !important;">
+								<caption></caption>
+								<thead>
+									<tr>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row" width="20%"></th>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row"></th>
+									</tr>
+								</thead>
+								<tbody>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="employeeDetails"><span><span th:text="#{de.enquiry.caseno}"></span></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.caseNo}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="employeeDetails"><span th:text="#{de.sevarth.id}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.sevarthId}"></span>
+										</td>
+									</tr>
+
+								<!-- 	<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="chargeSheet"><span>Employee id.</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.employeeId}"></span>
+										</td>
+									</tr> -->
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="employeeDetails"><span th:text="#{de.firstName.labels}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.firstName}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="chargeSheet"><span th:text="#{de.middleName.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.middleName}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="employeeDetails"><span th:text="#{de.lastName.labels}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.lastName}"></span>
+										</td>
+									</tr>
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="employeeDetails"><span th:text="#{de.email.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.email}"></span>
+										</td>
+									</tr>
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="employeeDetails"><span th:text="#{de.mobileno.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.mobileNumber}"></span>
+										</td>
+									</tr>
+
+
+								
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="Gender"><span th:text="#{de.empdetails.genders}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${employeeDetails.gender ne null}"
+											th:text="${employeeDetails.gender.genderName}"></span>
+										</td>
+									</tr>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="reInstatedOrderDate"><span th:text="#{dateof.joining.gov.service}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span
+											th:text="${#temporals.format(employeeDetails.joinCurrentOrgdate, 'dd-MM-yyyy')}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="reInstatedOrderDate"><span th:text="#{de.empdetails.dateofbirths}" ></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span
+											th:text="${#temporals.format(employeeDetails.localdate, 'dd-MM-yyyy')}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="reInstatedOrderDate"><span th:text="#{de.dateof.superannuation}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span
+											th:text="${#temporals.format(employeeDetails.superannuationDate, 'dd-MM-yyyy')}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+
+
+									<!-- <tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="Gender"><span>Revenue Division</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${employeeDetails.revenueDivision ne null}"
+											th:text="${employeeDetails.revenueDivision.divisionName}"></span>
+										</td>
+									</tr> -->
+
+									<!-- <tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="Gender"><span>Department Name</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${employeeDetails.globalorg ne null}"
+											th:text="${employeeDetails.globalorg.globalOrgName}"></span>
+										</td>
+									</tr>
+                                  -->
+
+
+
+							          	<!-- 	<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="employeeDetails"><span>Sub-Department
+													Name</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.subDepartment}"></span>
+										</td>
+									</tr>
+
+                               -->
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="Gender"><span th:text="#{de.empdetails.servicegroup}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${employeeDetails.servicegroup  ne null}"
+											th:text="${employeeDetails.servicegroup.service_group_name}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="Gender"><span th:text="#{de.empdetails.designations}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${employeeDetails.designation   ne null}"
+											th:text="${employeeDetails.designation.designation_name_en}"></span>
+										</td>
+									</tr>
+									
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="ruleApplicable"><span th:text="#{rule.applicable.preview.empdetails}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${employeeDetails.ruleApplicable   ne null}"
+											th:text="${employeeDetails.ruleApplicable.ruleName}"></span>
+										</td>
+									</tr>
+									
+									
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="officeName"><span th:text="#{de.empdetails.officename}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${employeeDetails.officeName}"></span>
+										</td>
+									</tr>
+									
+									
+									
+									
+								</tbody>
+							</table>
+						</div>
+						<br>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</html>

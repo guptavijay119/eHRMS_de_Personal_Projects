@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!-- <head th:replace="header::header">
+ -->
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+</head>
+<title>Generate Appointment Letter</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+		<nav th:insert="sportssidebar :: sportssidebar"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title">
+							<b><span th:text="#{Sidebar.Generate Appointment Letters}">Generating
+									Appointment Letter</span></b>
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{inbox.Recruitment Module}"></span></a></li>
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{inbox.Recruitment by Individual Departments through MPSC}">
+									</span></a></li>
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{Sidebar.newproposal}"> </span></a></li>
+							</ol>
+						</nav>
+
+
+					</div>
+					<div class="row">
+						<div class="col-lg-8 offset-2 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div class="row">
+										<p th:text="${message}" id="testingxyz"
+											th:if="${message ne null}" class="alert alert-danger"></p>
+									</div>
+
+									<div class="table-responsive" th:if="${gr ne null}">
+										<form method="post" enctype="multipart/form-data"
+											id="noticeregisterid" th:action="@{|/saveGrSports/${proposalId}|}" th:object="${gr}">
+											<div class="form-group">
+							  					<label for="ProposalId"><span th:text="#{candidatelist.Noticeid}"></span></label>
+							  					<input type="text" class="form-control" th:value="${proposalId}" id="proposalId" readonly="readonly">
+							  				</div>
+											<div class="form-group">
+												<label><span th:text=#{Form.Editor}></span></label>
+												<textarea th:field="${gr.grData}" id="editorletter"></textarea>
+												<input type="hidden" th:field="${gr.applicants}" th:value="${gr.applicants}">
+												<input type="hidden" th:field="${gr.id}" th:value="${gr.id}">
+											</div>
+											<button type="submit" class="btn btn-primary"><span th:text="#{Form.Save}"></span></button>
+										</form>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+		<!-- Modal 2 -->
+		<div class="modal fade" id="myModal2" role="dialog">
+			<div class="modal-dialog modal-xl">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="container">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+
+</body>
+</html>

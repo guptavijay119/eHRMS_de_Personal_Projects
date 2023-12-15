@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="header::header">
+
+</head>
+<title>Recruitment</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div th:insert="Navbar::Navbar"></div>
+	<div class="container-fluid">
+		<div class="row p-5 d-flex">
+				<div class="dropdown col text-center" id="RecruitmentDropdown">
+			    <button class="btn btn-primary dropdown-toggle" id="RecruitmentBtn" type="button" data-toggle="dropdown"
+			    	aria-haspopup="true" aria-expanded="false">
+			    	<span th:text="#{Recruitment}"></span>
+			    </button>
+			    <div id="myDropdown" class="dropdown-menu" aria-labelledby="RecruitmentBtn">
+			      <input class="form-control" id="RecruitmentSearch" type="text" placeholder="Search..">
+						<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span
+							th:text="#{Recruitment.CPTP}"></span></a>			      
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span
+							th:text="#{Recruitment.Recruitment by Individual Departments through MPSC}"></span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Compassionate Recruitment}"><span
+							th:text="#{Recruitment.Compassionate Recruitment}"></span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group B (non-Gazetted) and Group C posts}"><span
+							th:text="#{Recruitment.Recruitment of Group B (non-Gazetted) and Group C posts}"></span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							th:text="#{Recruitment.Recruitment of Group D posts}"></span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Framing of Recruitment Rules}"><span
+							th:text="#{Recruitment.Framing of Recruitment Rules}"></span></a>
+				</div>
+			  </div>
+			  <div class="dropdown col text-center">
+			    <button class="btn btn-primary dropdown-toggle"  type="button" data-toggle="dropdown">
+			    <span>Transfer and Posting</span>
+			    </button>
+			   <div id="postingSearchDrop" class="dropdown-menu"  aria-labelledby="RecruitmentBtn">
+			      <input class="form-control" id="postingSearch" type="text" placeholder="Search..">
+						<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span
+							>Transfers of employees - Group A</span></a>			      
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span
+							>Transfers of employees - Group B</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Compassionate Recruitment}"><span
+							>Transfers of employees - Group C</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group B (non-Gazetted) and Group C posts}"><span
+							>Transfers of employees - Group D</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Divisional Cadre Allotment</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Change Request for Divisional Cadre Allotment</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Deputations</span></a>
+							
+						
+				</div>
+			    
+			  </div>
+			  <div class="dropdown col text-center">
+			    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+			    <span>Statutory Compliance</span>
+			    </button>
+			    <div id="statSearchDrop" class="dropdown-menu" aria-labelledby="RecruitmentBtn">
+			      <input class="form-control" id="statSearch" type="text" placeholder="Search..">
+						<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span
+							>Departmental Examination</span></a>			      
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span
+							>Annual Property Returns</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Compassionate Recruitment}"><span
+							>Hindi Marathi Qualifying Exam</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group B (non-Gazetted) and Group C posts}"><span
+							>Assessment of Government employees nearing 50 or 55 years of age</span></a>
+							
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Foreign Tour Approval</span></a>
+							<!-- <a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Foreign Tour Approval22</span></a> -->
+				</div>
+			    
+			  </div>
+			  <div class="dropdown col text-center">
+			    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+			    <span>Training</span>
+			    </button>
+			    <div id="trainSearchDrop" class="dropdown-menu" aria-labelledby="RecruitmentBtn">
+			      <input class="form-control" id="trainSearch" type="text" placeholder="Search..">
+						<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span
+							>Implementation of the State Training Policy</span></a>			      
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span
+							>Combined Probation Training program (CPTP)</span></a>
+				</div>			    
+			  </div>
+			  <div class="dropdown col text-center">
+			    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+			    <span>Annual Confidential Report</span>
+			    </button>
+			    <div id="acrSearchDrop" class="dropdown-menu" aria-labelledby="RecruitmentBtn">
+			      <input class="form-control" id="acrSearch" type="text" placeholder="Search..">
+						<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span
+							>Group A - MAHAPAR</span></a>			      
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span
+							>Group A in Districts</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Compassionate Recruitment}"><span
+							>Group B and C</span></a>
+				</div>			    
+			  </div>
+			  <div class="dropdown col text-center">
+			    <button class="btn btn-primary dropdown-toggle" type="button" data-display="static" data-toggle="dropdown">
+			    <span>Department Enquiry</span>
+			    </button>
+			    <div id="departSearchDrop" class="dropdown-menu" aria-labelledby="RecruitmentBtn">
+			      <input class="form-control" id="departSearch" type="text" placeholder="Search..">
+						<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span
+							>Initiation of disciplinary proceedings for Group A & B</span></a>			      
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span
+							>Special Procedure in certain cases</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Compassionate Recruitment}"><span
+							>Rule 10 - for Group A & B</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group B (non-Gazetted) and Group C posts}"><span
+							>Rule 8 - for Group A & B</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Retired Employees</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Regularization of Period of Suspension</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Criminal Charges</span></a>
+						<a class="dropdown-item" th:href="@{/getProcess/Recruitment of Group D posts}"><span
+							>Absconding employees/ cases</span></a>
+				</div>
+			    
+			  </div>
+			  
+			  
+		</div>
+	</div>
+</body>
+</html>

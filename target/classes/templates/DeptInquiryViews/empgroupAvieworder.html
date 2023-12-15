@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>No DE Certifcate Details</title>
+	<style>
+		.ui-menu .ui-menu-item-wrapper {
+			color: #303030 !important;
+			background-color: #fff !important;
+		}
+
+		.ui-menu .ui-menu-item-wrapper:hover {
+			color: #303030 !important;
+			background-color: rgb(192, 192, 192) !important;
+			border: #fff 1px solid !important;
+		}
+
+		.ui-widget-content {
+			border: 1px solid #ddd;
+			background: rgb(192, 192, 192) !important;
+			color: #333 !important;
+		}
+	</style>
+
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar" aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar" aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+					
+
+					
+
+
+					</div>
+					<div class="text-center">
+						<h3>
+							<strong><span th:text="#{de.commonsidebar.checknodecertificate}"></span>
+							</strong>
+						</h3>
+					</div>
+
+					<div class="row">
+						<div class="offset-2 col-lg-8 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+
+									<form method="post" enctype="multipart/form-data"
+									id="noticeregisterid"
+									th:action="@{|/generaltransferA/|}"
+									th:object="${gr}">
+									<div class="form-group">
+										<input type="hidden" class="form-control"
+											 id="proposalId" readonly="readonly">
+									</div>
+
+									<div class="form-group">
+										<label> </label>
+										<textarea th:field="${gr.grData}" id="summernote"></textarea>
+										 <input
+											type="hidden" th:field="${gr.id}" th:value="${gr.id}">
+									</div>
+									<br />
+
+
+									<!-- <button type="submit" class="btn btn-primary"
+										
+										
+										th:name="action" th:value="save">
+										<span >Save Draft</span>
+									</button> -->
+									<button type="button" class="btn btn-primary form-rounded"
+										onclick="printDiv()">
+										<span >Print</span>
+									</button>
+									
+									<a th:href="@{|/departmentalEnquiry/verifynode|}" style="float:right" class="btn btn-primary form-rounded"
+										>
+										<span >Close</span>
+									</a>
+									<!-- <button type="submit" class="btn btn-primary"
+									
+										th:name="action" th:value="finalize">
+										<span >Finalize</span>
+									</button> -->
+								
+
+									
+
+
+								</form>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+	<script type="text/javascript">
+	function printDiv() {
+
+		// 			var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+//		var htmlcontent =document.getElementById('summernote').value;
+		
+		var mywindow = window
+				.open('', 'childWindow','location=yes,menubar=yes,toolbar=yes'
+						);
+		mywindow.open();
+	 	mywindow.document
+				.write('<html><style>@page{size: A4 portrait;}table {border-spacing: 0;border-collapse: collapse; }</style><head><title>Vigilance Certificate</title>'); 
+	
+		mywindow.document
+				.write(document.getElementById('summernote').value);
+		
+		 mywindow.document
+				.write('</body></html>');
+ 
+		mywindow.document.close();
+		mywindow.focus();
+
+		mywindow.print();
+		mywindow.close();
+
+		// 		    jQuery.noConflict();
+		return true;
+
+	}
+</script>
+
+		
+		<script type="text/javascript" th:inline="javascript">
+		var message = /*[[${message}]]*/;
+	 	if(message != null) {
+	 		swal(message);
+	 	}
+	 	var finalize= /*[[${finalize}]]*/;
+	var orderGenerated = /*[[${ordergenerated}]]*/;
+	var springAttribute= /*[[${authority}]]*/;
+			$('#summernote').summernote({
+				
+				tabsize : 2,
+				height : 1090,
+				
+				focus: false,                  // set focus to editable area after initializing summernote
+				  toolbar: [
+					 
+					  ['font', ['bold', 'underline', 'clear']],
+					  ['fontname', ['fontname']],
+					  ['color', ['color']],
+					  ['para', ['ul', 'ol', 'paragraph']],
+					  ['table', ['table']]
+					],
+				  tabDisable: false,
+				  codeviewFilter: false,
+				  codeviewIframeFilter: true
+			});
+			if(finalize != null && finalize)
+			{
+			$('#summernote').summernote('disable');
+			}
+			if(orderGenerated != null && orderGenerated)
+			{
+			$('#summernote').summernote('disable');
+			}
+			if(springAttribute == 'EMP')
+			{
+			$('#summernote').summernote('disable');
+			}
+			else if(springAttribute == 'Hoo')
+			{
+			$('#summernote').summernote('disable');
+			}
+			$('#summernote').summernote('disable');
+			
+		</script>
+	
+</body>
+
+</html>

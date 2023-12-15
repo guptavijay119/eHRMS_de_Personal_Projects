@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="ReportsforSuspendedEmployeeWithoutDEPreview">
+	<div class="modal fade" th:id="myModalCompact__${article.id}__"   role="dialog"  th:each="article,iStat:${caseDetailsAllRecords}">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div class="container">
+						
+						<button type="button" class="close" data-dismiss="modal"   th:data-idmodal="myModalCompact__${article.id}__"
+						th:id="myModalCompact__${article.id}__"    onclick="closeModalForce(this.getAttribute('data-idmodal'))">&times;</button>
+
+						
+						 <br>
+						<button type="button" class="btn btn-primary"  th:data-idprint="printdata__${article.id}__"
+							  onclick="printDivforInsidePreview(this.getAttribute('data-idprint'))" 
+							style="float: right;">	
+						<span th:text="#{view.pdf.label}">View PDF</span>
+						</button>
+						
+					
+						
+						<div class="table-responsive"  th:id="printdata__${article.id}__">
+						<h3  style="margin-top: 4px;">
+							<strong><span th:text="#{de.suspension.withoutde.preview.label}"></span></strong>
+						</h3>
+							<table class="table table-bordered table-sm"
+								style="border: 1px solid black !important; border-collapse: collapse !important;">
+								<caption></caption>
+								<thead>
+									<tr>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row" width="20%"></th>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row"></th>
+									</tr>
+								</thead>
+								<tbody>
+
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="suspensionCaseNo"><center><span th:text="#{de.file.no.labels}"></span></center> </label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${article.fileNo}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="employeeSuspended"><span th:text="#{de.suspension.employeesus}"></span></label>
+										</td>
+
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:if="${article.employeeSuspended}"
+											th:text="#{de.boolean.yes}"></span> <span
+											th:unless="${article.employeeSuspended}"
+											th:text="#{de.boolean.no}"></span>
+										</td>
+									</tr>
+									
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="sevarthId"><center><span th:text="#{de.sevarth.id}"></span> </center></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${article.sevarthId}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><center><span th:text="#{de.firstName.labels}"></span></center></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${article.firstName}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><center><span th:text="#{de.middleName.label}"></span></center></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${article.middleName}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><center><span th:text="#{de.lastName.labels}"></span></center></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${article.lastName}"></span>
+										</td>
+									</tr>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"> <span th:text="#{de.suspensionunder.rule.lbl}"></span> </label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:if="${article.susUnderRule ne null}"
+											th:text="${article.susUnderRule.susRuleName}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="dateOfOrder"><span th:text="#{de.actualsuspension.rule.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span
+											th:text="${#temporals.format(article.dateOfOrder, 'dd-MM-yyyy')}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="dateofActualSuspension">
+											<span th:text="#{de.dateofactual.suspension.rule.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span
+											th:text="${#temporals.format(article.dateofActualSuspension, 'dd-MM-yyyy')}"></span>
+										</td>
+									</tr>
+
+
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="dateofActualSuspension"><span th:text="#{de.dateoforder.ofdeemedsuspension}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span
+											th:text="${#temporals.format(article.dateOfOrder1, 'dd-MM-yyyy')}"></span>
+										</td>
+									</tr>
+
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="dateofDeemedSuspension"><span th:text="#{de.dateoforder.ofdeemedsuspension.date}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span
+											th:text="${#temporals.format(article.dateofDeemedSuspension, 'dd-MM-yyyy')}"></span>
+										</td>
+									</tr>
+
+									<!-- <tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="whetherSuspensionIsExtnd3Months"><span th:text="#{de.ofdeemedsuspension.review.taken}" > </span></label>
+										</td>
+
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span
+											th:if="${article.whetherReviewTaken}"
+											th:text="#{de.boolean.yes}"></span> <span
+											th:unless="${article.whetherReviewTaken}"
+											th:text="#{de.boolean.no}"></span>
+										</td>
+									</tr>
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><span th:text="#{de.SuspensionDetails.Currentstatuss}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${article.currentStatus}"></span>
+										</td>
+									</tr>
+
+
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="whetherSuspensionIsExtnd3Months">
+											<span th:text="#{de.SuspensionDetails.whetherSuspension.extendedafter3.month}"></span></label>
+										</td>
+
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span
+											th:if="${article.whetherSuspensionIsExtnd3Months}"
+											th:text="#{de.boolean.yes}"></span> <span
+											th:unless="${article.whetherSuspensionIsExtnd3Months}"
+											th:text="#{de.boolean.no}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><span th:text="#{de.SuspensionDetails.PeriodOfextensionInMonth}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${article.periodofExtension}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><span th:text="#{de.SuspensionDetails.PeriodOfextensionInDays}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${article.periodofExtensionInDays}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="dateofExtensionOrder">
+											<span th:text="#{de.SuspensionDetails.dateoflastExtension}" ></span> </label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span
+											th:text="${#temporals.format(article.dateofExtensionOrder, 'dd-MM-yyyy')}"></span>
+										</td>
+									</tr> -->
+
+
+
+								</tbody>
+							</table>
+						</div>
+					
+						<br> <br />
+
+
+					</div>
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+		</div>
+</html>

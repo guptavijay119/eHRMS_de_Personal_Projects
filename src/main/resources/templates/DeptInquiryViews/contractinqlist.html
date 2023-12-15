@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+<title>Case Details Entry</title>
+<style>
+.ui-menu .ui-menu-item-wrapper {
+	color: #303030 !important;
+	background-color: #fff !important;
+}
+
+.ui-menu .ui-menu-item-wrapper:hover {
+	color: #303030 !important;
+	background-color: rgb(192, 192, 192) !important;
+	border: #fff 1px solid !important;
+}
+
+.ui-widget-content {
+	border: 1px solid #ddd;
+	background: rgb(192, 192, 192) !important;
+	color: #333 !important;
+}
+
+.ui-helper-hidden-accessible {
+  display: none !important;
+}
+</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   
+	th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()" id="viewtop">
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"
+				aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3>
+							<strong>
+								<span th:text="${title}"></span>
+							</strong>
+						</h3>
+						<a href="#gridview" class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.scroll.down.AllBtn}"></span></a>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+									<span th:if="${cased ne null}">
+										<h4>Case No:
+										<span th:text="${cased.caseNo}"></span></h4>
+										
+									</span>
+									<br>
+									<div class="row">
+										<span><strong th:text="#{Legends}"></strong> <span><span style="background-color: #edfbf4;"></span>-Zero cases</span>&nbsp;<span></span>&nbsp;<span></span></span>
+									</div>
+									
+									<div class="table-responsive">
+										<table class="table table-bordered dark">
+											<thead>
+												<tr>
+													<th width="10%" class="text-wrap"><span th:text="#{srNo}" ></span></th>
+													
+													<th  class="text-wrap"><span th:text="#{de.inquiryofficer.inquiryofficername}" ></span></th>
+													<th  class="text-wrap"><span th:text="#{de.email.label}"></span></th>
+													<th  class="text-wrap"><span th:text="#{de.mobileno.label}" ></span></th>
+													
+													<th  class="text-wrap" th:if="${contractual ne null && contractual}"><span  >Appointment Date (Upto)</span></th>
+													
+													<th class="text-wrap" th:if="${contractual ne null && !contractual}"><span th:text="#{de.inquiryofficer.officertype}" ></span></th>
+													
+													<th  class="text-wrap"><span th:text="#{IO Report Pending}"></span></th>
+													
+													<th  class="text-wrap"><span  th:text="#{IO Report Issued}"></span></th>
+													
+													<th  class="text-wrap"><span th:text="#{de.finaldisposal}" ></span></th>
+													<th  class="text-wrap" th:if="${cased ne null}"><span ></span></th>
+
+												</tr>
+
+											</thead>
+											<tbody>
+												<tr th:each="article,iStat:${iolist}" 
+													th:style="${article.iodetaillist.size()==0?'background-color:#edfbf4':article.iodetaillist.size()>5?'background-color:#ff9e9e':'background-color:#fdfdb8'}">
+													<td th:text="${iStat.index+1}" class="text-wrap"></td>
+													
+													<td  class="text-wrap">
+													<span th:if="${article.appellation ne null}" th:text="${article.appellation}"></span>&nbsp;<span th:text="${article.firstName+' '+article.middelName+' '+article.lastName}"></span></td>
+													
+													<td th:text="${article.email}" class="text-wrap"></td>
+													<td th:text="${article.mobileNumber}" class="text-wrap"></td>
+													
+													<td class="text-wrap" th:if="${contractual ne null && contractual}">
+														<span th:if="${article.appointmentUpto ne null}"
+															th:text="${#temporals.format(article.appointmentUpto, 'dd-MM-yyyy')}"
+														></span>
+													</td>
+													
+													<td th:if="${contractual ne null && !contractual}" th:text="${article.inquiryOfficerlist}" class="text-wrap"></td>
+													
+													<td th:text="${article.iodetaillist.size()}" class="text-wrap"></td>
+													
+													<td th:text="${article.ioReportIssued.size()}" class="text-wrap"></td>
+													
+													<td th:text="${article.iodetaillistdecided.size()}" class="text-wrap"></td>
+													<td th:if="${cased ne null}">
+														<a th:data-caseid="${cased.id}"
+														th:data-id = "${article.id}"
+														 onclick="assignio(this.getAttribute('data-caseid'),this.getAttribute('data-id'))" 
+														 href="javascript:void(0);"
+														  
+														 class="btn btn-primary"><span th:text="#{Assign}"></span></a>
+													</td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+
+						<br>
+						<div style="float: right;" id="gridview"><a href="#viewtop"  class="btn btn-info btn-sm"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+							
+									
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+
+	<script th:inline="javascript">
+	
+	// added on 19/01/2023 as per DE Requirements
+	var doyuwanttoassign=[[${{doyyouwanttoassigntitle}}]];
+	var nolabel=[[${{nolabel}}]];
+	var yeslabel=[[${{yeslabel}}]];
+	
+	function assignio(caseid,id) {
+//		th:href="@{|/|}"
+		swal({
+				title: doyuwanttoassign,
+				text: "",
+				buttons: true,
+				dangerMode: true,
+				buttons: [nolabel, yeslabel]
+			}).then(function(isConfirm) {
+				if (isConfirm) {
+					window.location.href = '/de/departmentalEnquiry/assigncontractualio?caseid='+caseid+'&ioid='+id;
+				}
+			});
+	}
+	
+	function closeModalForce(id){
+		   /* var vk12=$('#vkg123').val();
+		  var vkstr='myModal'+vk12; */
+		  /* 	$('#myModalprint').modal('hide'); */
+	   	/* 	$('#myModalprint').modal('hide'); */
+	   	var modalid = "#"+id;
+			$(modalid).hide();
+			$('.modal-backdrop').remove();
+		}
+	
+	function printDivforInsidePreview(downloadreportsforall) {
+		/* 	var name = $('#myModalCompact');
+			var modalName = myModalCompact+name;  */
+// 			$('#myModalCompact273').modal('hide');
+			
+			    var printContents = document.getElementById(downloadreportsforall).innerHTML;
+			       jQuery.noConflict();
+			    var originalContents = document.body.innerHTML;
+			    document.body.innerHTML = printContents;
+
+			    window.print(); 
+				    document.body.innerHTML = originalContents;
+				  	   	
+		
+		}
+	
+	
+	
+		var mess = [[${{message}}]];
+		if (mess != null) {
+			swal(mess);
+		}
+		var sortfield = [[${{sortField}}]];
+		var sortdire = 	[[${{sortDir}}]];
+		
+		$("#caseno").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getCaseListjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+				var filter = ui.item.label;
+             	
+				window.location.href = '/de/departmentalEnquiry/caseDtlsRcdsInboxlst/1?caseno='+filter+'&sort-field='+sortfield+'&sort-dir='+sortdire;
+		    
+		
+		    }
+        });
+		
+		
+		$("#caseid").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getCaseListIdjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+				var filter = ui.item.label;
+             	
+				window.location.href = '/de/departmentalEnquiry/caseDtlsRcdsInboxlst/1?caseid='+filter+'&sort-field='+sortfield+'&sort-dir='+sortdire;
+		    
+		
+		    }
+        });
+		
+		$("#rule").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getRuleListjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+				var filter = ui.item.label;
+             	
+				window.location.href = '/de/departmentalEnquiry/reports/1?rule='+filter+'&viewreport=true'+'&sort-field='+sortfield+'&sort-dir='+sortdire;
+		    
+		
+		    }
+        });
+		
+	</script>
+	
+	<script th:inline="javascript">
+	var modalid = null;
+	
+	var caseid = /*[[${{caseid}}]]*/;
+	$('#caseid').val(caseid);
+	
+	var caseno = /*[[${{caseno}}]]*/;
+	$('#caseno').val(caseno);
+	
+	function downloadlist(id) {
+		modalid = '#myModal'+id;
+		var ff = new FormData();
+		var printdata = '#printdata'+id;
+		var mymodal = '#myModal'+id;
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	
+	/* function downloadlistCompact(id) {
+		modalid = '#myModalCompact'+id;
+		var ff = new FormData();
+		var printdata = '#printdataCompact'+id;
+		var mymodal = '#myModalCompact'+id;
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	} */
+	
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	
+	
+	
+	
+	</script>
+<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+
+</html>

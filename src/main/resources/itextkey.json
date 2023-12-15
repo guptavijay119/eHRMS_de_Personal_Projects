@@ -1,0 +1,282 @@
+[
+  {
+    "product": "itext-core",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 7,
+      "minor": 2
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "PS46jzJdKUq6GWHVavRjWVQ5EUGxf4VVCL9RX2V+NI4vQb5wFt/Y+IYp6SL1URvSRBbz4g6X6xzuC/IyW5TYbbEGLC1kaRX5rgieSUkBsYrR9CStDoFGWGu4TpsKf6O17Ufdh9LkCif8KGgfDsmTjFT4HASYA/NieZQ7BKBA25w5Dp+kDH1JoLWgiX0oCNxmUpsEzejZSbvFSHTGewAukyMSA2RhkyAUKahJBSnYr0p3f83lgQ0YShnOiZMlgf0adX/i6AUD5xCMhJvQ4xUFsHCTyJ4S7BI12n7TDy9bogoAkjHWONo1ocEclBAsbATkDQnEnttew0CBwsxC/jiNsC2czGXwHHeAHFN62Mioyb+p/lr9Z6OzAauVxxM21PRAENZfrXTTLQGE8/t6+6wF2TL7K46X272WCz81cdMLgghX0/OPOwr4tWeMvFg6Lq/fnvawnSyHA0C8iIEDUJMj1N3pczOAYY5uPSQzAl0m913ePYqEgytTXKYqKYU55j7UsdppXW7nIN0h4HueY8C/5x10ye720xgJ9phaYNJHI58x4qTAs0y8FFb4g06DrvuqlmxamjInWMW8FbSQnn9zR8k+WKBMPESWFWVuq9kEocm3GpoCGmHeIvLx8XZgianeV0qy0oywSWau3P/GNS70TiVZ/h1JZA5RFa36sBSjQps="
+  },
+  {
+    "product": "pdfXfa",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 3,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "GAbC8QVIQo0vOxvsbQGnEPDcQumxGM5CQis7hlJjsPVUhlGESvRjPiEeEBfUFWbG/6bNU1ubVK7f6Mlr797zAG1XYf7aQAc2Sv49LAQN0khVSgIIo0jMjQipi6wkqjHXEDx950fm7+1mHIQJdsU5rYSaGCFr9WhRaNr3mD3XrNf4LhDAr73VRUJgQkJcFgwpcsFTIg+BRDveWTg3/VkzgeE4sPkt8oyQhc36RxrVZ8y3pVeIMnARRrzGBuyjQw5jJ2O2GBjrcvSDm4dUxFtQadcCJxfW6dl8Lh0FIr21PvBLoqfgV++ttWPfkgwTenhlUwiuTp2jsA4M4m4ILoYoDcatUIZ0nIW0xb6FbRI1E+zUfZjvt35ehBfZUrjsLBIAYZSC6Olj+v0BW3Rhtbe6PRLRO5BF0CYXqiOUKEtg88h5sgReTqRg45ZvhSdbpwQkXMRZuzEKUhYGmfgxUmEU4zt0UhfuGlT8StVF1CD0PFgFhp6e5nkW6FeXpXiPmwV3XSs35iteqUARq2KYqXRFWZpsO39cbO4dqT3etMHibc/BxTlW6HQOe7gDG1kExVmZavznwbl6RUxmP8I29heGlQ0Hh2kqBPWTUovbGbV9ckcizTgUinh/0k+VJuD6/siup+lgwniDakmnaZVgkAq/5KLmmfITRMcO12ee/okBJZ4="
+  },
+  {
+    "product": "pdfSweep",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 3,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "ZqSYoZEfBUIrtv72K1DFeaCNiHHnx3Gp38SzO8iYxNnb56gowXrtFD1PTdvv70xiTaxNpfycsmWqZQz677QZHEESrXV1hvuBfy1Q3MlQfPANiPDNJHf+WkFAxjB/J/VmU7bUmjdDDgQy0I2gm0mpHqEpkhre+B/vbwWN4jmTeZBm0+JmsQr+FHpF2Af/4b1kh5HzcCSiGB1kmjUkGtw++HUddflyCZqfEWRcX85q9q2iiPPfEBBsqJ/LOLbxfNyslJB12DOGs+QpDaZ0CNK3mFWf9MVdBRewwgPWY1sYWh7vEwyM10l+1ghDHFR4qcXm6PLtp/+fALTQvg93OC11KyWdKWEbywprgDPwWRpn5IG6F9Xa+wEImMABAPOMqoNjEa4Ojhdb0kO/nrF5bazLWfNFl6ITTYpKNwvdq7MOEidFcghA1jUy9PsVrB+gwknaU4JZmJTSUOiVmS5FLPl6I2sAO9CWwu13BjDiahGqQh3XiVRcGYsCcl9SzDKVAlypkQjD8MegFUcVb+r0xg4f6Dsj2/8HZkIEKzUghEUBgb3kVDm9ur6IpxotrovQj+ABbRTZXpNHfMJwkujPLzGIDeFFyBHqGGFJ6NuHjRHsBy/IarbcFsUrg8BtzhVEWp5eaYkU0zFDdP4qd+otk3QLIO8Xl4OrvVvwG4vyyrho6Pg="
+  },
+  {
+    "product": "pdfRender",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 2,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "gyslaJh2PhuwEyO4GVhVwrAXc/0x2MwsEDoloIh3J1aVcQl0yheoMgNj8zmtpBG9ieSUVNpRa2SNvuapWws+T4DrWK+aB5stQZYFWqU9M9VBEq4Umrwj6dx86Doj1jlQqDD/5tzIigV1Zrs1OQ54rzgJwUBbWf7ZIN60+u1yrFOUq1s36jjgJEx28XdaqUQ1o3g0FBxIeWZEcjoJyZ87LRirzAt0VtNBiKkgAZl37vANIdgPGXG2iNrdlI5cSAwT/RPyWHsB9l5399kuHxrbW8+3fwGeZG5DlamCl7SAzAUBHfSxKc+om6C7BuGK1Cj0Ib+q3fhDLkY9rW3G2vxuOL1S+m8bzILdm6lK959hES9U4CCuvifO3BTbsy8W2GcqLaCgsItKLjYKZcj8q7VYKBH8xefIwsCV49SZOhLB2AV1+CE4qNLR0ev0IphZ8vKZLDCpyRTwwhmAmjCtWzvyZoA6j4O1hMWhioTJ2Dr7rimlgPFseIaYQIyPT5zQh8l74Zd2li+iNC3wi3btjLSe7ij34bu2ZpdJ60qjHQ1zSnBEQk5ENSmTVKG54Y/IsedJZ0IVccNtTBvdTiHGkulDSN0f1rkaXqOpMrsHszD4EL3xM65SieY+oJhEe9GzA8D6xEsFObavpuOq1GkqitXp5WWIk+vLJyC0m6dbT40LhmA="
+  },
+  {
+    "product": "pdfOcr-tesseract4",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 2,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "dj1SENSO5c6AzevuA50F6QA9THSwFZ710XVoDX3FRbjx0YW2w5ElpbENd/tZLgIUOVXTCgeo5mADnSsWq+Q6Y8VP1onavhoB0TER0YkC9pUiPwScDd0xE6lK0e/tA+xCsZIpil3d3v/e4MvwEp9glfoR6TLjvGngnHQFNh3s9HthdFrVprl1Fj7MZczCaplqoYCrNyt3FN+wuqPDq8MW+0Hbkc9ujsdCMDksLyvKhIaUamqFhIhRekX59K883RFA0ZdNaimDRPJZsJfSn5w+WxxhWeG1suFUtDCt/LTXMnhcb4JBLEMgG9ojCNJKB/lprZ203GwDz2UTSIbs6PC20RwUAfxgz1aDKW9OQPUJv8XV6qllNLMxYqHBN/UaSQVApFbAH0po6GsAoP49D8HU+g3Soa4BhLhww7FxWHbIE5lmga8yJTzu/bbeKo9AIh/g3KtdOFLyw9xIqWNQT8Pkflt/advPvElvLUI/32Zf+iMe4/IqYAEjYaW9F7f8K1IIB0vp3HeC2bRF9GFM1ssV1xGGZxSfuxJfiaUO1YfJI9nJVS9gWeVelvAfUp0M1SFiGKKjzfRoSRc9cf5K5MPmexGq3+5eaSGA7OjBIXOD/jpMBQ0U6unkvSZ07HvpyZND2vdgKE7TSV/LsnriyJJEUOI/610i+r4PBnC9jKfaTvM="
+  },
+  {
+    "product": "pdfOptimizer",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 2,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "SvkoKUcaoE1OYqx2yTBEqIRhp5C1/U48gYKBN+6q/R/hQAbLusL8HMRiK5toWAQ54Jdl9h0zxuuW2NDk1pRfmiSLz+BydIFRBroOLj8mEDA2exx8wQKTNtG2O4TExrEgPJ26EQARUs5VFROAkxI2gTJR/j1TSZng5F7mURpsLHdzIXZm8mulna/lX9HH5ppp7C+K5SUwBq/4KI6ceVFxrjNKwcgxJnZG/2VCO6G3oQQOvL5YhKlcllcbwdY0XrrUs0h/ZtGYJpzM3DoDmExp/gy68RXCwSb3rTE4tzG9d+giePksZ1MRprumRBL6yg/UTwBTCKnzXywqJjjoe46shuwldAvbsC0BvHZaIBEH3d193Pg15Dszbi0J1+t9i2HoB0o6UkO7UlC4D/R8utOwnGX+ipwteWHwtnBnEYXqu2181j6JAX8j3Y2MO5smlJBhXInk1pdAh+hyB5w5QFdjUvmAasKLFthLfEge/0mYkL+rdZHdBCQ0pwCP/1KRo3S8AqnHZW7wBUsWkQOL96Xqmyuybpu63OW7zakJqdJEU4nU1GoChyTgXEJrL+1MGqyVL+wmG6nPWHy3SwFq4PfrdW6fViA/PxrVRHueRii8HrR8/NQCcxmcMI6g6eC8JbmVIJpNTqD3PpsqQdxptH/F5FzZvUI32h8p5PlFG+sb5Xg="
+  },
+  {
+    "product": "pdfHtml",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 4,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "a/90ws7IBtZdAZse5X7m1o7ZiNJI/BeVR0QzacmCamiden4Ovq6sHSR5LMa53hPcUkGILG2CrtG+E3KzUC1Od6UBwjAR3EgGyWks5IK+TNWJQaapJ/RRdwrNlRpbFRlKATcxxyTOE31MzK9jsSMHUj2tTzknFRYvbsQSUwnefzkG56cHvtxmqYok4wSDS35CyeX9MhU2nIrZTwgVsse502kjbig9OoKWTfkAvK1IHnLzagWfuB8XdurX5Jep/hFofmj/Jr0qan4d7oDAUQg6WolCKNUjDwlPM9R27EhWNECm+dPHPQdk/zJ3tQ01txb/TbXV/99DxrvIIL1o5hv7njQntpCReiPy4BGDrUqSsg/98WuxywJ32fzAQDGCQGb9XtaPvpJuoyASM7YIlPSvtjd8KfnIvvgK5fAl6BjjZfhj1Fl/NqhFSCGh3rRqrJJ1V0SNKdgpgqK+LaVp2003g7/6Xu51b9r1rRoAQfcGi4YoN1/hCMATt92AL7BS3s4RnbO5UIy3sI8G/zgf1q27WhsbuxVyfBGlSfOBxq73vlUXAAXVooMkDi3R7TRLgziDg15VnvcyjRh786MiOVsaKEY0jPpkLwnO6YWJTOOHz8WotnX0CiWwhRd9uJTOAcrhsFm+TDLj4V7q5QKZ4haD/Pa5IYu+MZdGeDnyysaSKPk="
+  },
+  {
+    "product": "pdfCalligraph",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 3,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "N33TjxHsG4JgaFiCXSiwxAAw5SW7Etlfk7DXpPteIVqPwXObjk+BZ/9EojkX+D/mVQxTgD1+FKMX8M4cWDk6h03iw93kwg0LpH+PzRH2D2I3/qRhT8QObHTI5LjXNQTeMSI7DbITud0Tmmzt5QeGHT6WgLGi9lbjfg0/VuT2vLITK90s5Hu6a90Y9UZTH86Th2xI/KToDuUvPGD+4nFS9G6v8ei354Aj//ZLMsQng+G6clVEjXdtWwKy/niugFuIUf9CXJ17GfLnh01WaehlbEC9zrFu+63BK6JVN/uvh0gjuix3K4M8X3NLVI3T0RrEmaM2JGZvZNbkfC//I0CiijJmLZqSnIiY1Nmnu5fusGTEzoEEBnTJRr90sRo2HhkysyqX28H/ddvrhbrymuqzMNTrw6c1NcGBhVbA5HQq2LsULtWb33BcvHWZkg/Vwkj+Vp1vzbsMJnR5RzYLAaD9QPg6l8BpocCayBLxGj9Lq9R81nuawLZs4xLX8iow5iVOUacuruCiO2iGn9j0AHXhpuBzlq71a509M34p4NJikXboz/qb5TdZbVp4ZCHjCgLI36CJ4kWoSmKwvJDlxkR7svNxgSDDMCGZMFpUIrjPh6pCFEwF3SYVafHBHh0pOnPW57DfFGPwkAoeP/uNzDJ1zuVRSWfoxPm9okk2k1v4GDw="
+  },
+  {
+    "product": "pdf2Data",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 3,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "DWK/bx0Qj7n25GvzpX/v58G2nBxwBIQ7VLVde2WEMNQ5LFF51B0UQMKtFL5ewydNTbO915KtzSafRfVM4Jj/I6NfgQuzUbycFWBifxVLo2XWt3NDunkHxXjsNvxG6S264uWk4HDmMbPmxrHnOMw8xwG4ayUO+9fbfvAGBvPesJcILHP4QgOGkRMR3HFo3uPw1TkrYbruQ39B77HvkLYcR5/yQTEvSmp8sMIPJplycget0p6zJ+pfy6JOYuSX71gLfaAzUcGKwk94dt8j3XPq3TMjKL5EMwjr9E5CYo/LjRYcA0ziZ9MSXgAL2wmlm6KvuAADtzRSyvUf3ryV8MgDB7o/A8ByL9UMznQKpGGSDj7rMK1PrPlbZf871jRv8gzphbCXt/F0moETRqX3UTqecdsO8uFY08X5mUyq3Jo7FRG+hkCGCkEfJo9WBgzhNRVvT3LniAF4jKaN23Ro13b/+KdDOJAx7uFqTCg+dWmUMbNVtv7AJcUXeYPK4fHRJW3g1rzlXHsQd0A7q6+vcGOJKUBs5yecJ4gdbK5QiYolUM/wWEKlxB5rIrS4ARQQu5k8d5Elum4YQfxqxJnAUGB9Z4WIIDfb6SHVOdbTjlvWXlunn8NJu79oxldiDAjjeQycnOqPh2nR6/BOYP50NOmIQ5cnIji4hOXbNOVNqqDFl6g="
+  },
+  {
+    "product": "pdfOffice",
+    "licensee": {
+      "company": "N/A",
+      "name": "Khalid Shaikh",
+      "email": "hp13131@gmail.com"
+    },
+    "key": "fa6516e0e78b9baba60e9a696230ad063da538e9ee5615ac91b0032efa604e26",
+    "creationDate": "2021-12-10",
+    "expirationDate": "2022-01-10",
+    "onExpiration": "grace",
+    "gracePeriod": "1d0h0m",
+    "platform": "any",
+    "licenseType": "trial",
+    "productVersion": {
+      "major": 2,
+      "minor": 0
+    },
+    "limits": {
+      "default": {
+        "limitType": "unlimited",
+        "sendEvents": false
+      }
+    },
+    "licenseVersion": "1.0.0",
+    "sendStatistics": "disabled",
+    "signature": "RPxQ9p/c91tJMtJzVCqwAsmpLbgIdN4bDz9wEK/bLgf4Rmn2Ikgj1cX8aoWLMp30SxPNAl7I4mzgbCZSfxhF8ZfUUzwdKoHLyZ0kpWvqU5PXFNrkBWq6EA3K3e+ENSSCb4hbAEoya5EG4CgAyVuFhwn+XSusjHYdeWdjbCC9PNyaraPFmWVc4oT1mAHi9l38Wnx4V/We8EdFhhoH4etGSX945dx4rbZQ4GssUNvw2SPxtMwnyBd8Bn2lg9gCPz4ZdJvtz56rkcD5KDsDhw1+oBE6aB0asDE+fxiLDit9ETn3dphDVhm34Ko48HiQbk+RxdQxPR2jzMRArjFxEbCIl2OyauOwn+oVBGYI7+s5ACkvmQFpcjUWrfsa/6xP9wRH5VYbZjxgxog/4KOkNbvwEXbpCQJmW0cwnCJK1AtkdByol2aSbf5OtZVVXqYGkp9joPlJlJjCAj2ng6AAjY5D/Z5SYqe8VpFU/XC1zq4n/oPX7f1tRyl5gQXFrirl9AaB6W6ogTuhmfz9QReefZHm7FJJPWDYI8DoU9xdfOTwk+l+lDE5VJ8VpR50ShQJhpA3ZDumg8qarTIxjrXILX9vptrQHPekaDrmIIkMurHcadZ9bVT1ST7fOSJ6e0tUlx4AFz6sUBWWLbaV8R+id9iD3lalI1Z0bbT0qZR+R+8R20Q="
+  }
+]

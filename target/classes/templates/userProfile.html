@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+<!--   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+</head>
+<!-- <th:block th:include="fragments/headerlibs.html :: headerlibs"></th:block> -->
+<style type="text/css">
+
+.form-rounded {
+border-radius: 1rem;
+}
+</style>
+</head>
+
+
+
+<body sec:authorize="isAuthenticated()"  class="fixed-left">
+
+	<!-- Begin page -->
+	<div id="wrapper">
+
+		<!-- Top Bar Start -->
+		<!-- <header th:insert="fragments/header.html :: header"> </header> -->
+		<!-- Top Bar End -->
+
+
+		<!-- ========== Left Sidebar Start ========== -->
+		<!-- <nav th:insert="fragments/sidenav.html :: sidevav"></nav> -->
+		<!-- Left Sidebar End -->
+
+
+
+		<!-- ============================================================== -->
+		<!-- Start right Content here -->
+		<!-- ============================================================== -->
+		<div class="content-page">
+			<!-- Start content -->
+			<div class="content">
+				<div class="container">
+
+					<!-- Page-Title -->
+					<div class="row"></div>
+
+					<!-- Modal -->
+					
+					<div class="modal fade" id="exampleModal" tabindex="-1"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="container text-center">
+								<div class="modal-header">
+									<h3 class="modal-title text-primary" id="exampleModalLabel" th:text="#{User Profile}"></h3>
+								
+								</div>
+								
+								</div>
+								<div class="modal-body">
+									
+									<div class="row mrg_bottom">
+
+										<div class="col-md-4 text-center">
+											<div class="form-group">
+												<label class="col-md-12 control-label"> <span
+													th:text="#{Employee Id}"> </span>:
+												</label>
+											</div>
+                                           </div>
+                                           
+												<div class="col-md-3">
+													<input style="border:none;" type="text" class="form-control form-rounded" name="employeeId"
+														id="category_id" th:value="${userProfile[0]}" disabled readonly>
+												</div>
+												
+												
+									</div>
+										<div class="row mrg_bottom">
+											<div class="col-md-4 text-center">
+											<div class="form-group">
+												<label class="col-md-12 control-label"> <span
+													th:text="#{Employee Name}"> </span>:
+												</label>
+											</div>
+                                           </div>
+                                           
+												<div class="col-md-6 text-center">
+													<input style="border:none;" type="text" class="form-control form-rounded" 
+														id="category_id" th:value="${userProfile[13]}" disabled readonly>
+												</div>
+                                          </div>
+
+
+                                     <div class="row mrg_bottom">
+											<div class="col-md-4 text-center">
+											<div class="form-group">
+												<label class="col-md-12 control-label"> <span
+													th:text="#{Group}"> </span>:
+												</label>
+											</div>
+                                           </div>
+                                           
+												<div class="col-md-4 text-center">
+													<input style="border:none;" type="text" class="form-control form-rounded" 
+														id="category_id" th:value="${userProfile[2]}" disabled readonly>
+												</div>
+                                          </div>
+
+
+                                     <div class="row mrg_bottom">
+											<div class="col-md-4 text-center">
+											<div class="form-group">
+												<label class="col-md-12 control-label"> <span
+													th:text="Post"> </span>:
+												</label>
+											</div>
+                                           </div>
+                                           
+												<div class="col-md-6 text-center">
+													<input style="border:none;" type="text" class="form-control form-rounded" 
+														id="category_id" th:value="${userProfile[3]}" disabled readonly>
+												</div>
+                                          </div>
+
+                                          <div class="row mrg_bottom">
+											<div class="col-md-4 text-center">
+											<div class="form-group">
+												<label class="col-md-12 control-label"> <span
+													th:text="#{Newly Join}"> </span>:
+												</label>
+											</div>
+                                           </div>
+                                           
+												<div class="col-md-3 text-center">
+													<input style="border:none;" type="text" class="form-control form-rounded" 
+														 th:value="${userProfile[4]}" disabled readonly>
+												</div>
+                                          </div>  
+                                          
+                                           <div class="row mrg_bottom">
+											<div class="col-md-4 text-center">
+											<div class="form-group">
+												<label class="col-md-12 control-label"> <span
+													th:text="#{Joining Date}"> </span>:
+												</label>
+											</div>
+                                           </div>
+                                           
+												<div class="col-md-5 text-center">
+													<input style="border:none;" type="text" class="form-control form-rounded" 
+														th:value="${#dates.format(userProfile[5],'dd-MM-yyyy')}" disabled readonly>
+												</div>
+                                          </div> 
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">Close</button>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				 
+
+
+					<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#exampleModal').modal('show');
+    });
+</script>
+				</div>
+				<!-- container -->
+
+			</div>
+			<!-- content -->
+			<!-- remove from footer -->
+			<!-- <div th:replace="fragments/footer.html :: footer"></div> -->
+			<!-- remove from footer -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Right content here -->
+		<!-- ============================================================== -->
+
+
+
+
+
+	</div>
+	<!-- END wrapper -->
+
+	<!-- <div th:replace="fragments/footerlibs.html :: footerlibs"></div> -->
+
+
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+<title>eHRMS : Candidates List</title>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+      <!-- partial:partials/_sidebar.html -->
+      
+       <!-- ========== Left Sidebar Start ========== -->
+				 <nav th:insert="ehrms_sidebar3_2_5.html :: ehrms_sidebar3_2_5"> </nav> 
+       <!-- Left Sidebar End -->
+      
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+         
+        <div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+        
+        <!-- partial -->
+        <!-- partial:partials/_navbar.html -->
+        <nav th:insert="fragments/ehrms_navbar.html :: navbar"> </nav> 
+        
+        <div class="main-panel">
+          <div class="content-wrapper">
+          	<div class="page-header">
+              	<h3 class="page-title"><b th:text="#{candidatelist}">Candidate List</b></h3>
+	              <nav aria-label="breadcrumb">
+	                <ol class="breadcrumb">
+	<!--                   <li class="breadcrumb-item"><a href="#">Tables</a></li> -->
+	<!--                   <li class="breadcrumb-item active" aria-current="page"> Basic tables </li> -->
+	                  
+	                 	  <li class="breadcrumb-item"><a href="#"><span th:text="#{Form.Recruitment Module}"></span></a></li>
+						  <li class="breadcrumb-item"><a href="#"><span th:text="#{Form.Recruitment of Group D posts}"></span></a></li>
+						  <li class="breadcrumb-item"><a href="#"><span th:text="#{candidatelist}"></span></a></li>
+	                </ol>
+	              </nav>
+	              
+	           </div>
+          		
+          		<div class="row">
+            	
+	            	<div class="col-lg-12 grid-margin stretch-card">
+	                	<div class="card">
+	                  		<div class="card-body">
+		<!--                     <h4 class="card-title">Striped Table</h4> -->
+		<!--                     <p class="card-description"> Add class <code>.table-striped</code> 
+		                   		 </p> -->
+		                    
+			                     <div class="row">
+									<p th:text="${message}" id="testingxyz" th:if="${message ne null}"
+										class="alert alert-primary"></p>							
+								</div>
+	          					
+	          						<div class="table-responsive">
+                    			  		<table id="link-list" class="table table-striped table-bordered">
+													<thead>
+														<tr>
+															<th th:text="#{candidatelist.index}"></th>
+															<th th:text="#{candidatelist.Noticeid}"></th>
+															<th th:text="#{candidatelist.Group D candidate number}">Group D candidate number
+																number</th>
+															<th th:text="#{candidatelist.Roll number}">Roll Number</th>
+															<th th:text="#{candidatelist.Candidate name}">Candidate Name</th>
+															<th th:text="#{candidatelist.Designation}">Designation</th>
+															<th th:text="#{candidatelist.All documents verified}"></th>
+															<th th:text="#{candidatelist.Reverification}"></th>
+															<th th:text="#{candidatelist.Revenue department}">City</th>
+															<th th:text="#{candidatelist.Appointment Letter}"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="article : ${candidatelist}">
+															<td th:text="${{article.id}}"></td>
+															<td th:text="${{article.proposal[0].id}}">
+															<td th:text="${{article.mpsccandidatenumber}}"></td>
+															<td th:text="${{article.rollnumber}}"></td>
+															<td><a href="javascript:void(0);" class="btn btn-info"
+																th:href="@{|/editCandidategroupdDetail/${article.id}|}"> <span
+																	th:text="${{article.candidatename}}"></span></a></td>
+															<td th:text="${{article.designation}}"></td>
+															<td th:text="${{article.verified}}"></td>
+															<td th:text="${{article.verified}}"></td>
+															<td th:text="${{article.city}}"></td>
+															<td th:text="${{article.offerletter}}"></td>
+														</tr>
+													</tbody>
+												</table>
+									</div>
+											
+										
+										
+										<div class="row" th:fragment="pagination">
+											<div class="col-md-2"></div>
+											<div class="col-md-8">
+												<nav aria-label="Pagination">
+													<ul class="pagination justify-content-center">
+														<li class="page-item" th:each="pageNumber : ${pageNumbers}">
+															<a class="page-link"
+															th:href="@{|/candidatelistgroupd/ptype/GROUPD/page/${pageNumber}|}"
+															th:text=${pageNumber}>1</a>
+														</li>
+													</ul>
+												</nav>
+											</div>
+											<div class="col-md-2"></div>
+										</div>
+	          					</div>
+	          				
+	          			
+	          				</div>
+	          			</div>
+	          		</div>
+          		
+          		 </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+           <!-- remove from footer -->
+			    <div th:replace="fragments/ehrms_footer.html :: footer"></div>
+		    <!-- remove from footer -->
+
+       <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+        
+ <!-- container-scroller -->
+    <div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+          			
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>Form</title>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<table class="table table-bordered table-sm" id="link-listssx" th:fragment="commonreservationtablesmall">
+		<caption></caption>
+		<thead>
+			<tr>
+				<th scope="row" class="text-wrap" th:text="#{masterData.caste}">Caste</th>
+				<th scope="row" class="text-wrap" th:text="#{masterData.seatNumber}">Seat Number</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.vacancy}">Vacancy</th>
+				<th scope="row" class="text-wrap" th:text="#{inbox.check}">Check</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="cates,iStat: ${notice.vacancySmallClass}">
+
+				<td class="text-wrap" style="background-color: #804000;color: #ffffff;"><span
+						th:text="${cates.caste.regionalText}"></span></td>
+				<td><span th:text="${cates.seatNumber}" id="seatnumber"></span>
+					<input type="hidden" th:field="${notice.vacancySmallClass[__${iStat.index}__].caste}"
+						th:value="${cates.caste}">
+					<input type="hidden" th:field="${notice.vacancySmallClass[__${iStat.index}__].id}"
+						th:value="${cates.id}">
+					<input type="hidden" th:field="${notice.vacancySmallClass[__${iStat.index}__].seatNumber}"
+						th:value="${cates.seatNumber}">
+				</td>
+				<td><input type="number" th:field="${notice.vacancySmallClass[__${iStat.index}__].seatCount}"
+						th:value="${cates.seatCount}" class="form-control" readonly="readonly"></td>
+				<td><input type="checkbox" th:field="${notice.vacancySmallClass[__${iStat.index}__].currentActive}"
+						id="currentActive" th:value="${cates.currentActive}" class="form-control"></td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+
+</html>

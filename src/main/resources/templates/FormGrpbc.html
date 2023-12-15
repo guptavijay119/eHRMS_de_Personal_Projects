@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+<head>
+<title>Inbox Proposal</title>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div th:fragment="FormGrpbc">
+		
+		<div class="page-header">
+			
+			<div th:object="${notice}">
+			
+              
+			<h3 th:if="${!notice.approved and notice.id == null}">
+              		<strong><span th:text="#{Form.Prepare Recruitment Proposal}">Prepare recruitment proposal</span></strong></h3>
+				<h3 th:if="${!notice.approved and notice.id != null}">
+              		<strong><span th:text="#{Form.View Recruitment Proposal}">View recruitment proposal</span></strong></h3>
+			  <h3 th:if="${notice.finalApprovedHori and notice.authority=='DEP'}">
+				<strong><span th:text="#{Form.FinalizeProposal}">Finalize proposal</span></strong></h3>
+				
+				<h3 th:if="${notice.approved and notice.authority != 'DEP'}" th:text="#{Form.proposaldetail}"></h3>
+				
+			</div>
+						
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+
+                  		
+                  		<li class="breadcrumb-item"><a th:href="@{|/|}"><span th:text="#{Form.Recruitment Module}"></span></a></li>
+						  <li class="breadcrumb-item"><a href="/recruitmentbc/inboxgroupbc/ptype/GROUPBC/page/1"><span th:text="#{Form.Recruitment of Group B (non-Gazetted) and Group C posts}"></span></a></li>
+						 <li class="breadcrumb-item"><a href=""><span sec:authorize="hasRole('ROLE_DEPARTMENT')" th:text="#{Form.Prepare Recruitment Proposal}">
+						  
+							<span sec:authorize="hasRole('ROLE_16B')" th:text="#{Form.16B}"></span> 
+							<span sec:authorize="hasRole('ROLE_BCCELL')" th:text="#{Form.BC}"></span> 
+							<span
+							sec:authorize="hasRole('ROLE_AA')" th:text="#{Form.Appointing Authority}"> </span> <span
+							sec:authorize="hasRole('ROLE_VAC')" th:text="#{Form.VAC}"></span>
+							</span></a></li>
+                </ol>
+              </nav>
+              
+            </div>
+            
+			<div class="row">
+			<div class="col-md grid-margin stretch-card">
+				<div class="card">
+					<div class="card-body">
+<!-- 						<div class="row"> -->
+<!-- 							<p th:text="${message}" id="testingxyz" -->
+<!-- 								th:if="${message ne null}" class="alert alert-danger"></p> -->
+<!-- 						</div> -->
+						<form th:action="@{/recruitmentbc/registerGrpbcNotice}" th:object="${notice}" method="post" onsubmit="return confirmation()"
+							enctype="multipart/form-data" id="noticeregisterid"
+							class="needs-validation">
+ 							<div class="form-group" th:replace="commonfragments/formdetails.html::formdetailfragment">
+							</div>
+							<div class="btn-toolbar mr-1" role="toolbar"
+								aria-label="Basic example">
+								<button th:if="${notice.id != null && !notice.finalApprovedHori && !notice.offlineImportEnable}" type="submit" class="btn btn-primary" th:name="action"
+									id="save" th:value="save">
+									<span th:text=#{Form.Save}></span>
+								</button>
+								<button th:if="${notice.id == null && !notice.offlineImportEnable}" type="submit" class="btn btn-primary" th:name="action"
+									id="save" th:value="save">
+									<span th:text=#{Form.generate}></span>
+								</button>
+								
+<!-- 								<button type="button" id="buttoncheck">Confirmation</button> -->
+								<button type="button" class="btn btn-primary" name="preview"
+									data-toggle="modal" data-target="#myModalFormDetails" 
+									th:attrappend="disabled=${notice.id==null}?'disabled'">
+									<span th:text=#{Form.Preview}></span>
+								</button>
+								<button type="submit" class="btn btn-primary"
+									th:if="${!notice.finalApproved and notice.nextAuth=='AA' && !notice.offlineImportEnable}"  sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+									th:disabled="${notice.id == null}" th:name="action"
+									th:value="auditingauthority" id="sendtoaa">
+									<span th:text=#{Form.Send}></span>
+								</button>
+
+								<button type="submit" class="btn btn-primary"
+									th:disabled="${notice.id == null}"
+									th:if="${notice.authority != 'DEP' and notice.id != null && !notice.offlineImportEnable}"
+									th:name="action" th:value="sendbackdept" id="backtodept">
+									<span th:text="#{Form.SendDept}"></span>
+								</button>
+
+								<button type="submit" class="btn btn-primary"
+									th:disabled="${notice.id == null}" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+									th:if="${notice.nextAuth=='16B' and !notice.finalApproved and notice.id != null && !notice.offlineImportEnable}"
+									th:name="action" th:value="sendtobccell" id="sendto16b">
+									<span th:text="#{Form.SendBCcell}"></span>
+								</button>
+
+								<button type="submit" class="btn btn-primary" id="vacbutton" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"	th:if="${!notice.offlineImportEnable}"							
+									th:name="action" th:value="sendtovac">
+									<span th:text="#{Form.SendVac}"></span>
+								</button>
+
+<!-- 								<button type="submit" class="btn btn-primary" -->
+<!-- 									th:disabled="${notice.id == null}" -->
+<!-- 									th:if="${notice.finalApproved && notice.finalApprovedHori and notice.id != null and notice.authority=='DEP'}" -->
+<!-- 									th:name="action" th:value="sendtompsc" id="sendtompsc"> -->
+<!-- 									<span th:text="#{Form.SendSelectionComitee}"></span> -->
+<!-- 								</button> -->
+								
+								<button type="submit" class="btn btn-primary"
+									th:if="${notice.authority=='DEP' && notice.finalApproved && !notice.finalApprovedHori && !notice.offlineImportEnable}"
+									th:disabled="${notice.id == null}" th:name="action"
+									th:value="auditingauthority" id="sendtoaa">
+									<span th:text=#{Form.Send}></span>
+								</button>
+								
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	         
+ <script th:inline="javascript">
+ var mess = [[${{message}}]];
+	if(mess != null) {
+		swal(mess);
+	}
+				$(document).ready(function() {
+					
+					$.validator.addMethod('filesize', function(value, element, param) {
+						  return this.optional(element) || (element.files[0].size <= param)
+						}, 'File size must be less than {0} bytes');	
+					$('#noticeregisterid').validate({
+							rules: {
+
+								FileUpload1: {
+					                required: false, 
+					                accept: "application/pdf",
+					                filesize: 5242880,   
+					            }
+					
+					        },
+					        messages: 
+					           { 
+					        	FileUpload1: "File must be PDF, less than 5MB" 
+					           }
+					});
+					
+					
+					  $('#vacbutton').prop('disabled', true);
+					  $('#vacbutton').hide();
+					  $('#enablefor16b').hide();
+					  var notapproved = $('#option2:checked').val();
+						var approved = $('#option1:checked').val();
+					  if(approved != undefined) {
+							$('#sendto16b').show();
+  							$('#enablefor16b').show();
+							$('#vacbutton').hide();
+						} else if(notapproved != undefined) {
+							$('#backtodept').show();
+							$('#sendto16b').hide();
+							$('#enablefor16b').hide();
+							$('#vacbutton').hide();
+						}
+					  $('#option1').change(function(){
+							$('#sendto16b').show();
+ 							$('#enablefor16b').show();
+							$('#vacbutton').hide();
+						});
+						$('#option2').change(function(){
+							$('#backtodept').show();
+							$('#sendto16b').hide();
+							$('#enablefor16b').hide();
+							$('#vacbutton').hide();
+						});	
+					  $('#extravacancy').change('input', function() {
+						 var ext = JSON.parse([[${{extravacancy}}]]);
+					    if ($(this).val() != ext) {
+					      $('#vacbutton').prop('disabled', false);
+						  $('#vacbutton').show();
+					      $('#save').prop('disabled',true);
+							var notapproved = $('#option2:checked').val();
+							var approved = $('#option1:checked').val();
+							if(approved != undefined) {
+								$('#backtodept').prop('disabled',true);
+								$('#sendto16b').prop('disabled',false);				
+								$('#backtodept').hide();
+								$('#sendto16b').hide();
+								$('#vacbutton').show();
+							} else if(notapproved != undefined) {
+								$('#backtodept').prop('disabled',false);
+								$('#sendto16b').prop('disabled',true);
+								$('#backtodept').show();
+								$('#sendto16b').hide();
+								$('#vacbutton').hide();
+							}
+							$('#option1').change(function(){
+								$('#backtodept').prop('disabled',true);
+								$('#sendto16b').prop('disabled',false);
+								$('#backtodept').hide();
+								$('#sendto16b').hide();
+								$('#vacbutton').show();
+							});
+							$('#option2').change(function(){
+								$('#backtodept').prop('disabled',false);
+								$('#sendto16b').prop('disabled',true);				
+								$('#backtodept').show();
+								$('#sendto16b').hide();
+								$('#vacbutton').hide();
+							});								      
+					    } else {
+					      $('#vacbutton').prop('disabled', true);
+					      $('#vacbutton').hide();
+							var notapproved = $('#option2:checked').val();
+							var approved = $('#option1:checked').val();
+							if(approved != undefined) {
+								$('#backtodept').prop('disabled',true);
+								$('#sendto16b').prop('disabled',false);				
+								$('#backtodept').hide();
+								$('#sendto16b').show();
+ 								$('#enablefor16b').show();
+								$('#vacbutton').hide();
+							} else if(notapproved != undefined) {
+								$('#backtodept').prop('disabled',false);
+								$('#sendto16b').prop('disabled',true);
+								$('#backtodept').show();
+								$('#sendto16b').hide();
+								$('#enablefor16b').hide();
+								$('#vacbutton').hide();
+							}
+							$('#option1').change(function(){
+								$('#backtodept').prop('disabled',true);
+								$('#sendto16b').prop('disabled',false);
+								$('#backtodept').hide();
+ 								$('#sendto16b').show();
+								$('#enablefor16b').show();
+								$('#vacbutton').hide();
+							});
+							$('#option2').change(function(){
+								$('#backtodept').prop('disabled',false);
+								$('#sendto16b').prop('disabled',true);				
+								$('#backtodept').show();
+								$('#sendto16b').hide();
+								$('#enablefor16b').hide();
+								$('#vacbutton').hide();
+							});			
+					    }
+					  });
+					});
+				
+			</script>	
+ <script type="text/javascript">
+	 $(function () {
+	     //initialize
+//	     if (!$("#link-listss").is(":blk-transpose")) {
+	setTimeout(function(){ 
+
+        $("#link-listss").transpose({ mode: 0 });
+//        $("#link-listssx").transponse({ mode:0 });
+//	     }
+	     $("#link-listss").transpose("transpose");
+//	     $("#link-listssx").transpose("transpose");
+//		var xyz = $("#link-listssx").tableToJSON();
+//		console.log(xyz);
+
+	}, 100);
+	
+	
+	
+	 });
+	 var originalfilled = parseInt($('#filledPostByRecruitmentRules').val());
+	 
+	 var originaltotal = parseInt($('#totalvacancy').val());
+	 
+	 function changeintotalvacancy() {
+		 var actual = parseInt($('#actualVacancy').val());
+		 var extra =  parseInt($('#extravacancy').val());
+		 if(extra<0 || isNaN(extra)) {
+			 $('#extravacancy').val(0);
+			 extra = 0;
+		 }
+		 var expect = parseInt($('#expectedvacancy').val());
+		 if(expect<0 || isNaN(expect)) {
+			 $('#expectedvacancy').val(0);
+			 expect = 0;
+		 }
+		 if(extra >=0 && expect >=0) {
+		 	$('#totalvacancy').val(actual+extra+expect);
+		 }
+	 }
+	 
+	 function changeactualvacancy() {
+		 var total = parseInt($('#sanctionedByRecruitmentRules').val());
+		 var filled = parseInt($('#filledPostByRecruitmentRules').val());
+		 if(total>filled) {
+		 	$('#actualVacancy').val(total-filled);
+		 } else {
+			 alert('Filled post can not be greated than sanctioned strength');
+			 $('#filledPostByRecruitmentRules').val(originalfilled);
+		 }
+	 }
+	 
+	 
+	 
+	 $("#btnTpHorizontal").click(function () {
+	     var currentMode = $("#link-listss").data("tp_mode");
+	     if (currentMode == undefined) {
+	         $("#link-listss").transpose("transpose");
+	         $("#btnTpHorizontal").html("Reset");
+	     }
+	     else {
+	         $("#link-listss").transpose("reset");
+	         $("#btnTpHorizontal").html("Transpose");
+	     }
+	 });
+	 
+	 function showreservation1() {
+		 $('#link-listss').show();
+		 $('#showreservation').hide();
+		 $('#hidereservation').show();
+	 }
+	 
+	 function hidereservation1() {
+		 $('#link-listss').hide();
+		 $('#showreservation').show();
+		 $('#hidereservation').hide();
+	 }
+	
+	 function showreservationx() {
+		 $('#link-listssx').show();
+		 $('#showreservation2').hide();
+		 $('#hidereservation2').show();
+	 }
+	 
+	 function hidereservationx() {
+		 $('#link-listssx').hide();
+		 $('#showreservation2').show();
+		 $('#hidereservation2').hide();
+	 }
+	 
+	 $('#link-listss').hide();
+	 $('#hidereservation').hide();
+	 $('#link-listssx').hide();
+	 $('#hidereservation2').hide();
+	 
+	 	function removefileajax(idx) {
+		var filenameid = $('#'+idx).text();
+		alert("do you want to delete?");
+		getdata('/recruitmentmpsc/removeproposalfile/'+idx+'/'+filenameid,function(data){
+			
+		//	if(data) {
+		//		$('#viewfile').hide();
+		//		$('#removefile').hide();
+		//	}
+		location.reload();
+		});
+	}
+	 
+    </script>
+
+		<!-- Modal -->
+		
+		<script type="text/javascript"
+			th:src="@{/othercontent/commonrecruitment.js}"></script>
+		<div th:replace="commonfragments/noticehistory.html::proposalhistory"></div>
+		
+		<!-- <div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog modal-xl">
+				Modal content
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body container">
+						<form  id="noticeregisteridxxx"
+							class="needs-validation" novalidate>
+							<div class="row">
+								<div class="form-group col-sm" id="hidden_div"
+									th:if="${notice.id>0}" style="color: red">
+									<label for="exampleFormControlInput1" class="control-label"><span
+										th:text=#{Form.Noticeid}></span>:</label> <strong class="form-control"><span
+										th:text="${{notice.id}}"></span></strong>
+								</div>
+
+								<div class="form-group col-sm">
+									<label for="designations"><span
+										th:text=#{Form.Designation}></span>:</label> <strong class="form-control"><span
+										th:text="${{notice.designation}}"></span></strong>
+								</div>
+								<div class="form-group col-sm">
+									<label for="expectedvacancy"><span
+										th:text=#{Form.expectedvacancy}></span>:</label><strong class="form-control"><span
+										th:text="${{notice.expectedvacancy}}"></span></strong>
+
+								</div>
+								<div class="form-group col-sm">
+									<label for="reservedvacancy"><span
+										th:text=#{Form.reservedvacancy}></span>:</label><strong class="form-control"><span
+										th:text="${{notice.reservedvacancy}}"></span></strong>
+								</div>
+
+
+							</div>
+							<div class="row">
+								
+								<div class="form-group col-sm">
+									<label for="extravacancy"><span
+										th:text=#{Form.extravacancy}></span>:</label> <strong class="form-control"><span
+										th:text="${{notice.extravacancy}}"></span></strong>
+								</div>
+								<div class="form-group col-sm">
+									<label for="vacancy"><span th:text=#{Form.vacancy}></span>:</label><strong class="form-control"><span
+										th:text="${{notice.totalvacancy}}"></span></strong>
+								</div>
+								
+							</div>
+
+							
+						</form>
+						<object id="embedPDF" accept="application/pdf"
+							th:attr="data=${{notice.dataurl}}" width="100%" height="500"
+							style="height: 85vh;"><span th:text="#{Form.error.nodocumentfound}"></span></object>
+									          <embed id ="embedPDF" src="" type="application/pdf" frameborder="0" width="100%" height="400px">
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+		<!-- Modal 2 -->
+		<!-- <div class="modal fade" id="myModal2" role="dialog">
+			<div class="modal-dialog modal-xl">
+				Modal content
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="container">
+							<div class="row text-center justify-content-center">
+									<table class="table table-bordered table-sm">
+										<caption></caption>
+										<thead>
+											<tr>
+												<th scope="row">Edited By</th>
+												<th scope="row">Edited date</th>
+												<th scope="row">Remarks</th>
+												<th scope="row">File Links</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="history:${proposalList}">
+												<td th:text="${history.lastModifiedBy}"></td>
+												<td th:text="${#temporals.format(history.lastModifiedDate, 'dd-MMM-yyyy')}"></td>
+												<td th:utext="${history.info}"></td>	
+												<td>
+													<a href="#">links</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								
+									<form>
+										<div class="row">
+											<div class="form-group col-sm">
+												<label class="control-label"><span th:text="#{EmployeeDetail.Remarks}"></span>:</label> <strong><span
+													th:utext="${{history.info}}"></span></strong>
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-sm">
+												<label><span th:text="#{Form.Modified By}"></span>:</label>
+												<strong class="form-control"><span th:text="${history.lastModifiedBy}"></span></strong>
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-sm">
+												<label><span th:text="#{Form.Modified Date}"></span>:</label>
+												<strong class="form-control"><span
+													th:text="${#temporals.format(history.lastModifiedDate, 'dd-MMM-yyyy')}"></span></strong>
+											</div>
+
+										</div>
+										<div class="row">
+											<div class="form-group col-sm">
+												<label><span
+													th:text="#{Form.Modified By IP Address}"></span>:</label> <strong class="form-control"><span
+													th:text="${history.remoteIp}"></span></strong>
+											</div>
+										</div>
+									</form>
+
+								<div class=col-sm-7>
+									<object id="embedPDFx" accept="application/pdf" width="100%"
+										height="500" th:attr="data=${{history.dataurl}}"
+										style="height: 85vh;"><span th:text="#{Form.error.nodocumentfound}"></span></object>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+		
+	</div>
+</body>
+</html>

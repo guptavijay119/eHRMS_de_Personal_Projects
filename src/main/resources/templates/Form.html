@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+<head>
+	<title>Form</title>
+</head>
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div th:fragment="Form">
+		<div class="page-header">
+
+			<div>
+
+				<h3  th:if="${!notice.approved}">
+					<strong><span th:text="#{Form.Prepare Recruitment Proposal}">Prepare
+							a recruitment proposal</span></strong>
+				</h3>
+				<h3 
+					th:if="${notice.approved and notice.authority=='DEP'}">
+					<strong><span th:text="#{Form.FinalizeProposal}">Finalize
+							proposal</span></strong>
+				</h3>
+
+			</div>
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{|/|}"><span
+							th:text="#{Form.Recruitment Module}"></span></a></li>
+					<li class="breadcrumb-item"><a th:href="@{|/recruitmentmpsc/inbox/page/1|}"><span
+							th:text="#{Form.Recruitment by Individual Departments through MPSC}"></span></a></li>
+					<li class="breadcrumb-item"><a th:href="@{|/recruitmentmpsc/selectDesignation|}"><span
+							sec:authorize="hasRole('ROLE_DEPARTMENT')"
+							th:text="#{Form.Prepare Recruitment Proposal}"> <span
+								sec:authorize="hasRole('ROLE_16B')" th:text="#{Form.16B}"></span>
+								<span sec:authorize="hasRole('ROLE_BCCELL')"
+								th:text="#{Form.BC}"></span> <span
+								sec:authorize="hasRole('ROLE_AA')"
+								th:text="#{Form.Appointing Authority}"> </span> <span
+								sec:authorize="hasRole('ROLE_VAC')" th:text="#{Form.VAC}"></span>
+						</span></a>
+					</li>
+				</ol>
+			</nav>
+
+		</div>
+		<div class="row">
+			<div class="col-md grid-margin stretch-card">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<p th:text="${message}" id="testingxyz"
+								th:if="${message ne null}" class="alert alert-danger"></p>
+						</div>
+						<form th:action="@{/recruitmentmpsc/registernotice}" th:object="${notice}" method="post" onsubmit="return confirmation()"
+							enctype="multipart/form-data" id="noticeregisterid"
+							class="needs-validation" novalidate>
+							<div class="row table-responsive text-center">
+								<table class="table table-bordered table-sm" id="staticProp">
+								<caption></caption>
+									<thead><tr><th scope="row"></th></tr></thead>
+									<tbody>
+										<tr th:if="${notice.id>0}" class="danger">
+											<td th:text="#{Form.Noticeid}"></td>
+											<td>
+												<input type="text"
+													class="form-control" name="noticexId" th:field="*{id}" readonly="readonly"
+												id="noticexId" placeholder="12345">
+											</td>
+										</tr>
+										<tr>
+											<td th:text="#{Form.Designation}"></td>
+											<td><input type="text" class="form-control"
+												th:field="*{designation}" readonly="readonly" id="depart"
+												placeholder="12345">
+												<input type="hidden" class="form-control"
+												th:field="${notice.asOnDate}" th:value="${notice.asOnDate}">
+											</td>
+										</tr>
+										<tr>
+											<td th:text="#{Form.totalSanctionedByDesignation}"></td>
+											<td><input type="number"
+												min="0" id="totalSanctionedByDesignation" th:field="*{totalSanctionedByDesignation}"
+												required="required" class="form-control"
+												placeholder="Enter Vacancy">
+											</td>
+										</tr>
+
+										<tr>
+											<td th:text="#{Form.sanctionedByRecruitmentRules}"></td>
+											<td><input type="number"
+												min="0" id="sanctionedByRecruitmentRules" th:field="*{sanctionedByRecruitmentRules}"
+												required="required" class="form-control"
+												placeholder="Enter Vacancy">
+											</td>
+										</tr>
+										<tr>
+											<td th:text="#{Form.filledPostByRecruitmentRules}"></td>
+											<td><input type="number"
+												min="0" id="filledPostByRecruitmentRules" th:field="*{filledPostByRecruitment}"
+												required="required" class="form-control"
+												placeholder="Enter Vacancy">
+											</td>
+										</tr>
+										<tr>
+											<td th:text="#{Form.actualvacancy}"></td>
+											<td><input type="number"
+												min="0" id="actualVacancy" th:field="*{actualVacancy}"
+												required="required" class="form-control"
+												placeholder="Enter Vacancy">
+											</td>
+										</tr>
+										<tr>
+											<td th:text="#{Form.expectedvacancy}"></td>
+											<td><input type="number"
+												id="extravacancy" th:field="*{extravacancy}" min="0"
+												required="required" class="form-control" placeholder="100">
+											</td>
+										</tr>										
+										<tr>
+											<td th:text="#{Form.extravacancy}"></td>
+											<td><input type="number"
+												min="0" id="filledPostByRecruitmentRules" th:field="*{filledPostByRecruitment}"
+												required="required" class="form-control"
+												placeholder="Enter Vacancy">
+											</td>
+										</tr>
+										<tr>
+											<td th:text="#{Form.vacancy}"></td>
+											<td><input min="0" type="number" id="totalvacancy"
+												th:field="*{totalvacancy}" required="required"
+												class="form-control" placeholder="Enter total vacancy">
+											</td>
+										</tr>
+										<tr>
+											<td th:text="#{Form.grVacancy4}"></td>
+											<td><input min="0" type="number" id="grVacancy4"
+												th:field="*{grVacancy4}" required="required"
+												class="form-control" placeholder="Enter total vacancy">
+											</td>
+										</tr>
+										<tr>
+											<td th:text="#{Form.grVacancy50}"></td>
+											<td><input min="0" type="number" id="grVacancy50"
+												th:field="*{grVacancy50}" required="required"
+												class="form-control" placeholder="Enter total vacancy">
+											</td>
+										</tr>										
+									</tbody>
+								</table>
+							</div>							
+							
+							<br><br>
+							<div class="row table-responsive-sm text-center justify-content-center" th:if="${!#lists.isEmpty(previousproposal)}">
+							<span th:text="#{Form.previousproposal}">:</span>
+								<table class="table table-bordered table-sm" id="previousProposal">
+								<caption></caption>
+									<thead>
+										<tr>
+											<th scope="row" class="text-wrap"><span th:text=#{inbox.Noticeid}></span></th>
+											<th scope="row" class="text-wrap"><span th:text="#{inbox.Designation}"></span></th>
+											<th scope="row" class="text-wrap"><span th:text=#{inbox.Subject}></span></th>
+											<th scope="row" class="text-wrap"><span th:text=#{inbox.Date}></span></th>
+											<th scope="row" class="text-wrap"><span th:text="#{inbox.status}"></span></th>
+											<th scope="row" class="text-wrap"><span th:text="#{inbox.From}"></span></th>
+											<th scope="row" class="text-wrap"><span th:text="#{inbox.Current Authority}">Current
+													Authority</span></th>
+											<th scope="row" class="text-wrap"><span>Total Vacancy</span></th>		
+										</tr>
+									</thead>
+									<tbody>
+										<tr  th:each="article : ${previousproposal}">
+											<td th:text="${article.id}" class="text-wrap"></td>
+											<td th:text="${article.designationObj.designation_name_en}" class="text-wrap"></td>
+											<td th:text="${article.subject}" class="text-wrap"></td>
+											<td  th:text="${#temporals.format(article.date, 'dd-MMM-yyyy')}" class="text-wrap"></td>
+											<td th:switch="${{article.proposalState}}" class="text-wrap">
+												<a href="javascript:void(0);" th:case="'NEW'" class="btn btn-outline-info btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'APPROVED'" class="btn btn-outline-success btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'REJECTED'" class="btn btn-outline-danger btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'PENDING'" class="btn btn-outline-secondary btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>														
+											</td>
+											
+											<td th:switch="${{article.from}}" class="text-wrap">
+												<a href="javascript:void(0);" th:case="'DEP'" class="btn btn-outline-primary btn-sm"><span th:text="#{constants.__${article.from}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'AA'" class="btn btn-outline-primary btn-sm"><span th:text="#{constants.__${article.from}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'16B'" class="btn btn-outline-primary btn-sm"><span th:text="#{constants.__${article.from}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'VAC'" class="btn btn-outline-primary btn-sm"><span th:text="#{constants.__${article.from}__}"></span></a>														
+											</td>
+											<td th:switch="${{article.authority}}" class="text-wrap">
+												<a href="javascript:void(0);" th:case="'DEP'" class="btn btn-outline-primary btn-sm"><span th:text="#{constants.__${article.authority}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'AA'" class="btn btn-outline-primary btn-sm"><span th:text="#{constants.__${article.authority}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'16B'" class="btn btn-outline-primary btn-sm"><span th:text="#{constants.__${article.authority}__}"></span></a>
+												<a href="javascript:void(0);" th:case="'VAC'" class="btn btn-outline-primary btn-sm"><span th:text="#{constants.__${article.authority}__}"></span></a>														
+											</td>
+											<td th:text="${article.totalvacancy}" class="text-wrap"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+							<div class="row"><hr><hr></div>
+
+							<div class="row table-responsive-sm text-center justify-content-center" th:if="${!#lists.isEmpty(notice.vacancyDistributionList)}">
+								<p class="alert alert-danger"
+								th:if="${vacancyerror ne null}"
+								th:text="${vacancyerror}">Extra vacancy Error</p>							
+								<span th:text="#{Form.Vertical vacancy}">:</span>
+								
+								<table class="table table-bordered table-sm table-responsive" id="link-listss">
+								<caption></caption>
+									<thead>
+										<tr>
+											<th scope="row"><span th:text="#{ListEmployee.index}"></span></th>
+											<th scope="row"></th>
+											<th scope="row">1</th>
+											<th scope="row">2</th>
+											<th scope="row">3</th>
+											<th scope="row">4</th>
+											<th scope="row">5</th>
+											<th scope="row">6</th>
+											<th scope="row">7</th>
+											<th scope="row">8</th>
+											<th scope="row">9</th>
+											<th scope="row">10</th>
+											<th scope="row">11</th>
+											<th scope="row">12</th>
+											<th scope="row">13</th>
+											<th scope="row">14</th>
+											<th scope="row" th:if="${notice.finalApproved}">15</th>
+											<th scope="row" th:if="${notice.finalApproved}">16</th>
+											<th scope="row" th:if="${notice.finalApproved}">17</th>
+											<th scope="row" th:if="${notice.finalApproved}">18</th>
+										</tr>
+										<tr>
+											<th scope="row" class="text-wrap"></th>											
+											<th scope="row" class="text-wrap" th:text="#{Form.category}">Category</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.santioned}">Sanctioned Post</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.filledpost}">Filled Post</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.tobefilled}">To be filled (1-2)</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.adjustment}">Adjustment</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.Vacancy by formula filled post}">Vacancy by formula filled post</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.backlog}">Backlog (5-2)</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.Current Vacancy posts}">Current Vacancy posts (4-6)</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.Post available letter demand}">post available letter demand(6+7)</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.percentGR}">50% by GR (3)</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.Previous Proposals}">Previous Proposals</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.Current Vacancy}">Current Vacancy (9-10)</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.expectedvacancy}">Expected Vacancy</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.extravacancy}">Extra Vacancy</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.totalvacancytobefilled}">Total Vacancy(11+12)</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.handicapped}" th:if="${notice.finalApproved}">Handicapped</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.sports}" th:if="${notice.finalApproved}">Sportsman</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.widow}" th:if="${notice.finalApproved}">widow</th>
+											<th scope="row" class="text-wrap" th:text="#{Form.exServiceman}" th:if="${notice.finalApproved}">Ex-Serviceman</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="cates,iStat: ${notice.vacancyDistributionList}" >
+											<td class="custom-td"><span th:text="${iStat.index+1}"></span></td>
+											<td class="text-wrap" style="background-color: #804000;color: #ffffff;">
+											<span th:text="${cates.caste.CasteName}"></span>(<strong><span th:text="${cates.caste.casteNameMr}"></span></strong>)
+												<input type="hidden"
+													th:field="${notice.vacancyDistributionList[__${iStat.index}__].caste}" 
+													th:value="${cates.caste}">
+												<input type="hidden" th:field="${notice.vacancyDistributionList[__${iStat.index}__].id}"
+													th:value = "${cates.id}">
+											</td>		 											
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].sanctionedPost}" 
+												th:value="${cates.sanctionedPost}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].fillePost}" 
+												th:value="${cates.fillePost}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].tobeFilled}" 
+												th:value="${cates.tobeFilled}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].adjustment}" 
+												th:value="${cates.adjustment}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].vacancyByFormulaFilledPost}" 
+												th:value="${cates.vacancyByFormulaFilledPost}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].backlog}" 
+												th:value="${cates.backlog}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].currentVacancycPosts}" 
+												th:value="${cates.currentVacancycPosts}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].postAvailableLetterDemand}" 
+												th:value="${cates.postAvailableLetterDemand}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].percentGrPost}" 
+												th:value="${cates.percentGrPost}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].previousProposals}" 
+												th:value="${cates.previousProposals}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].currentVacancy}" 
+												th:value="${cates.currentVacancy}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].expectedVacancy}" 
+												th:value="${cates.expectedVacancy}" class="form-control"></td>
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].extraVacancy}" 
+												th:value="${cates.extraVacancy}" class="form-control"></td>												
+											<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].totalVacancy}" 
+												th:value="${cates.totalVacancy}" class="form-control"></td>
+											<td th:if="${notice.finalApproved}"><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].handiCapped}" 
+												th:value="${cates.handiCapped}" class="form-control"></td>
+											<td th:if="${notice.finalApproved}"><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].sports}" 
+												th:value="${cates.sports}" class="form-control"></td>
+											<td th:if="${notice.finalApproved}"><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].widow}" 
+												th:value="${cates.widow}" class="form-control"></td>
+											<td th:if="${notice.finalApproved}"><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].exServiceman}" 
+												th:value="${cates.exServiceman}" class="form-control"></td>
+
+												
+										</tr>										
+										<tr>
+											<td class="custom-td">12</td>
+											<td class="custom-td"><strong><span th:text="#{Form.totalCount}">Total Count</span></strong></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![sanctionedPost])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![fillePost])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![tobeFilled])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![adjustment])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![vacancyByFormulaFilledPost])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![backlog])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![currentVacancycPosts])}" class="form-control"></td>											
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![postAvailableLetterDemand])}" class="form-control"></td>																						
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![percentGrPost])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![previousProposals])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![currentVacancy])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![expectedVacancy])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![extraVacancy])}" class="form-control"></td>
+											<td><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![totalVacancy])}" class="form-control"></td>
+											<td th:if="${notice.finalApproved}"><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![handiCapped])}" class="form-control"></td>
+											<td th:if="${notice.finalApproved}"><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![sports])}" class="form-control"></td>
+											<td th:if="${notice.finalApproved}"><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![widow])}" class="form-control"></td>
+											<td th:if="${notice.finalApproved}"><input type="number" th:value="${#aggregates.sum(notice.vacancyDistributionList.![exServiceman])}" class="form-control"></td>																																												
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+							<div class="row table-responsive-sm text-center justify-content-center" th:if="${!#lists.isEmpty(notice.vacancySmallClass)}">
+							<p class="alert alert-danger"
+								th:if="${vacancyerror ne null}"
+								th:text="${vacancyerror}">Extra vacancy Error</p>							
+								<span th:text="#{Form.Vertical vacancy}">:</span>
+								<table class="table table-bordered table-sm" id="link-listssx">
+								<caption></caption>
+									<thead>
+										<tr>
+											<th scope="row" class="text-wrap">Caste</th>
+											<th scope="row" class="text-wrap">Seat Number</th>
+											<th scope="row" class="text-wrap">Vacancy</th>
+											<th scope="row" class="text-wrap">Check</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="cates,iStat: ${notice.vacancySmallClass}">
+
+											<td class="text-wrap" style="background-color: #804000;color: #ffffff;"><span th:text="${cates.caste.CasteName}"></span></td>											
+											<td><span th:text="${cates.seatNumber}" id="seatnumber"></span>												
+												<input type="hidden" th:field="${notice.vacancySmallClass[__${iStat.index}__].caste}" th:value="${cates.caste}">
+												<input type="hidden" th:field="${notice.vacancySmallClass[__${iStat.index}__].id}" th:value="${cates.id}">												
+												<input type="hidden" th:field="${notice.vacancySmallClass[__${iStat.index}__].seatNumber}" th:value="${cates.seatNumber}">																								
+											</td>
+											<td><input type="number" th:field="${notice.vacancySmallClass[__${iStat.index}__].seatCount}" 
+												th:value="${cates.seatCount}" class="form-control" readonly="readonly"></td>
+											<td><input type="checkbox" th:field="${notice.vacancySmallClass[__${iStat.index}__].currentActive}" id="currentActive"
+												th:value="${cates.currentActive}" class="form-control"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+							<div class="form-group"></div>
+ 							<div class="form-group required">
+								<label for="subject" class="control-label"><span th:text=#{Form.Subject}></span>:</label>
+								<input min="5" max="255" type="text" id="subject"
+									th:field="*{subject}" required="required" class="form-control"
+									placeholder="Enter Subject">
+								<p class="alert alert-danger"
+									th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}">Subject
+									Error</p>
+							</div>
+
+							<button type="button" class="btn btn-primary" data-toggle="modal"
+								data-target="#myModal2"
+								th:if="${proposalList != null and !proposalList.isEmpty()}">
+								<span th:text="#{Form.History Info}"></span>
+							</button>
+							<div class="form-group">
+								<label><span th:text=#{Form.Editor}></span></label>
+								<textarea id="editor" th:field="*{info}"></textarea>
+								<p class="alert alert-danger"
+									th:if="${#fields.hasErrors('info')}" th:errors="*{info}">Extra
+									vacancy Error</p>
+							</div>
+							<div class="form-group">
+								<label for="file"><span th:text=#{Form.multifileupload}></span></label>
+								<input type="file" accept=".pdf" name="FileUpload1" multiple="multiple"
+									class="form-control" id="FileUpload1" required="required"><br>
+									
+									 <!-- <a href="javascript:void(0);" th:if="${notice.id ne null and notice.filename ne null}" 
+										th:href="@{|/recruitmentmpsc/getProposalMpscfile/${notice.id}/${notice.filename}|}"
+										target="_blank">
+										<span th:text="${notice.filename}"></span>
+									</a> -->
+								<p class="alert alert-danger"
+									th:if="${fileNameNotFound ne null}" th:text="${fileNameNotFound}">Designation
+									Error</p>
+							</div>
+							
+							<div class="form-group" id="enablefor16b">
+								<label for="file"><span th:text=#{Form.excelupload}></span></label>
+								<input type="file" name="FileUpload2"
+									class="form-control" id="FileUpload2" required="required"><br>									
+									<!-- <a href="javascript:void(0);" th:if="${notice.id ne null and notice.filename ne null}" 
+										th:href="@{|/recruitmentmpsc/getProposalMpscfile/${notice.id}/${notice.filename}|}"
+										target="_blank">
+										<span th:text="${notice.filename}"></span>
+									</a> -->
+								<p class="alert alert-danger"
+									th:if="${fileNameNotFound ne null}" th:text="${fileNameNotFound}">Designation
+									Error</p>
+							</div>
+
+							<div class="form-group"
+								th:style="${(notice.authority == 'DEP' or notice.authority =='')? 'display:none' : 'display:block'}">
+								<div class="custom-control custom-radio custom-control-inline">
+									<input type="radio" id="option1" name="option1"
+										class="custom-control-input" value=true th:field="*{approved}">
+									<label class="custom-control-label" for="option1"><span
+										th:text="#{Form.Approved}"></span></label>
+								</div>
+								<div class="custom-control custom-radio custom-control-inline">
+									<input type="radio" id="option2" name="option2"
+										class="custom-control-input" value=false
+										th:field="*{approved}"> <label
+										class="custom-control-label" for="option2"><span
+										th:text="#{Form.Not Approved}"></span></label>
+								</div>
+							</div>
+							<div class="row table-responsive-sm text-center justify-content-center" th:if="${notice.id ne null and notice.id >0 and !#lists.isEmpty(notice.files)}">
+							<span th:text="#{Form.viewuploaded}"></span>
+								<table class="table table-bordered">
+								<caption></caption>
+									<thead>
+										<tr>
+											<th scope="row" th:text="#{ListEmployee.index}"></th>
+											<th scope="row" th:text="#{ApplicationForm.filename}"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="file,iStat:${notice.files}" th:if="${file.AuthorityName == null}">
+											<td th:text="${iStat.index+1}"></td>
+											<td><a target="_blank" th:href="@{|/recruitmentmpsc/getProposalFile/${file.id}|}"><span th:text="${file.fileName}"></span></a></td>
+										</tr>
+									</tbody>
+								</table>
+							
+							</div>
+
+
+							<div class="btn-toolbar mr-1" role="toolbar" th:if="${!notice.offlineImportEnable}"
+								aria-label="Basic example">
+								<button type="submit" class="btn btn-primary" th:name="action"
+									id="save" th:value="save">
+									<span th:text=#{Form.Save}></span>
+								</button>
+<!-- 								<button type="button" id="buttoncheck">Confirmation</button> -->
+								<button type="submit" class="btn btn-primary" name="preview"
+									data-toggle="modal" data-target="#myModal" 
+									th:attrappend="disabled=${notice.id==null}?'disabled'">
+									<span th:text=#{Form.Preview}></span>
+								</button>
+								<button type="submit" class="btn btn-primary"
+									th:if="${notice.nextAuth=='AA' && !notice.finalApproved}" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+									th:disabled="${notice.id == null}" th:name="action"
+									th:value="auditingauthority" id="sendtoaa">
+									<span th:text=#{Form.Send}></span>
+								</button>
+
+								<button type="submit" class="btn btn-primary"
+									th:disabled="${notice.id == null}"
+									th:if="${notice.authority != 'DEP' and notice.id != null}"
+									th:name="action" th:value="sendbackdept" id="backtodept">
+									<span th:text="#{Form.SendDept}"></span>
+								</button>
+
+								<button type="submit" class="btn btn-primary"
+									th:disabled="${notice.id == null}" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+									th:if="${notice.nextAuth=='16B' and !notice.finalApproved and notice.id != null}"
+									th:name="action" th:value="sendto16b" id="sendto16b">
+									<span th:text="#{Form.Send16B}"></span>
+								</button>
+
+								<button type="submit" class="btn btn-primary" id="vacbutton" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"								
+									th:name="action" th:value="sendtovac">
+									<span th:text="#{Form.SendVac}"></span>
+								</button>
+
+								<button type="submit" class="btn btn-primary"
+									th:disabled="${notice.id == null}"
+									th:if="${notice.finalApproved && notice.finalApprovedHori and notice.id != null and notice.authority=='DEP'}"
+									th:name="action" th:value="sendtompsc" id="sendtompsc">
+									<span th:text="#{Form.SendMpsc}"></span>
+								</button>
+								
+								<button type="submit" class="btn btn-primary"
+									th:if="${notice.authority=='DEP' && notice.finalApproved && !notice.finalApprovedHori}"
+									th:disabled="${notice.id == null}" th:name="action"
+									th:value="auditingauthority" id="sendtoaa">
+									<span th:text=#{Form.Send}></span>
+								</button>
+								
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+ <script th:inline="javascript">
+				$(document).ready(function() {
+					  $('#vacbutton').prop('disabled', true);
+					  $('#vacbutton').hide();
+					  $('#enablefor16b').hide();
+					  var notapproved = $('#option2:checked').val();
+						var approved = $('#option1:checked').val();
+					  if(approved != undefined) {
+							$('#sendto16b').show();
+							$('#enablefor16b').show();
+							$('#vacbutton').hide();
+						} else if(notapproved != undefined) {
+							$('#backtodept').show();
+							$('#sendto16b').hide();
+							$('#enablefor16b').hide();
+							$('#vacbutton').hide();
+						}
+					  $('#option1').change(function(){
+							$('#sendto16b').show();
+							$('#enablefor16b').show();
+							$('#vacbutton').hide();
+						});
+						$('#option2').change(function(){
+							$('#backtodept').show();
+							$('#sendto16b').hide();
+							$('#enablefor16b').hide();
+							$('#vacbutton').hide();
+						});	
+					  $('#extravacancy').change('input', function() {
+					    if ($(this).val() != noticeObj.extravacancy) {
+					      $('#vacbutton').prop('disabled', false);
+						  $('#vacbutton').show();
+					      $('#save').prop('disabled',true);
+							var notapproved = $('#option2:checked').val();
+							var approved = $('#option1:checked').val();
+							if(approved != undefined) {
+								$('#backtodept').prop('disabled',true);
+								$('#sendto16b').prop('disabled',false);				
+								$('#backtodept').hide();
+								$('#sendto16b').hide();
+								$('#vacbutton').show();
+							} else if(notapproved != undefined) {
+								$('#backtodept').prop('disabled',false);
+								$('#sendto16b').prop('disabled',true);
+								$('#backtodept').show();
+								$('#sendto16b').hide();
+								$('#vacbutton').hide();
+							}
+							$('#option1').change(function(){
+								$('#backtodept').prop('disabled',true);
+								$('#sendto16b').prop('disabled',false);
+								$('#backtodept').hide();
+								$('#sendto16b').hide();
+								$('#vacbutton').show();
+							});
+							$('#option2').change(function(){
+								$('#backtodept').prop('disabled',false);
+								$('#sendto16b').prop('disabled',true);				
+								$('#backtodept').show();
+								$('#sendto16b').hide();
+								$('#vacbutton').hide();
+							});								      
+					    } else {
+					      $('#vacbutton').prop('disabled', true);
+					      $('#vacbutton').hide();
+							var notapproved = $('#option2:checked').val();
+							var approved = $('#option1:checked').val();
+							if(approved != undefined) {
+								$('#backtodept').prop('disabled',true);
+								$('#sendto16b').prop('disabled',false);				
+								$('#backtodept').hide();
+								$('#sendto16b').show();
+								$('#enablefor16b').show();
+								$('#vacbutton').hide();
+							} else if(notapproved != undefined) {
+								$('#backtodept').prop('disabled',false);
+								$('#sendto16b').prop('disabled',true);
+								$('#backtodept').show();
+								$('#sendto16b').hide();
+								$('#enablefor16b').hide();
+								$('#vacbutton').hide();
+							}
+							$('#option1').change(function(){
+								$('#backtodept').prop('disabled',true);
+								$('#sendto16b').prop('disabled',false);
+								$('#backtodept').hide();
+								$('#sendto16b').show();
+								$('#enablefor16b').show();
+								$('#vacbutton').hide();
+							});
+							$('#option2').change(function(){
+								$('#backtodept').prop('disabled',false);
+								$('#sendto16b').prop('disabled',true);				
+								$('#backtodept').show();
+								$('#sendto16b').hide();
+								$('#enablefor16b').hide();
+								$('#vacbutton').hide();
+							});			
+					    }
+					  });
+					});
+				
+			</script>	
+ <script type="text/javascript">
+	 $(function () {
+	     //initialize
+//	     if (!$("#link-listss").is(":blk-transpose")) {
+	setTimeout(function(){ 
+
+        $("#link-listss").transpose({ mode: 0 });
+//        $("#link-listssx").transponse({ mode:0 });
+//	     }
+	     $("#link-listss").transpose("transpose");
+//	     $("#link-listssx").transpose("transpose");
+//		var xyz = $("#link-listssx").tableToJSON();
+//		console.log(xyz);
+
+	}, 100);
+	
+	 });
+	
+	 $("#btnTpHorizontal").click(function () {
+	     var currentMode = $("#link-listss").data("tp_mode");
+	     if (currentMode == undefined) {
+	         $("#link-listss").transpose("transpose");
+	         $("#btnTpHorizontal").html("Reset");
+	     }
+	     else {
+	         $("#link-listss").transpose("reset");
+	         $("#btnTpHorizontal").html("Transpose");
+	     }
+	 });
+
+    </script>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog modal-xl">
+				Modal content
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body container">
+						<form  id="noticeregisteridxxx"
+							class="needs-validation" novalidate>
+							<div class="row">
+								<div class="form-group col-sm" id="hidden_div"
+									th:if="${notice.id>0}" style="color: red">
+									<label for="exampleFormControlInput1" class="control-label"><span
+										th:text=#{Form.Noticeid}></span>:</label> <strong class="form-control"><span
+										th:text="${{notice.id}}"></span></strong>
+								</div>
+
+								<div class="form-group col-sm">
+									<label for="designations"><span
+										th:text=#{Form.Designation}></span>:</label> <strong class="form-control"><span
+										th:text="${{notice.designation}}"></span></strong>
+								</div>
+								<div class="form-group col-sm">
+									<label for="expectedvacancy"><span
+										th:text=#{Form.expectedvacancy}></span>:</label><strong class="form-control"><span
+										th:text="${{notice.expectedvacancy}}"></span></strong>
+
+								</div>
+								<div class="form-group col-sm">
+									<label for="reservedvacancy"><span
+										th:text=#{Form.reservedvacancy}></span>:</label><strong class="form-control"><span
+										th:text="${{notice.reservedvacancy}}"></span></strong>
+								</div>
+
+
+							</div>
+							<div class="row">
+								
+								<div class="form-group col-sm">
+									<label for="extravacancy"><span
+										th:text=#{Form.extravacancy}></span>:</label> <strong class="form-control"><span
+										th:text="${{notice.extravacancy}}"></span></strong>
+								</div>
+								<div class="form-group col-sm">
+									<label for="vacancy"><span th:text=#{Form.vacancy}></span>:</label><strong class="form-control"><span
+										th:text="${{notice.totalvacancy}}"></span></strong>
+								</div>
+								
+							</div>
+
+							
+						</form>
+						<object id="embedPDF" accept="application/pdf"
+							th:attr="data=${{notice.dataurl}}" width="100%" height="500"
+							style="height: 85vh;"><span th:text="#{Form.error.nodocumentfound}"></span></object>
+									          <embed id ="embedPDF" src="" type="application/pdf" frameborder="0" width="100%" height="400px">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal 2 -->
+		<div class="modal fade" id="myModal2" role="dialog">
+			<div class="modal-dialog modal-xl">
+				Modal content
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="container">
+							<div class="row text-center justify-content-center">
+									<table class="table table-bordered table-sm">
+										<caption></caption>
+										<thead>
+											<tr>
+												<th scope="row">Edited By</th>
+												<th scope="row">Edited date</th>
+												<th scope="row">Remarks</th>
+												<th scope="row">File Links</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="history:${proposalList}">
+												<td th:text="${history.lastModifiedBy}"></td>
+												<td th:text="${#temporals.format(history.lastModifiedDate, 'dd-MMM-yyyy')}"></td>
+												<td th:utext="${history.info}"></td>	
+												<td>
+													<a href="#">links</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								
+<!-- 									<form>
+										<div class="row">
+											<div class="form-group col-sm">
+												<label class="control-label"><span th:text="#{EmployeeDetail.Remarks}"></span>:</label> <strong><span
+													th:utext="${{history.info}}"></span></strong>
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-sm">
+												<label><span th:text="#{Form.Modified By}"></span>:</label>
+												<strong class="form-control"><span th:text="${history.lastModifiedBy}"></span></strong>
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-sm">
+												<label><span th:text="#{Form.Modified Date}"></span>:</label>
+												<strong class="form-control"><span
+													th:text="${#temporals.format(history.lastModifiedDate, 'dd-MMM-yyyy')}"></span></strong>
+											</div>
+
+										</div>
+										<div class="row">
+											<div class="form-group col-sm">
+												<label><span
+													th:text="#{Form.Modified By IP Address}"></span>:</label> <strong class="form-control"><span
+													th:text="${history.remoteIp}"></span></strong>
+											</div>
+										</div>
+									</form> -->
+
+<!-- 								<div class=col-sm-7>
+									<object id="embedPDFx" accept="application/pdf" width="100%"
+										height="500" th:attr="data=${{history.dataurl}}"
+										style="height: 85vh;"><span th:text="#{Form.error.nodocumentfound}"></span></object>
+								</div> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</body>
+</html>
+

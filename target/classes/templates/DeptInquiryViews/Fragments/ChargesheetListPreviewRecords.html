@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="ChargesheetListPreviewRecords">
+	<div class="modal fade" id="myModal2" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div class="container">
+						<button type="button" class="close" data-dismiss="modal"
+							th:id="myModal2"  onclick="closeModalForce()">&times;</button>
+
+						<br><br>
+						<button type="button" class="btn btn-primary"  id="myModal29"   onclick="printDivforInsidePreview('printdata')" 
+							style="float: right;">	
+							<span th:text="#{view.pdf.label}">View PDF</span>
+						</button>
+
+						
+
+						<br>
+						<div class="table-responsive" id="printdata">
+						<h3 style="margin-top: 4px;">
+							<strong><span th:text="#{de.chargesheet.preview}"></span></strong>
+						</h3>
+							<table class="table table-bordered table-sm"
+								style="border: 1px solid black !important; border-collapse: collapse !important;">
+								<caption></caption>
+								<thead>
+									<tr>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row" width="20%"></th>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row"></th>
+									</tr>
+								</thead>
+								<tbody>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargeSheet"><span th:text="#{de.enquiry.caseno}"></span></label></td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:text="${chargeSheetObj.caseNo}"></span></td>
+									</tr>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargesheetIssued">
+													<span th:text="#{de.chargesheetissued}"></span></label></td>
+
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:if="${chargeSheetObj.chargesheetIssued}"
+											th:text="#{de.boolean.yes}"></span> <span
+											th:unless="${chargeSheetObj.chargesheetIssued}"
+											th:text="#{de.boolean.no}"></span></td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargeSheet"><span th:text="#{de.sevarth.id}"></span> </label></td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:text="${chargeSheetObj.sevarthId}"></span></td>
+									</tr>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargeSheet"><span th:text="#{de.firstName.labels}"></span></label></td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:text="${chargeSheetObj.firstName}"></span></td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargeSheet"><span th:text="#{de.middleName.label}"></span></label></td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:text="${chargeSheetObj.middleName}"></span></td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargeSheet"><span th:text="#{de.lastName.labels}"></span></label></td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:text="${chargeSheetObj.lastName}"></span></td>
+									</tr>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="reInstatedOrderDate">
+											<span
+													th:text="#{candidatelist.chargesheetDate}"></span></label></td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:text="${#temporals.format(chargeSheetObj.chargesheetDate, 'dd-MM-yyyy')}"></span></td>
+									</tr>
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargesheetIssued">
+											<span th:text="#{de.chargesheet.revisedchargesheet}"></span></label></td>
+
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:if="${chargeSheetObj.revisedChargesheetIssued}"
+											th:text="#{de.boolean.yes}"></span> <span
+											th:unless="${chargeSheetObj.revisedChargesheetIssued}"
+											th:text="#{de.boolean.no}"></span></td>
+									</tr>
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="reInstatedOrderDate"><span th:text="#{de.chargesheet.dateofsupplementary.revisedchargesheet}"></span></label></td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:text="${#temporals.format(chargeSheetObj.revisedChargesheetDate, 'dd-MM-yyyy')}"></span></td>
+									</tr>
+									
+									
+
+
+								</tbody>
+							</table>
+						</div>
+						<br> <br />
+
+					</div>
+
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+    
+        <title th:text="#{ListEmployee.index}"></title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta charset="UTF-8" />
+    </head>
+    <body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+    वार्षिक गोपनीय अहवाल
+        <span th:text="#{inbox.Current Authority}">
+            Dear
+        </span>
+        <div>hello tested ok</div>
+        <span th:text="#{Recruitment}">
+
+        </span>
+        <p>
+            <span th:text="#{inbox.Current Authority}">Regards, </span>
+            <br/>
+            <em th:text="#{inbox.Current Authority}"></em>
+        </p>
+    </body>
+</html>

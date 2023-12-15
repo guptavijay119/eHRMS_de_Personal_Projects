@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title>Appointment Letter</title>
+<head>
+	
+	<link rel="stylesheet"
+		href="http://localhost:8080/ehrms_assets/vendors/mdi/css/materialdesignicons.min.css">
+	<link rel="stylesheet"
+		href="http://localhost:8080/ehrms_assets/vendors/flag-icon-css/css/flag-icon.min.css">
+	<link rel="stylesheet"
+		href="http://localhost:8080/ehrms_assets/vendors/css/vendor.bundle.base.css">
+	<!-- endinject -->
+	<!-- Plugin css for this page -->
+	<link rel="stylesheet"
+		href="http://localhost:8080/ehrms_assets/vendors/jquery-bar-rating/css-stars.css" />
+	<link rel="stylesheet"
+		href="http://localhost:8080/ehrms_assets/vendors/font-awesome/css/font-awesome.min.css" />
+	<!-- End plugin css for this page -->
+	<!-- inject:css -->
+	<!-- endinject -->
+	<!-- Layout styles -->
+	<link rel="stylesheet"
+		href="http://localhost:8080/ehrms_assets/css/demo_1/style.css" />
+	<!-- End layout styles -->
+		<link rel="stylesheet"
+			href="http://localhost:8080/css/bootstrap-table.min.css">
+		
+		<link type="text/css" rel="stylesheet"
+			href="http://localhost:8080/css/jquery-ui.min.css">
+		<link type="text/css" rel="stylesheet"
+			href="http://localhost:8080/css/summernote-lite.css">
+		<link rel="icon" href="http://localhost:8080/favicon.ico}"
+			type="image/x-icon">
+	</head>
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <div class="row justify-content-end">
+                <p><br></br><br></br>
+                    <b>महाराष्ट्र अभियाांभिकी सेवा,<br></br> गॅट ए मधील<br></br>
+                        सहायक काययकारी अभियांता <br></br>पदावर सरळसेवा भरती.<br></br></b></p>
+                </div>
+
+                <div class="row justify-content-center">
+                    <p>
+                        <b><span>महाराष्ट्र शासन<br></br>
+                            सावयजभनक बाांधकाम भविाग<br></br>
+                            शासन भनर्यय, क्रमाांकः जीएबी 2019/प्र.क्र.150/सेवा-2<br></br>
+                            मंत्रालय, मुंबई- 400 032<br></br>
+                            भदनाांक: 10.12.2019<br></br></span>
+                        </b>
+                    </p>
+                </div>
+                <p class="row justify-content-center"><b>वाचा -
+                    1) महाराष्ट्र लोकसेवा आयोगाचे पि क्रमाांक -374(2)/2017/14-ब, भद.15.06.2019</b></p>
+                    <b>शासन भनर्यय</b> -
+                    <p></p>
+                    <p class="col-sm justify-content-center">
+                                महाराष्ट्र लोकसेवा आयोग, मुंबई याांनी महाराष्ट्र अभियाांभिकी सेवा, गट-अ मधील पदाांच्या
+                        नेमर् कीसाठी 2017 मध्ये घेतलेल्या स्पधात्मक पभरक्षेच्या भनकालान सार, सावयजभनक बाांधकाम भविागाांतगयत
+                        सहायक काययकारी अभियांता या पदाकभरता एकू र् 23 उमेदवाराांची भशफारस के लेली आहे. भशफारस प्राप्त
+                        23 उमेदवाराांपैकी खालील तक्तत्यात नमूद उमेदवाराांची सावयजभनक बाांधकाम भविागात सहायक काययकारी
+                        अभियांता, गट-अ या पदावर सातव्या वेतन आयोगान सार स धाभरत वेतन मॅरीक्तसमधील वेतन स्तर एस-20
+                        ( रू.56100-177500) या वेतनसांरचनेत ते ज्या भदवशी रूजू होतील त्या भदनाांकापासून दोन वर्षाच्या
+                        पभरवीक्षाधीन कालावधीसाठी भनय क्तती करण्यात येत आहे. उमेदवाराांना देण्यात येत असलेली भनय क्तती
+                        त्याांच्या नाांवासमोर दशयभवलेल्या ग र्ान क्रमान सार करण्यात येत आह
+                    </p>
+                
+                <p class="row justify-content-center"><b><br></br><br></br>
+                    सदर शासन भनर्यय महाराष्ट्र शासनाच्या www.maharashtra.gov.in या सांके तस्थळावर उपलब्ध<br></br>
+                    करण्यात आला असून त्याचा सांके ताक 201912101157227418 असा आहे. हा आदेश भडजीटल स्वाक्षरीने<br></br>
+                    साक्षाांभकत करुन काढण्यात येत आहे.<br></br></b></p>
+                <p></p>
+                
+                <p class="row justify-content-center"><b>महाराष्ट्राचेराज्यपाल याांच्या आदेशान सार व नावाने.</b></p>
+                <p class="row justify-content-end"><b>
+                     ( स्वा.स.पाटील)<br></br>
+                     कायासन अभधकारी, महाराष्ट्र शासन<br></br>
+                </b></p>
+                
+                <p></p>
+                <p><b>				
+                प्रत,<br></br>
+                1. सभचव, महाराष्ट्र लोकसेवा आयोग, म ांबई (पिाने),<br></br>
+                2. प्रधान सभचव, जलसांपदा भविाग, मांिालय, म ांबई,<br></br>
+                3. महालेखापाल-1 (लेखापभरक्षा) महाराष्ट्र राज्य, म ांबई <br></br>
+                4. महालेखापाल-1 (लेखा व अन ज्ञेयता) महाराष्ट्र राज्य, म ांबई <br></br>
+                5. महालेखापाल-2 (लेखापभरक्षा) महाराष्ट्र राज्य, नागपूर <br></br>
+                6. महालेखापाल-2 (लेखा व अन ज्ञेयता) महाराष्ट्र राज्य, नागपूर <br></br>
+                7. सवय म ख्य अभियांता, सावयजभनक बाांधकाम प्रादेभशक भविाग <br></br>
+                8. अधीक्षक अभियांता तथा सह सांचालक, महाराष्ट्र अभियाांभिकी प्रभशक्षर् प्रबोभधनी, नाभशक <br></br>
+                9. सवय अधीक्षक अभियांता, सावयजभनक बाांधकाम मांडळ <br></br>
+                10.अभधदान व लेखाभधकारी, म ांबई <br></br>
+                11.भनवासी लेखाभधकारी, म ांबई <br></br>
+                12.स्वीय सहायक अपर म ख्य सभचव (सा.बाां.), सावयजभनक बाांधकाम भविाग, मांिालय, म ांबई <br></br>
+                13.स्वीय सहायक सभचव (रस्ते), सावयजभनक बाांधकाम भविाग, मांिालय, म ांबई <br></br>
+                14.स्वीय सहायक सभचव (बाांधकामे), सावयजभनक बाांधकाम भविाग, मांिालय, म ांबई <br></br>
+                15.कायासन-सेवा-1/सेवा-3/सेवा-6/आस्था-1/आस्था-3/सांगर्क कक्ष, सावयजभनक बाांधकाम <br></br>
+                भविाग, मांिालय, म ांबई <br></br>
+                16.सांबांभधत उमेदवार ( ई-मेल द्वारे) <br></br>
+                17.कायासन सेवा-2 (भनवडनस्ती) <br></br>
+                </b></p>				
+            </div>
+        </div>	
+    </div>
+</body>
+</html>

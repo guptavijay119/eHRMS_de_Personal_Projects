@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+         <th:block th:include="fragments/headerlibs.html :: headerlibs"></th:block>
+    </head>
+
+
+
+    <body sec:authorize="isAuthenticated()"  class="fixed-left">
+        
+        <!-- Begin page -->
+        <div id="wrapper">
+        
+            <!-- Top Bar Start -->
+           	<header th:insert="fragments/header.html :: header"> </header>
+                <!-- Top Bar End -->
+    
+               <!-- ========== Left Sidebar Start ========== -->
+				 <nav th:insert="fragments/sidenav.html :: sidevav"> </nav> 
+                <!-- Left Sidebar End -->
+
+
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->                      
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    <div class="container">
+
+                        <!-- Page-Title -->
+                        <div class="row">
+                            
+							
+							<div class="col-sm-12">
+                                
+                                <ol class="breadcrumb pull-right">
+                                    <li><a href="#"><span th:text="#{Transfer and Posting Module}">Transfer and Posting Module</span></a></li>
+                                    <li><a href="#"><span th:text="#{e-HRMS Revenue Divisional Allotment & Initial Posting}">e-HRMS Revenue Divisional Allotment & Initial Posting</span></a></li>
+                                    <li class="active"><span th:text="#{Employee Preference/ Exemption - Processing}">Employee Preference/ Exemption - Processing</span></li>
+                                    
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title text-center">Employee Preference/ Exemption - Processing</h3>
+                                    </div>
+                                    <div class="panel-body">
+						      
+									
+								
+								<div class="row mrg_bottom">
+									
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="col-md-12 control-label">Employee No.<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Group<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-md-4">
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Recruitment mode<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								
+								<div class="row mrg_bottom">
+									
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-md-12 control-label">Revenue Department<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Department Name<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								
+								<div class="row mrg_bottom">
+									
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="col-md-12 control-label">Employee Name<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Designation<span style="color:red;"> *</span></label>
+											<div class="col-md-12 ">
+												<input type="text" class="form-control">
+												
+											</div>
+										</div>
+										
+										
+									</div>
+								</div>
+								<br>
+									<hr>
+									<div class="cearfix"></div>
+								
+								<h4 class="text-center" style="color:blue;">Preference Entry Details</h4>
+								
+							<div class="row mrg_bottom">
+									
+									<div class="col-md-4">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Revenue Department<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<select class="form-control" name="category" id="category_id" >
+													<option value="">Select Group</option>
+													<option value="">Group 1</option>
+													<option value="">Group 2</option>
+													<option value="">Group 3</option>
+													<option value="">Group 4</option>
+													
+													
+												</select>
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+							
+								</div>
+								
+								
+						<!-- ///////////////////////////////////////// -->
+									
+										<br>
+									<hr>
+									<div class="cearfix"></div>
+								
+								<h4 class="text-center" style="color:blue;">Exemption Entry Details (If applicable)</h4>
+								
+							<div class="row mrg_bottom">
+									
+									<div class="col-md-6">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Applicable for Exemption<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<select class="form-control" name="category" id="category_id" >
+													<option value="">Select </option>
+													<option value="">Yes</option>
+													<option value="">No</option>
+													
+													
+													
+												</select>
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+										<div class="col-md-6">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Test<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+											<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+							
+								</div>
+								
+								
+										<div class="row mrg_bottom">
+									
+									<div class="col-md-6">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Test<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+										<div class="col-md-6">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Test Department<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+											<input type="text" class="form-control">
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+							
+								</div>
+								
+								<br>
+									<hr>
+									<div class="cearfix"></div>
+									<h4 class="text-center" style="color:blue;">Departmental Processing</h4>
+								
+										<div class="row mrg_bottom">
+									
+									<div class="col-md-6">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Document Upload<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="file" >
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+										<div class="col-md-6">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">&nbsp</label>
+											<div class="col-md-12">
+											<button class="btn btn-primary">Application View</button>
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+							
+								</div>
+								
+								
+									<div class="row mrg_bottom">
+									
+									<div class="col-md-6">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Recommendation<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+												<input type="file" >
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+										<div class="col-md-6">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">&nbsp</label>
+											<div class="col-md-12">
+											<button class="btn btn-primary">Documents View</button>
+											<span class="error" id="err_category"></span>
+											</div>
+										</div>
+										
+									</div>
+									
+							
+								</div>
+								
+								
+									<div class="row mrg_bottom">
+									
+									<div class="col-md-2">
+									
+										<div class="form-group" >
+											<label class="col-md-12 control-label">Permission Granted<span style="color:red;"> *</span></label>
+											<div class="col-md-12">
+                                         </div>
+												
+											<span class="error" id="err_category"></span>
+											<div>
+  
+											</div>
+										</div>
+										
+									</div>
+									
+										<div class="col-md-3">
+									
+										<div class="form-group" >
+											<div class="col-md-3">
+											
+											<input type="hidden" name="permission_granted" value="no">
+                                           <input type="radio" name="permission_granted" id="permission_granted" value="yes" />
+                                           <label for="permission_granted">Yes</label>
+                                             </div>									
+											<span class="error" id="err_category"></span>
+											<div>
+  
+											</div>
+										</div>
+										
+									</div>
+									
+							
+							    			<div class="col-md-3">
+									
+										<div class="form-group" >
+											<div class="col-md-3">
+											
+											<input type="hidden" name="permission_granted" value="no">
+                                           <input type="radio" name="permission_granted" id="permission_granted" value="no" />
+                                           <label for="permission_granted">No</label>
+                                             </div>									
+											<span class="error" id="err_category"></span>
+											<div>
+  
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								
+								
+									<div class="row mrg_bottom">
+									
+									<div class="col-md-3">
+									
+										<div class="form-group" >
+											
+											<div class="col-md-12">
+											<button class="btn btn-primary">Save</button>
+                                         </div>
+												
+											<span class="error" id="err_category"></span>
+											<div>
+  
+											</div>
+										</div>
+										
+									</div>
+									
+									
+										<div class="col-md-3">
+									
+										<div class="form-group" >
+											
+											<div class="col-md-12">
+											<button class="btn btn-primary">Forword to Department</button>
+                                         </div>
+												
+											<span class="error" id="err_category"></span>
+											<div>
+  
+											</div>
+										</div>
+										
+									</div>
+							
+								</div>
+									
+								</div>
+                                      
+									
+								
+									<br>
+									<hr>
+									<div class="cearfix"></div>
+									<div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12 vacancy">
+												<h4>Employees List for Exemption</h4>
+                                                <table class="table  table-bordered table-striped" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S. No.</th>
+                                                            <th>Vacancy 1</th>
+                                                            <th>Vacancy 2</th>
+                                                            <th>Vacancy 3</th>
+															<th>Vacancy 4</th>
+                                                            <th>Vacancy 5</th>
+                                                            <th>Vacancy 6</th>
+                                                            <th>Vacancy 7</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                             <!-- <td><a href="#">Edit</a></td> -->
+                                                        </tr>
+														<tr>
+                                                            <td>2</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                        </tr>
+														
+														<tr>
+                                                            <td>3</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                        </tr>
+														
+														<tr>
+                                                            <td>4</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                            <td>xxxx</td>
+                                                        </tr>
+														
+													</tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+									
+								</div>
+                                </div>
+                            </div>
+                        </div> <!-- End Row -->
+
+
+                    </div> <!-- container -->
+                               
+                </div> <!-- content -->
+				<!-- remove from footer -->
+			    <div th:replace="fragments/footer.html :: footer"></div>
+				<!-- remove from footer -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+
+
+           
+
+
+        </div>
+        <!-- END wrapper -->
+    
+        <div th:replace="fragments/footerlibs.html :: footerlibs"></div>
+		
+		
+	
+	</body>
+</html>

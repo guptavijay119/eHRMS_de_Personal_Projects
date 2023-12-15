@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="header::header">
+</head>
+<title>Select Designation</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+
+	<div th:insert="Navbar::Navbar"></div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3"
+				th:insert="Sidebar::Sidebar"></div>
+			<div class="col-sm">
+				<h2>
+					<b><span th:text="#{SelectDesignation.newproposal}">New Proposal</span></b>
+				</h2>
+				<div class="row">
+					<span><span th:text="#{SelectDesignation.Recruitment Module}"></span> > 
+					<span th:text="#{SelectDesignation.Recruitment by Individual Departments through MPSC}"></span> > 
+					<span th:text="#{SelectDesignation.Prepare Recruitment Proposal}"></span></span>
+				</div>
+				<div class="row p-5">
+					<p th:text="${message}" th:if="${message ne null}"
+						class="alert alert-primary"></p>
+					<form th:action="@{/newproposal}" th:object="${designation}"
+						method="post" id="noticeregisterid">
+						<div class="row">
+							<div class="form-group col-sm">
+								<label for="designations"><span
+									th:text="#{SelectDesignation.selectgroupofemployees}">Select Group
+										for Designation</span>:</label> <select id="depart" name="depart"
+									class="form-control" th:field="${designation.service_group}">
+									<option th:each="Design : ${designationmap}"
+										th:value="${Design.key}" th:text="${Design.key}"></option>
+								</select>
+							</div>
+							<div class="form-group col-sm">
+								<!-- 								<div class="form-group" id="divSelectInput"></div>							 -->
+								<label for="depar"><span th:text="#{SelectDesignation.Designation}">Designation</span>:</label>
+								<select id="depar" name="depar" class="form-control"
+									th:field="${designation.designation_name_en}">
+								</select>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary"><span th:text="#{SelectDesignation.Next}">Submit</span></button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function() {
+		var selections = $("#depart :selected");
+        var html = '';
+        $.each(selections,function(i,item){
+        	var designation = /*[[${designationmap}]]*/;
+        	var des = null;
+        	console.log(designation);
+        	for(var x in designation) {
+        		if(x==$(item).text()) {
+        			des = designation[$(item).text()];
+        			break;
+        		}
+        	}
+        	var htmlx = '';
+        	for(var y=0;y<des.length;y++) {
+            	htmlx+='<option th:value="'+des[y]+'">'+des[y]+'</option>';        		
+        	}
+        	$("#depar").html(htmlx);   
+            $("#depar").trigger('contentChanged');    
+        })
+    });
+	
+	$(function(){
+		$('#depart').change(function(){
+    		var selections = $("#depart :selected");
+        var html = '';
+        $.each(selections,function(i,item){
+        	var designation = /*[[${designationmap}]]*/;
+        	var des = null;
+        	console.log(designation);
+        	for(var x in designation) {
+        		if(x==$(item).text()) {
+        			des = designation[$(item).text()];
+        			break;
+        		}
+        	}
+        	var htmlx = '';
+        	for(var y=0;y<des.length;y++) {
+            	htmlx+='<option th:value="'+des[y]+'">'+des[y]+'</option>';        		
+        	}
+        	$("#depar").html(htmlx);   
+            $("#depar").trigger('contentChanged');    
+        })
+    })
+	});
+	</script>
+</body>
+</html>

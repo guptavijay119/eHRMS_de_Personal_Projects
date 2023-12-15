@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{index}"></title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta charset="UTF-8" />
+    </head>
+    <body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+        <span>
+            Dear <span th:text="${applicantsName}"></span>
+        </span>
+        <p>Your Application has processed by department for applied post. Application Number: <span th:text="${applicantsId}"></span></p>
+        <p>
+            <span>Regards, </span>
+            <br/>
+            <em>Recruitment Department</em>
+        </p>
+    </body>
+</html>

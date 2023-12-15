@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="header::header">
+</head>
+<title>Form</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div th:fragment="FormPromotions">
+		<div class="page-header">
+
+			<div th:object="${notice}">
+
+				<h3 class="page-title" th:if="${!notice.approved}">
+					<b><span th:text="#{Form.Prepare Recruitment Proposal}">Prepare
+							a recruitment proposal</span></b>
+				</h3>
+				<h3 class="page-title"
+					th:if="${notice.approved and notice.authority=='DEP'}">
+					<b><span th:text="#{Form.FinalizeProposal}">Finalize
+							proposal</span></b>
+				</h3>
+
+			</div>
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#"><span
+							th:text="#{Form.Recruitment Module}"></span></a></li>
+					<li class="breadcrumb-item"><a href="#"><span
+							th:text="#{Recruitment.promotions1}"></span></a></li>
+					
+				</ol>
+			</nav>
+
+		</div>
+		<div class="row">
+			<div class="grid-margin stretch-card">
+				<div class="card">
+					<div class="card-body">
+						<form th:action="@{/registernoticePromotions}" th:object="${notice}"
+							method="post"
+							enctype="multipart/form-data" id="noticeregisterid"
+							class="needs-validation" novalidate>
+							<div class="row">
+								<div class="form-group col-md-6" th:if="${notice.id>0}">
+									<label for="designations"><strong><span
+											th:text=#{Form.Designation}></span></strong></label>
+
+									<input type="text" class="form-control"
+										th:field="*{designation}" readonly="readonly" id="depart"
+										placeholder="12345">
+									<p th:if="${#fields.hasErrors('designation')}"
+										th:errors="*{designation}" id="designationError">Designation
+										Error</p>
+								</div>
+								<div class="form-group col-md-6" id="hidden_div"
+									th:if="${notice.id>0}" style="color: red">
+									<label for="exampleFormControlInput1"><span
+										th:text=#{Form.Noticeid}></span></label> <input type="text"
+										class="form-control" th:field="*{id}" readonly="readonly"
+										id="noticeId" placeholder="12345">
+								</div>
+							</div>
+
+
+			
+							<div class="form-group">
+								<label for="subject"><span th:text=#{Form.Subject}></span></label>
+								<input min="5" max="255" type="text" id="subject"
+									th:field="*{subject}" required="required" class="form-control"
+									placeholder="Enter Subject">
+								<p class="alert alert-danger"
+									th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}">Subject
+									Error</p>
+							</div>
+
+							<div class="form-group table-responsive " id="noticcc" th:if="${filepromo ne null}">
+										<table id="link-list" class="table table-bordered dark sortable">
+											<thead>
+												<tr>
+													<th><span th:text=#{inbox.fileno}></span></th>
+													<th><span th:text=#{inbox.Subject}></span></th>
+													<th><span th:text="#{inbox.From}"></span></th>
+													<th><span th:text="#{inbox.Current Authority}">Current
+															Authority</span>
+													<th><span th:text=#{inbox.Date}></span></th>
+													<th><span th:text=#{inbox.moddate}></span></th>
+													<th><span th:text="#{inbox.status}"></span></th>
+													<th><span th:text=#{Form.Designation}></span></th>
+													<th><span th:text="#{Form.check}"></span></th>
+													<th><span th:text=#{inbox.Apply}></span></th>
+													
+												</tr>
+											</thead>
+											<tbody>
+												<tr  th:each="article,iState : ${filepromo}"
+													>										
+													<td th:text="${{article.id}}"></td>
+													<td th:utext="${{article.subject}}"></td>
+													<td th:text="${{article.from}}"></td>
+													<td th:text="${article.authority}"></td>
+													<td th:text="${#temporals.format(article.createdDate, 'dd-MMM-yyyy')}"></td>
+													<td th:text="${#temporals.format(article.lastModifiedDate, 'dd-MMM-yyyy')}"></td>
+													<td th:switch="${{article.proposalState}}">
+														<a href="javascript:void(0);" th:case="'NEW'" class="btn btn-info btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+														<a href="javascript:void(0);" th:case="'FINALIZE'" class="btn btn-success btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+														<a href="javascript:void(0);" th:case="'PROVISIONAL'" class="btn btn-warning btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+														<a href="javascript:void(0);" th:case="'PENDING'" class="btn btn-secondary btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+														<a href="javascript:void(0);" th:case="'APPROVED_16B'" class="btn btn-success btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>														
+														<a href="javascript:void(0);" th:case="'REJECTED_16B'" class="btn btn-warning btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>														
+																												
+													</td>
+													<td th:text="${{article.designation.designation_name_en}}"></td>
+													<td><input type="checkbox" name="checker" th:value="${{filepromo[__${iState.index}__].check}}">
+														<span th:text="#{Form.check}"></span>
+													</td>
+													<td><a href="javascript:void(0)" class="btn btn-primary" th:href="@{|/promotions/viewFilePromotions/${article.id}|}"><span th:text="#{inbox.viewfile}"></span></a></td>
+													
+												</tr>
+											</tbody>
+										</table>
+									</div>
+							<div class="form-group">
+								<label><span th:text=#{Form.Editor}></span></label>
+								<textarea id="editor" th:field="*{info}"></textarea>
+								<p class="alert alert-danger"
+									th:if="${#fields.hasErrors('info')}" th:errors="*{info}">Extra
+									vacancy Error</p>
+							</div>
+							<div class="form-group">
+								<label for="file"><span th:text=#{Form.FileUpload}></span></label>
+								<input type="file" accept=".pdf" name="FileUpload1"
+									class="form-control-file" id="FileUpload1" required="required">
+								<p class="alert alert-danger"
+									th:if="${fileNameNotFound ne null}" th:text="${fileNameNotFound}">Designation
+									Error</p>
+							</div>
+
+							<div class="form-group"
+								th:style="${(notice.authority == 'DEP' or notice.authority =='')? 'display:none' : 'display:block'}">
+								<div class="custom-control custom-radio custom-control-inline">
+									<input type="radio" id="option1" name="option1"
+										class="custom-control-input" value=true th:field="*{approved}">
+									<label class="custom-control-label" for="option1"><span
+										th:text="#{Form.Approved}"></span></label>
+								</div>
+								<div class="custom-control custom-radio custom-control-inline">
+									<input type="radio" id="option2" name="option2"
+										class="custom-control-input" value=false
+										th:field="*{approved}"> <label
+										class="custom-control-label" for="option2"><span
+										th:text="#{Form.Not Approved}"></span></label>
+								</div>
+							</div>
+
+
+							
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</body>
+</html>
+

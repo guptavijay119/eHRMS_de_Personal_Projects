@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	lang="en">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+
+<head>
+<title>Sub Department List</title>
+
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title">
+							<b><span>Sub Department List</span></b>
+						</h3>
+
+
+						<div class="row">
+							<p th:text="${message}" id="testingxyz"
+								th:if="${message ne null}" class="alert alert-danger"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div class="form-group col-sm">
+										<div class="row">
+
+											<button type="button" class="btn btn-primary btn-sm"
+												onclick="insertData()"> <span>Insert
+													Data </span></button>
+
+
+
+										</div>
+									</div>
+
+
+									<div class="table-responsive">
+										<table id="link-list" class="table table-bordered " data-ordering="false">
+											<caption></caption>
+											<thead>
+												<tr>
+													<th width="5%;"><span>Index</span></th>
+													<th class="text-wrap"><span>Sub Department Name</span></th>
+													<th><span>Main Department</span></th>
+													<th><span>Active/ Inactive</span></th>
+
+
+
+
+													<th><span ></span></th>
+
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="office,iState : ${noticelist}">
+													<td class=" text-center" th:text="${{pageIndex + iState.index}}"></td>
+													<td class="text-wrap" th:text="${{office.subdepartmentNameEn}}"></td>
+													<td class="text-wrap"><span th:if="${{office.globalorg  ne null}}"
+														th:text="${{office.globalorg.globalOrgName}}"></span></td>
+													<td >
+														<span th:if="${office.active}">Active</span>
+														<span th:unless="${office.active}">Inactive</span>
+													</td>
+
+													<td><button type="button" th:data-id="${office.id}"
+													th:if="${office.globalorg ne null}"
+													th:data-subdepartment="${office.subdepartmentNameEn}"
+													th:data-globalorg = "${office.globalorg.id}"
+													th:data-active = "${office.active}"
+															class="btn btn-primary btn-sm" 
+															onclick="updateData(this.getAttribute('data-id'),this.getAttribute('data-subdepartment'),this.getAttribute('data-globalorg'),this.getAttribute('data-active'))" id="preview">
+															<span>Update </span>
+														</button>
+														<button type="button" th:data-id="${office.id}"
+														th:unless="${office.globalorg ne null}"
+													th:data-subdepartment="${office.subdepartmentNameEn}"
+													th:data-globalorg = "null"
+													th:data-active = "${office.active}"
+															class="btn btn-primary btn-sm" 
+															onclick="updateData(this.getAttribute('data-id'),this.getAttribute('data-subdepartment'),this.getAttribute('data-globalorg'),this.getAttribute('data-active'))" id="preview">
+															<span>Update </span>
+														</button>
+														</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+									<!-- <div class="row" th:fragment="pagination">
+										<div class="col-md-4">
+											<b style="color: blue"><span> Total No. of Sub
+													Department</span> : <span th:text="${totalItems}"></span></b>
+										</div>
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item" th:if="${currentPage > 1}"><a
+														class="page-link"
+														th:href="@{|/departmentalEnquiry/getSubDepartmentList/1|}"
+														th:text="#{pages.first}">First</a> <span
+														th:unless="${currentPage > 1}" th:text="#{pages.first}">First</span>
+													</li>
+
+													<li class="page-item"><a class="page-link"
+														th:if="${currentPage > 1}"
+														th:href="@{|/departmentalEnquiry/getSubDepartmentList/${currentPage - 1}|}"
+														th:text="#{pages.previous}">Previous</a> <span
+														th:unless="${currentPage > 1}" th:text="#{pages.previous}">Previous</span>
+													</li>
+
+													<li class="page-item"
+														th:each="i: ${#numbers.sequence(begin, end)}"
+														th:if="${begin<end}"><a
+														th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}"
+														th:href="@{|/departmentalEnquiry/getSubDepartmentList/${i}|}"
+														th:text="${i}"></a></li>
+
+													<li class="page-item"><a class="page-link"
+														th:if="${currentPage < totalPages}"
+														th:href="@{|/departmentalEnquiry/getSubDepartmentList/${currentPage + 1}|}"
+														th:text="#{pages.next}">Next</a> <span
+														th:unless="${currentPage < totalPages}"
+														th:text="#{pages.next}">Next</span></li>
+
+													<li class="page-item"><a class="page-link"
+														th:if="${currentPage < totalPages}"
+														th:href="@{|/departmentalEnquiry/getSubDepartmentList/${totalPages}|}"
+														th:text="#{pages.last}">Last</a> <span
+														th:unless="${currentPage < totalPages}"
+														th:text="#{pages.last}">Last</span></li>
+
+												</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div> -->
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+<div>
+			<div class="modal fade" th:id="myModalCompact"
+				role="dialog" >
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+
+						<div class="modal-body">
+							<div class="container">
+
+<button type="button" class="close" data-dismiss="modal"
+							th:id="myModal2">&times;</button>
+							
+						
+						
+							<br><br>
+						
+
+								<div th:id="printdataCompact">
+
+									<form id="noticeregisteridmpsc" class="form">
+										<div class="row">
+											<div class="col-md-3 mb-3">
+												<label for="typeOfMisconduct">Department Name * </label> <select
+													class="form-control" id="globalorg" required="required">
+													<option value="">Select</option>
+
+													<option th:each="global:${globalOrgList}"
+														th:value="${global.id}" th:text="${global.globalOrgName}">
+													</option>
+												</select>
+											</div>
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="deFileNo"><span>Id : </span></label> <input
+													type="hidden" class="form-control" 
+													id="subId" >
+											</div>
+
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Sub Department
+														Name (En)* </span></label> <input type="text" class="form-control"
+													id="subDepartmentName" required="required"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Sub Department
+														Name (Mr)* </span></label> <input type="text" class="form-control"
+													id="subDepartmentName" required="required"
+													>
+											</div>
+											
+
+											<div class=" col-sm-3">
+
+												<label for="chargesheet" style="margin: 10px"><span>Active
+														* </span></label> &nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														 type="radio"
+														name="chargesheetIssued2" id="chargesheetYes" value="true"
+														checked> Yes <input 
+														type="radio" name="chargesheetIssued2" id="chargesheetNo"
+														value="false"> No
+												</div>
+											</div>
+											
+
+										</div>
+										<div class="btn-toolbar mr-1" role="toolbar"
+												aria-label="Basic example">
+												<button type="button" th:value="save" id="saveupdate"
+													class="btn btn-primary ">
+													Save / Update
+												</button>
+
+
+											</div>
+									</form>
+
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		</div>
+		<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+		<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+		
+		<script th:inline="javascript">
+		
+		$('#link-list').dataTable({
+			"lengthChange": false
+			
+		});
+		
+		
+		jQuery.noConflict();
+			function insertData() {
+				$('#subId').val('');
+				$('#subDepartmentName').val('');
+				$('#globalorg').val('');
+				$('#chargesheetNo').prop('checked',true);
+				$('#myModalCompact').modal();
+			}	
+			
+			function updateData(id,name,org,active) {
+				$('#subId').val(id);
+				$('#subDepartmentName').val(name);
+				$('#globalorg').val(org);
+				active = JSON.parse(active);
+				if(active) {
+					$('#chargesheetYes').prop('checked',true);
+				} else {
+					$('#chargesheetNo').prop('checked',true);
+				}
+				$('#myModalCompact').modal();
+			}
+			
+			
+			
+			$('#saveupdate').click(function(){
+				var obb = new FormData();
+				
+				obb.append('id', $('#subId').val());
+				obb.append('subDepartment',$('#subDepartmentName').val());
+				obb.append('globalOrg',$('#globalorg').val());
+				obb.append('active',JSON.parse($('input[name="chargesheetIssued2"]:checked').val()));
+				postdata('/de/departmentalEnquiry/updateSubDepartment', obb, function (data) {
+					jQuery.noConflict();
+					swal(data).then(function(){
+					    location.reload();
+					});
+				});
+			});
+		
+		</script>
+</body>
+</html>

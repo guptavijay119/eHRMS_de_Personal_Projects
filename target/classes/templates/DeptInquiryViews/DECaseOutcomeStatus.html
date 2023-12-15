@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div id="headerid"></div>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+    <div id="sidebarid"></div>
+
+    <div class="container">
+        <div id="toperid"></div>
+
+
+        <div class="card-header col-sm-12">
+            <h5>DE Case Status</h5>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="DECaseStatus" style="margin: 10px">DE Case Status</label>
+                <select class="form-control" id="DECaseStatus">
+                    <option>Select</option>
+                    <option>Pending</option>
+                    <option>Completed</option>
+                    <option>Kept in Abeyance</option>
+                    <!-- <option>Closed</option> -->
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="DECaseStatus" style="margin: 10px">Pending Status</label>
+                <select class="form-control" id="DECaseStatus">
+                    <option>Select</option>
+                    <option>Chargesheet issued but IO not appointed</option>
+                    <option>IO is appointed but Report is not submitted</option>
+                    <option>Report is recieved but Disciplinary Authority is processing</option>
+                    <!-- <option>Closed</option> -->
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="DECaseStatus" style="margin: 10px">Completed Status</label>
+                <select class="form-control" id="DECaseStatus">
+                    <option>Select</option>
+                    <option>Convicated</option>
+                    <option>Acquitted</option>
+                    <option>Set Free</option>
+                    <!-- <option>Closed</option> -->
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="DECaseStatus" style="margin: 10px">Closed Status</label>
+                <select class="form-control" id="DECaseStatus">
+                    <option>Select</option>
+                    <option>Due to Death</option>
+                    <option>Others Reason</option>
+                    <!-- <option>Closed</option> -->
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="firstName">Other Reason Details</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="penaltyAwarded">Penalty Awarded</label>
+                <select class="form-control" id="penaltyAwarded">
+                    <option>Select</option>
+                    <option>Major</option>
+                    <option>Minor</option>
+
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="uploadDecisionCopy">Upload File Decision / Order Copy</label>
+                <input type="file">
+            </div>
+            <div class="col-md-4 mb-3">
+                &nbsp;
+                <label for="sevarthID">Sevarth ID</label>
+                <!-- <input type="text" class="form-control" id="firstName" placeholder="" value="" required> -->
+                <select class="form-control" id="sevarthID">
+                    <option>Select</option>
+                    <option>MRFAKK7901</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="middleName">Middle Name</label>
+                <input type="text" class="form-control" id="middleName" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="delinquentCaseStatus" style="margin: 10px">Delinquent Case Status</label>
+                <select class="form-control" id="delinquentCaseStatus">
+                    <option>Select</option>
+                    <option>Punishment Implemented</option>
+                    <option>Acquitted</option>
+                    <option>Due to Death of Delinquent</option>
+                </select>
+            </div>
+        </div>
+
+        <br>
+        <div class="text-center">
+            <button type="button" class="btn btn-primary">Save</button>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/fontawesome.min.js"
+        integrity="sha512-5qbIAL4qJ/FSsWfIq5Pd0qbqoZpk5NcUVeAAREV2Li4EKzyJDEGlADHhHOSSCw0tHP7z3Q4hNHJXa81P92borQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/jquery-3.2.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarid').load('sidebar.html');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#headerid').load('headers.html');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#toperid').load('topers.html');
+        });
+    </script>
+</body>
+
+</html>

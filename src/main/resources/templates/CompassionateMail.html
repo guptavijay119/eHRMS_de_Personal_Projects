@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <title>Application Form</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta charset="UTF-8" />
+    </head>
+    <body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+    	Dear,
+    	<p th:text="${name}"></p>
+    	<p>Application Form number <span th:text="${applicationNumber}"></span>
+    		<span th:text="${status}"></span> against vacancy of <span th:text="${employeename}"></span></p>
+    	<p> 
+            <span>Regards, </span>
+            <br/>
+            <em>Recruitment Department</em>
+        </p>
+    </body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+
+<nav 
+	class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row"
+	th:fragment="navbar">
+	<noscript>
+		<div
+			style="position: fixed; top: 0px; left: 0px; z-index: 30000000; height: 100%; width: 100%; background-color: #FFFFFF">
+			<p style="margin-left: 10px">JavaScript is not enabled.</p>
+		</div>
+	</noscript>
+
+	<div class="navbar-menu-wrapper d-flex align-items-stretch">
+		<button class="navbar-toggler navbar-toggler align-self-center" style="cursor: default !important;"
+			type="button" data-toggle="minimize">
+			<span class="mdi mdi-chevron-double-left"></span>
+		</button>
+		<div
+			class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+
+			<img th:src="@{/image/maharashtralogo.png}" alt="logo"
+				style="width: 80%;" />
+
+		</div>
+		<h2 class="d-none d-md-block mr-3">
+			<a class="nav-link" style="color: white;" th:href="@{'/'}" id="logout"
+				sec:authorize="isAuthenticated()"> <span
+				th:text="#{de.header.labelsname}"></span> - <span
+				th:text="#{deptenq}"></span></a> <a class="nav-link"
+				style="color: white;" href="javascript:void(0);"
+				sec:authorize="!isAuthenticated()">eHRMS </a>
+		</h2>
+		<ul class="navbar-nav">
+		</ul>
+		<ul class="navbar-nav navbar-nav-right">
+			<!-- <li class="nav-item dropdown ml-3"><a class="nav-link"
+				id="notificationDropdown" href="#" data-toggle="dropdown"> <i
+					class="mdi mdi-bell-outline"></i>
+			</a>
+				<div
+					class="dropdown-menu dropdown-menu-left navbar-dropdown preview-list"
+					aria-labelledby="notificationDropdown">
+					<h6 class="px-3 py-3 font-weight-semibold mb-0">Notifications</h6>
+					<div id="notificationList"></div>
+					<div class="dropdown-divider"></div>
+						<div class="preview-thumbnail">
+							<div class="preview-icon bg-success">
+								<i class="mdi mdi-calendar"></i>
+							</div>
+						</div>
+						<div
+							class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+							<h6 class="preview-subject font-weight-normal mb-0">New
+								order recieved</h6>
+							<p class="text-gray ellipsis mb-0">45 sec ago</p>
+						</div>
+					</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item preview-item">
+						<div class="preview-thumbnail">
+							<div class="preview-icon bg-warning">
+								<i class="mdi mdi-settings"></i>
+							</div>
+						</div>
+						<div
+							class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+							<h6 class="preview-subject font-weight-normal mb-0">Server
+								limit reached</h6>
+							<p class="text-gray ellipsis mb-0">55 sec ago</p>
+						</div>
+					</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item preview-item">
+						<div class="preview-thumbnail">
+							<div class="preview-icon bg-info">
+								<i class="mdi mdi-link-variant"></i>
+							</div>
+						</div>
+						<div
+							class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+							<h6 class="preview-subject font-weight-normal mb-0">Kevin
+								karvelle</h6>
+							<p class="text-gray ellipsis mb-0">11:09 PM</p>
+						</div>
+					</a> 
+					<div class="dropdown-divider"></div>
+				</div></li> -->
+
+
+			<li class="nav-item nav-profile dropdown d-none d-md-block"><a
+				class="nav-link dropdown-toggle" id="profileDropdown"
+				th:href="@{''(lang=en)}" data-toggle="dropdown">
+					<div class="nav-profile-text">
+						<span th:text="#{lang.change}"></span>
+					</div>
+			</a>
+				<div class="dropdown-menu center navbar-dropdown"
+					aria-labelledby="profileDropdown">
+					<a class="dropdown-item" th:href="@{''(lang=mr)}"> <i
+						class="flag-icon flag-icon-in mr-3"></i> <span
+						th:text="#{lang.mr}"></span>
+					</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" th:href="@{''(lang=en)}"> <i
+						class="flag-icon flag-icon-in mr-3"></i> <span
+						th:text="#{lang.en}"></span>
+					</a>
+					<div class="dropdown-divider"></div>
+				</div></li>
+			<li class="nav-item nav-profile dropdown"><a class="nav-link"
+				sec:authorize="isAuthenticated()" id="profileDropdown" href="#"
+				data-toggle="dropdown" aria-expanded="false">
+					<div class="nav-profile-img">
+						<img th:src="@{/ehrms_assets/images/faces-clipart/pic-1.png}"
+							alt="image" />
+					</div>
+					<div class="nav-profile-text" sec:authorize="isAuthenticated()">
+						<p class="text-white font-weight-semibold m-0">
+							<span sec:authentication="principal.username">User</span>
+						</p>
+						<span class="font-13 online-color"> <span
+							th:text="#{ehrms_navbar.online}"></span> <i
+							class="mdi mdi-chevron-down"></i></span>
+					</div>
+
+			</a>
+				<div class="dropdown-menu navbar-dropdown"
+					aria-labelledby="profileDropdown">
+					<!--	<a class="dropdown-item"  th:href="@{/user-profile}"> <i
+						class="mdi mdi-cached mr-2 text-success"></i> Detail 
+					</a>-->
+					<a class="dropdown-item" href="javascript:void(0);"
+						onclick="showchangepassword()"> 
+						<i
+						class="mdi mdi-logout mr-2 text-primary"></i> 
+						<span th:text="#{de.change.password.labels}">
+					</span>
+					</a>
+
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" th:href="@{/logout}"  id="logoutstorage"> <i
+						class="mdi mdi-logout mr-2 text-primary"></i> <span
+						th:text="#{ehrms_navbar.signout}"></span>
+					</a>
+
+
+				</div></li>
+			<!--       <li class="nav-item nav-logout d-none d-lg-block">
+        <a class="nav-link" href="javascript:void(0)">
+          <img src="/favicon.ico" />
+        </a>
+      </li> -->
+		</ul>
+		<button
+			class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
+			type="button" data-toggle="offcanvas">
+			<span class="mdi mdi-menu"></span>
+		</button>
+	</div>
+
+	
+	
+<!-- 	<script inline="javascript">
+	jQuery.noConflict();
+	function showchangepassword(){
+		$('#myModalPassword').modal();
+	}
+	
+ 	$('#saveupdatepassword').click(function(){
+ 			swal({
+ 				title: "Do you want to save?",
+ 				text: "",
+ 				icon: "warning",
+ 				buttons: true,
+ 				dangerMode: true,
+ 				buttons: ["No", "Yes"]
+ 			}).then(function(isConfirm) {
+ 				if (isConfirm) {
+ 						var obb = new FormData();
+ 						
+ 						obb.append('oldpassword',$('#oldpassword').val());
+ 						obb.append('newpassword',$('#newpassword').val());
+ 						obb.append('confirmnewpassword',$('#confirmnewpassword').val());
+ 						postdata('/de/departmentalEnquiry/changepassword', obb, function (data) {
+ 							jQuery.noConflict();
+ 							swal(data).then(function(){
+ 								if(data == 'Updated Successfully') {
+ 									window.location.href = "/de/logout";
+ 								}
+ 							});
+ 						});
+ 				}
+ 			});
+ 		});
+
+	
+
+	
+	</script>
+ -->
+
+
+</nav>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!-- <head th:replace="header::header">
+ -->
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+</head>
+<title>Inbox Generate Order</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()"  >
+		<nav th:insert="sidebar3_2_9.html :: ehrms_sidebar3_2_9"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title">
+							<b><span th:text="#{inbox.generateorders}">Generate Orders
+									</span></b>
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{Recruitment}"></span></a></li>
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{inbox.probationsList}"></span></a></li>
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{Recruitment.generateorders}">
+
+											<span sec:authorize="hasRole('ROLE_DEPARTMENT')"> <span
+												th:text="#{inbox.Department}"></span> <span
+												th:text="#{inbox.Inbox}"></span></span> <span
+											sec:authorize="hasRole('ROLE_16B')">16B <span
+												th:text="#{inbox.Inbox}"></span></span> <span
+											sec:authorize="hasRole('ROLE_BCCELL')" th:text="#{Form.BC}"><span
+												th:text="#{inbox.Inbox}"></span></span> <span
+											sec:authorize="hasRole('ROLE_AA')">Auditing Authority
+												<span th:text="#{inbox.Inbox}"></span>
+										</span> <span sec:authorize="hasRole('ROLE_VAC')">VAC <span
+												th:text="#{inbox.Inbox}"></span></span>
+
+									</span></a></li>
+							</ol>
+						</nav>
+
+						
+					</div>
+					<div class="row" th:object="${fileprobationslist}" id="filepro">
+						<div class="col-lg-12 grid-margin stretch-card">
+							
+							<div class="card">
+								<div class="row">
+									<p th:text="${message}" id="testingxyz"
+										th:if="${message ne null}" class="alert alert-danger"></p>
+								</div>
+								<div class="card-body">
+									<form th:action="@{/permanency/generateOrderpermanEmployee}"
+										 method="post" enctype="multipart/form-data" 
+										id="fileprobationsList">
+									<div class="row">
+										<br>
+									</div>
+									<div class="table-responsive " id="noticcc">
+										<table id="link-list" class="table table-bordered dark sortable">
+											<thead>
+												<tr>
+<!-- 													<th></th> -->
+													<th><span th:text=#{inbox.fileno}></span></th>
+													<th><span th:text=#{inbox.Subject}></span></th>
+													<th><span th:text=#{inbox.moddate}></span></th>
+													<th><span th:text="#{inbox.status}"></span></th>
+													<th><span th:text=#{Form.Designation}></span></th>
+													<th><span th:text=#{Form.ApprovedFile}></span></th>
+													<th><span th:text=#{inbox.Apply}></span></th>
+													
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="article : ${filepermanencylist}">
+<!-- 													<input type="checkbox" name="checkordersend" value="Yes"/> -->
+														<input type="hidden" name="id" th:value="${{article.id}}">
+														<input type="hidden" name="subject" th:value="${{article.subject}}">
+													
+													<td th:text="${{article.id}}"></td>
+													<td th:utext="${{article.subject}}"></td>
+
+													<td th:text="${#temporals.format(article.lastModifiedDate, 'dd-MMM-yyyy')}"></td>
+													<td th:switch="${{article.proposalState}}">
+														<a href="javascript:void(0);" th:case="'NEW'" class="btn btn-info btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+														<a href="javascript:void(0);" th:case="'FINALIZE'" class="btn btn-success btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+														<a href="javascript:void(0);" th:case="'PROVISIONAL'" class="btn btn-warning btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+														<a href="javascript:void(0);" th:case="'PENDING'" class="btn btn-secondary btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>
+														<a href="javascript:void(0);" th:case="'APPROVED_16B'" class="btn btn-success btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>														
+														<a href="javascript:void(0);" th:case="'REJECTED_16B'" class="btn btn-warning btn-sm"><span th:text="#{constants.__${article.proposalState}__}"></span></a>																												
+													</td>
+													<td th:text="${{article.designation.designation_name_en}}"></td>
+													<!--  <td th:text="${{article.provisional}}"></td> -->
+													<td th:switch="${article.provisional}"> 
+														<a href="javascript:void(0);" th:case="true" class="btn btn-info btn-sm">Yes</a>
+														<a href="javascript:void(0);" th:case="false" class="btn btn-success btn-sm">No</span></a>
+													</td>
+													<td><a href="javascript:void(0)" class="btn btn-primary" th:href="@{|/permanency/viewFilePermanency/${article.id}|}"><span th:text="#{inbox.viewfile}"></span></a></td>
+													
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="row" th:fragment="pagination">
+										<div class="col-md-2"></div>
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item" th:each="pageNumber : ${pageNumbers}">
+														<a class="page-link"
+														th:href="@{|/permanency/inboxgenerateorderperm/page/${pageNumber}?auth=DEP|}"
+														th:text=${pageNumber}>1</a>
+													</li>
+												</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+									
+									<div class="form-group">
+											<label><span th:text=#{Form.Editor}></span></label>
+											<textarea id="editor" name="remarksmsg" 
+											></textarea>
+											<!--  <p class="alert alert-danger"
+												th:if="${#fields.hasErrors('remarks')}"
+												th:errors="*{remarks}">Extra vacancy Error</p> -->
+									</div>
+									
+									<button type="submit" class="btn btn-primary" id="save" th:value="save" th:name="action"
+											th:if="${not #lists.isEmpty(filepermanencylist)}">
+											<span th:text="#{EmployeeDetail.Save}"></span>
+										</button>
+									<!--	<button type="button" class="btn btn-primary" id="preview" data-toggle="modal" data-target="#myModal" th:name="action" th:value="preview">
+											<span th:text="#{Form.Preview}"></span>
+										</button>
+										
+ 										 <button type="submit" class="btn btn-primary" id="forwardtocompetent" th:value="forwardtocompetent" th:name="action" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')" 
+ 											th:if="${!fileprobations.finalize}"> 
+ 											<span th:text="#{ListEmployee.forwardtocompetent}"></span> 
+ 										</button> -->
+										  <button type="submit" class="btn btn-primary" id="Generateorders" th:value="Generateorders" th:name="action" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+											th:if="${not #lists.isEmpty(filepermanencylist)}">
+											<span th:text="#{ListEmployee.Generateorders}"></span>
+										</button> 
+									
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+
+</body>
+</html>

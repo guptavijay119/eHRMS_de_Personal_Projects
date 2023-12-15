@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<title></title>
+</head>	
+<nav class="sidebar sidebar-offcanvas" id="sidebar" th:fragment="ehrms_siderbarrecruitment">
+
+  <ul class="nav" sec:authorize="isAuthenticated()">
+    <li class="nav-item nav-profile border-bottom">
+      <a href="javascript:void(0);" class="flex-column">
+        <div class="text-wrap" style="font-weight: normal !important;">
+<!-- 				<div class="ellipse"><b><span
+				th:text="#{Government Construction Department}"></span>
+				<span th:text="${session.department}"></span>
+				</b>
+				</div> 
+ -->           <strong class="text-wrap">
+ 					<span 
+ 						th:if="${session.departobb ne null and session.subdepartment == null}" 
+ 						th:text="${session.departobb.globalOrgName}"></span>
+ 					<span 
+ 						th:if="${session.departobb ne null and session.subdepartment ne null}" 
+ 						th:text="${session.subdepartment.subdepartmentNameEn}"></span>
+ 					</strong>
+ </div>
+      </a>
+    </li> 
+
+ 	<li class="nav-item disabledli">
+           <!--  <a class="nav-link" data-toggle="collapse" href="#recruitment" data-target="#recruitment" aria-expanded="false" aria-controls="recruitment">
+              <i class="mdi mdi-folder menu-icon"></i>
+              <span class="menu-title"><span th:text="#{Recruitment}"></span></span>
+              <i class="menu-arrow"></i>
+            </a> -->
+            <div class="collapse" id="recruitment">
+ <!--            <ol sec:authorize="hasRole('ROLE_ADMIN')">
+						<li><a class="dropdown-item"
+							th:href="@{/mastertables}"> <span class="text-wrap"
+								th:text="#{Recruitment.Master Tables for Recruitment process}"></span>
+						</a></li>
+            </ol> -->
+            
+             <!-- <ol th:replace="commonsidebar/commonsidebardashboard.html :: commonsidebardashboard"></ol> -->
+					<!-- <ol sec:authorize="!hasRole('ROLE_ADMIN')">
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/CPTP}"> <span class="text-wrap"
+								th:text="#{Recruitment.CPTP}"></span>
+						</a></li>
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}">
+								<span class="text-wrap"
+								th:text="#{Recruitment.Recruitment by Individual Departments through MPSC}"></span>
+						</a></li>
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/Compassionate Recruitment}"> <span
+								class="text-wrap"
+								th:text="#{Recruitment.Compassionate Recruitment}"></span>
+						</a></li>
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/Recruitment of Group B (non-Gazetted) and Group C posts}">
+								<span class="text-wrap"
+								th:text="#{Recruitment.Recruitment of Group B (non-Gazetted) and Group C posts}"></span>
+						</a></li>
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/Recruitment of Group D posts}"><span class="text-wrap"
+								th:text="#{Recruitment.Recruitment of Group D posts}"></span></a></li>
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/ddsports}"><span class="text-wrap"
+								th:text="#{Recruitment.ddsports}"></span></a></li>
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/Framing of Recruitment Rules}"><span class="text-wrap"
+								th:text="#{Recruitment.Framing of Recruitment Rules}"></span></a></li>
+	
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/Probation Confirmation}"><span class="text-wrap"
+								th:text="#{Recruitment.Probation Confirmation}"></span></a></li>
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/permanencyCertificate}"><span class="text-wrap"
+								th:text="#{Recruitment.Permanency Certificate}"></span></a></li>
+								
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/seniority}"><span class="text-wrap"
+								th:text="#{Recruitment.seniority}"></span></a></li>		
+	
+						<li><a class="dropdown-item"
+							th:href="@{/getProcess/PromotionsGroupA}"><span class="text-wrap"
+								th:text="#{Recruitment.promotions}"></span></a></li>
+                     </ol> -->
+			</div>
+	</li>
+	
+	<li class="nav-item disabledli">
+           <!--  <a class="nav-link" data-toggle="collapse" href="#transferposting" data-target="#transferposting" aria-expanded="false" aria-controls="transferposting">
+              <i class="mdi mdi-folder menu-icon"></i>
+              <span class="menu-title"><span th:text="#{Transfer and Posting}">Transfer and Posting</span></span>
+              <i class="menu-arrow"></i>
+            </a> -->
+			<div class="collapse" id="transferposting">
+				<ol>
+					<!-- <li>Transfers of employees
+						<ul>
+							<li><a class="dropdown-item"
+								th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span>Group
+										A</span></a></li>
+							<li><a class="dropdown-item"
+								th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span>Group
+										B</span></a></li>
+							<li><a class="dropdown-item"
+								th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span>Group
+										C</span></a></li>
+							<li><a class="dropdown-item"
+								th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span>Group
+										D</span></a></li>
+						</ul>
+					</li> -->
+
+				<!-- 	<li><a class="dropdown-item"
+						th:href="@{/getProcess/Recruitment of Group D posts}"><span class="text-wrap">Divisional
+								Cadre Allotment</span></a></li> -->
+				<!-- 	<li><a class="dropdown-item"
+						th:href="@{/getProcess/Recruitment of Group D posts}"><span class="text-wrap">Change
+								Request for Divisional Cadre Allotment</span></a></li> -->
+				<!-- 	<li><a class="dropdown-item"
+						th:href="@{/getProcess/Recruitment of Group D posts}"><span>Deputations</span></a></li> -->
+				</ol>
+
+			</div>
+		</li>
+		
+		<li class="nav-item disabledli">
+          <!--   <a class="nav-link" data-toggle="collapse" href="#statutory" data-target="#statutory" aria-expanded="false" aria-controls="statutory">
+              <i class="mdi mdi-folder menu-icon"></i>
+              <span class="menu-title"><span th:text="#{Statutory Compliance}">Statutory Compliance</span></span>
+              <i class="menu-arrow"></i>
+            </a> -->
+			<div class="collapse" id="statutory">
+				<!-- <ol>
+					<li>
+					<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span class="text-wrap">Departmental
+							Examination</span></a> </li>
+							
+					<li>		
+					<a class="dropdown-item"
+						th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span class="text-wrap">Annual
+							Property Returns</span></a> </li>
+							
+					<li>
+					<a class="dropdown-item"
+						th:href="@{/getProcess/Compassionate Recruitment}"><span class="text-wrap">Hindi
+							Marathi Qualifying Exam</span></a> 
+					</li>		
+					
+					<li>		
+					<a class="dropdown-item"
+						th:href="@{/getProcess/Recruitment of Group B (non-Gazetted) and Group C posts}"><span class="text-wrap">Assessment
+							of Government employees nearing 50 or 55 years of age</span></a></li>
+							
+					<li>		
+					<a class="dropdown-item"
+						th:href="@{/getProcess/Recruitment of Group D posts}"><span class="text-wrap">Foreign
+							Tour Approval</span></a></li>
+				</ol> -->
+			</div>
+		</li>
+		<li class="nav-item disabledli">
+           <!--  <a class="nav-link" data-toggle="collapse" href="#training" data-target="#training" aria-expanded="false" aria-controls="training">
+              <i class="mdi mdi-folder menu-icon"></i>
+              <span class="menu-title"><span th:text="#{Training}">Training</span></span>
+              <i class="menu-arrow"></i>
+            </a> -->
+			<div class="collapse" id="training">
+				<!-- <ol>
+					<li>
+					<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span class="text-wrap">Implementation
+							of the State Training Policy</span></a></li>
+							
+					<li>		
+					<a class="dropdown-item" th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span class="text-wrap">Combined
+							Probation Training program (CPTP)</span></a></li>
+				</ol> -->
+			</div>
+		</li>	
+		
+		<li class="nav-item disabledli">
+            <!-- <a class="nav-link" data-toggle="collapse" href="#confreport" data-target="#confreport" aria-expanded="false" aria-controls="confreport">
+              <i class="mdi mdi-folder menu-icon"></i>
+              <span class="menu-title"><span th:text="#{Annual Confidential Report}">Annual Confidential Report</span></span>
+              <i class="menu-arrow"></i>
+            </a> -->
+			<div class="collapse" id="confreport">
+				<!-- <ol>
+					<li>
+					<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span>Group
+							A - MAHAPAR</span></a></li>
+
+					<li>
+					<a class="dropdown-item"
+						th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span>Group
+							A in Districts</span></a></li>
+							
+					<li>		
+					<a class="dropdown-item"
+						th:href="@{/getProcess/Compassionate Recruitment}"><span>Group
+							B and C</span></a></li>
+				</ol> -->
+			</div>
+		</li>
+		
+		<li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#departenq" data-target="#departenq" aria-expanded="false" aria-controls="departenq">
+              <i class="mdi mdi-folder menu-icon"></i>
+              <span class="menu-title"><span th:text="#{Department Enquiry}">Department Enquiry</span></span>
+              <i class="menu-arrow"></i>
+            </a>
+			<div class="collapse" id="departenq">
+			 <ol th:replace="commonsidebar/commonsidebardashboard.html :: commonsidebardashboard"></ol>
+<!-- 				<ol> -->
+<!-- 				<li> -->
+<!-- 					<a class="dropdown-item" th:href="@{/getProcess/CPTP}"><span class="text-wrap">Initiation -->
+<!-- 							of disciplinary proceedings for Group A & B</span></a></li> -->
+<!-- 				<li>			 -->
+<!-- 					<a class="dropdown-item" -->
+<!-- 						th:href="@{/getProcess/Recruitment by Individual Departments through MPSC}"><span class="text-wrap">Special -->
+<!-- 							Procedure in certain cases</span></a></li> -->
+<!-- 				<li>			 -->
+<!-- 					<a class="dropdown-item" -->
+<!-- 						th:href="@{/getProcess/Compassionate Recruitment}"><span class="text-wrap">Rule -->
+<!-- 							10 - for Group A & B</span></a></li> -->
+<!-- 				<li>			 -->
+<!-- 					<a class="dropdown-item" -->
+<!-- 						th:href="@{/getProcess/Recruitment of Group B (non-Gazetted) and Group C posts}"><span class="text-wrap">Rule -->
+<!-- 							8 - for Group A & B</span></a></li> -->
+<!-- 				<li>			 -->
+<!-- 					<a class="dropdown-item" -->
+<!-- 						th:href="@{/getProcess/Recruitment of Group D posts}"><span class="text-wrap">Retired -->
+<!-- 							Employees</span></a></li> -->
+<!-- 				<li>			 -->
+<!-- 					<a class="dropdown-item" -->
+<!-- 						th:href="@{/getProcess/Recruitment of Group D posts}"><span class="text-wrap">Regularization -->
+<!-- 							of Period of Suspension</span></a></li> -->
+				
+<!-- 				<li>			 -->
+<!-- 					<a class="dropdown-item" -->
+<!-- 						th:href="@{/getProcess/Recruitment of Group D posts}"><span class="text-wrap">Criminal -->
+<!-- 							Charges</span></a></li> -->
+							
+<!-- 					<li>			 -->
+<!-- 					<a class="dropdown-item" -->
+<!-- 						th:href="@{/getProcess/Recruitment of Group D posts}"><span class="text-wrap">Absconding -->
+<!-- 							employees/ cases</span></a></li> -->
+<!-- 				</ol> -->
+			</div>
+		</li>
+	<!-- 	hfjgjdf -->
+	
+		<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+           <!--  <a class="nav-link" data-toggle="collapse" href="#confrepor" data-target="#confrepor" aria-expanded="false">
+              <i class="mdi mdi-folder menu-icon"></i>
+              <span class="menu-title" ><span th:text="#{Recruitment.Masters Data}">Recruitment.Masters Data</span></span>
+              <i class="menu-arrow"></i>
+            </a> -->
+			<div class="collapse" id="confrepor">
+				<!-- <ol>
+					<li><a class="dropdown-item"
+						th:href="@{/Admin/setMaster/Data}"><span class="text-wrap"
+							th:text="#{Recruitment.Masters Data}"></span></a></li>
+				</ol> -->
+			</div>
+		</li>
+					
+ </ul>
+ <script type="text/javascript" th:inline="javascript">
+	console.log("call")
+	function load(){
+		
+		getdatafragments("/de/getprocessListDashboard",function(data){
+			$('#processList').replaceWith(data);	
+		});
+	}
+	load();
+</script>
+ </nav>
+
+</html>

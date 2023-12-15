@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<div id="headerid"></div>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div id="sidebarid"></div>
+
+	<div class="container">
+		<div id="toperid"></div>
+
+		<div class="card-header col-sm-12">
+			<h5>Case Details </h5>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-md-3 mb-3">
+				<label for="systemGenCaseNo">System Generated Case No.</label>
+				<input type="text" class="form-control" id="systemGenCaseNo" placeholder="" value="12389" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="deFileNo">DE File No. / Case No.</label>
+				<input type="text" class="form-control" id="deFileNo" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="caseFiledDate">Case Filed Date</label>
+				<input type="date" class="form-control" id="caseFiledDate" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="typeOfMisconduct">Type of Misconduct</label>
+				<select class="form-control" id="typeOfMisconduct">
+					<option>Select</option>
+					<option>Administrative Misconduct</option>
+					<option>Criminal Offence - Bribery (ACB)</option>
+					<option>Criminal Offence - Misappropriation</option>
+					<option>Criminal Offence - Embezzlement</option>
+					<option>Criminal Offence</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="ruleApplicable">Rule Applicable</label>
+				<select class="form-control" id="ruleApplicable">
+					<option>Select</option>
+					<option>Rule 8</option>
+					<option>Rule 10</option>
+					<option>Rule 13 (i)</option>
+					<option>Rule 13 (ii)</option>
+					<option>Rule 27</option>
+				</select>
+			</div>
+
+			<div class="col-md-3 mb-3">
+				<label for="delinquentsInvolved">No. of Delinquents Involved </label>
+				<select class="form-control" id="delinquentsInvolved">
+					<option>Select</option>
+					<option>Single Employee</option>
+					<option>Multiple Employees</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3"></div>
+			<div class="col-md-3 mb-3"></div>
+			<div class="col-md-12 mb-3">
+				<label for="caseSummary">Case Summary </label>
+				<textarea rows="5" cols="110"></textarea>
+			</div>
+		</div>
+
+		<br>
+		<div class="text-center">
+			<button type="button" class="btn btn-primary">Save</button>
+		</div>
+
+		<br>
+		<br>
+
+		<br>
+	</div>
+
+	<div id="fotterid"></div>
+
+<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/fontawesome.min.js"
+		integrity="sha512-5qbIAL4qJ/FSsWfIq5Pd0qbqoZpk5NcUVeAAREV2Li4EKzyJDEGlADHhHOSSCw0tHP7z3Q4hNHJXa81P92borQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="js/jquery-3.2.1.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+ -->	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#sidebarid').load('sidebar.html');
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#headerid').load('headers.html');
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#toperid').load('topers.html');
+		});
+	</script>
+</body>
+
+</html>

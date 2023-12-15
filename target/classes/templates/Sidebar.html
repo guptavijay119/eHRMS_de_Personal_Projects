@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="header::header">
+<title>Sidebar</title>
+</head>
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div th:fragment="Sidebar" class="container-fluid">
+		<span th:text="#{Recruitment}">Recruitment</span><br>
+		<ul class="list-group" sec:authorize="isAuthenticated()">
+			<li class="list-group-item"><a th:href="@{/inbox/page/1}"><span
+					th:text="#{inbox}">Inbox</span></a></li>
+
+			<li class="list-group-item"
+				sec:authorize="hasAnyRole('ROLE_DEPARTMENT','ROLE_AA','ROLE_VAC','ROLE_16B')"><a
+				th:href="@{/selectDesignation}"> <span
+					th:text="#{Sidebar.Prepare Recruitment Proposal}">Prepare
+						Recruitment Proposal</span></a></li>
+			<li class="list-group-item"
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a
+				th:href="@{/candidateslist/page/1}"> <span
+					th:text="#{Sidebar.MPSC Candidates List}">MPSC Candidates List</span></a></li>
+			<li class="list-group-item"
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a th:href="@{/mpsccandidateallocation}">
+					<span th:text="#{Sidebar.Revenue Division Allotment}">Revenue
+						Division Allotment</span>
+			</a></li>
+			<li class="list-group-item"
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a
+				th:href="@{/generateAppointment}"> <span
+					th:text="#{Sidebar.Generate Appointment Letters}">Generate
+						Appointment Letters</span></a></li>
+
+		</ul>
+	</div>
+
+</body>
+</html>

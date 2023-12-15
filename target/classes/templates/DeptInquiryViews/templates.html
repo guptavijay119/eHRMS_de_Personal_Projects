@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+<title>Case Details Entry</title>
+<style>
+.ui-menu .ui-menu-item-wrapper {
+	color: #303030 !important;
+	background-color: #fff !important;
+}
+
+.ui-menu .ui-menu-item-wrapper:hover {
+	color: #303030 !important;
+	background-color: rgb(192, 192, 192) !important;
+	border: #fff 1px solid !important;
+}
+
+.ui-widget-content {
+	border: 1px solid #ddd;
+	background: rgb(192, 192, 192) !important;
+	color: #333 !important;
+}
+</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()"   id="viewtop">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"
+				aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3>
+							<strong> <span >Templates</span>
+							</strong>
+						</h3>
+						<a href="#gridview" class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.scroll.down.AllBtn}"></span></a>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div class="table-responsive" >
+										<h4 style="margin-top:3px;"><span >Templates: </span></h4>
+										<table class="table table-bordered dark">
+											<caption></caption>
+											<thead>
+												<tr>
+													<th scope="row" width="5%"> <span th:text="#{srNo}">Sr.No. </span></th>
+													<th><span >Template Name</span></th>													
+												</tr>												
+											</thead>
+											<tbody>
+												<tr th:each="article,iState:${templatelist}">
+													<td th:text="${iState.index+1}"></td>
+													<td> 
+													<a target="_blank" th:href="@{|/departmentalEnquiry/getTemplate/${article.id}|}" th:text="${article.subject}"
+													data-toggle="tooltip" title="Click here for downloading template"
+													></a>
+													</td>
+												</tr>												
+											</tbody>
+										</table>
+									</div>
+								
+									  <div style="float: right;" id="gridview"><a href="#viewtop"  class="btn btn-info btn-sm"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+	<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+</html>

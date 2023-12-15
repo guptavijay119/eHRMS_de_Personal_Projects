@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="CaseEntryPreviewListRecords">
+	<div class="modal fade" id="myModal29" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div class="container">
+					        <button type="button" class="close" data-dismiss="modal"
+							th:id="myModal29"     onclick="closeModalForce()">&times;</button>
+							
+						
+						
+							<br><br>
+						<button type="button" class="btn btn-primary"  id="myModal29"   onclick="printDivforInsidePreview('printdata')" 
+							style="float: right;">	
+							<span th:text="#{view.pdf.label}">View PDF</span>
+						</button>
+						
+						
+						
+						
+						
+						
+						<br>
+						
+						
+						
+						
+
+
+						<div class="table-responsive" id="printdata">
+						<h3 style="margin-top: 4px;">
+							<strong><span th:text="#{de.cases.caseEntryPreview.label}"></span></strong>
+						</h3>
+							<table class="table table-bordered table-sm"
+								style="border: 1px solid black !important; border-collapse: collapse !important;">
+								<caption></caption>
+								<thead>
+									<tr>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row" width="20%"></th>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row"></th>
+									</tr>
+								</thead>
+								<tbody>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<label for="cases"><center><span th:text="#{de.enquiry.caseno}"></span></center></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:text="${cases.caseNo}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<label for=fileSubject><span th:text="#{de.casesdetails.fileSubject}">File Subject</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:text="${cases.fileSubject}"></span>
+										</td>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="misconductName"><span th:text="#{de.casesdetails.misconduct}">Type of Misconduct</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;" class="text-wrap">
+											<span th:if="${cases.misConductType ne null}"
+											th:text="${cases.misConductType.misconductName}"></span>
+										</td>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="ruleApplicable"><span th:text="#{de.casedetails.ruleapplicables}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:if="${cases.ruleApplicable ne null}"
+											th:text="${cases.ruleApplicable.ruleName}"></span>
+										</td>
+										</td>
+									</tr>
+									
+									
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargesheetIssued"><span th:text="#{de.cases.whether.chargesheetissued}"></span></label></td>
+
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:if="${cases.whetherChargesheetIssued}"
+											th:text="#{de.boolean.yes}"></span> <span
+											th:unless="${cases.whetherChargesheetIssued}"
+											th:text="#{de.boolean.no}"></span></td>
+									</tr>
+									
+									
+									
+									
+									
+										<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="ruleApplicable"><span th:text="#{de.cases.details.subrule}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:if="${cases.subRule ne null}"
+											th:text="${cases.subRule.ruleName}"></span>
+										</td>
+										</td>
+									</tr>
+									
+									
+									
+									
+									
+									
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"class="text-wrap">
+											<label for="misconductName"><span th:text="#{de.casedetails.noofemployee}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;" class="text-wrap">
+											<span th:if="${cases.employeeType ne null}"
+											th:text="${cases.employeeType.employeeType}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="totalNoOfEmployee"><span th:text="#{de.totalemployee.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${cases.totalNoOfEmployee}"></span>
+										</td>
+										</td>
+									</tr>
+									
+									<!-- added on as per DE changes -->
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="totalNoOfEmployee"><span th:text="#{de.casedetails.division.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${cases.division ne null}"
+											th:text="${cases.division.divisionName}"></span>
+										</td>
+										</td>
+									</tr>
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="totalNoOfEmployee"><span th:text="#{de.district.label}">District</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${cases.district ne null}"
+											th:text="${cases.district.districtName}"></span>
+										</td>
+										</td>
+									</tr>
+									
+									
+									
+									
+									
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="caseSummary"><span th:text="#{de.caseCasesummary.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:text="${cases.caseSummary}"></span>
+										</td>
+										
+									</tr>
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="caseSummary"><span th:text="#{de.otherthangovserv}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:text="${cases.otherThanGovServ}"></span>
+										</td>
+										
+									</tr>
+									
+									</tbody>
+									</table>
+									</div>
+									</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+</html>

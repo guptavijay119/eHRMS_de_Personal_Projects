@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>Final Outcome / Abeyance Cases Details</title>
+	<style>
+	#tooltip{
+	background-color: red;
+	}
+		.ui-menu .ui-menu-item-wrapper {
+			color: #303030 !important;
+			background-color: #fff !important;
+		}
+
+		.ui-menu .ui-menu-item-wrapper:hover {
+			color: #303030 !important;
+			background-color: rgb(192, 192, 192) !important;
+			border: #fff 1px solid !important;
+		}
+
+		.ui-widget-content {
+			border: 1px solid #ddd;
+			background: rgb(192, 192, 192) !important;
+			color: #333 !important;
+		}
+	</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()" id="headidfo">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar" aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar" aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<div th:replace="DeptInquiryViews/Fragments/processfrag.html :: processfrag">
+
+						</div>
+
+
+						<!-- <nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{|/|}"><span
+											>Case Details Entry</span></a></li>
+								<li class="breadcrumb-item"></li>
+							</ol>
+						</nav> -->
+
+
+					</div>
+					<div>
+						<h3>
+							<strong><span th:text="#{de.finaloutcome.finalOutcomeDetailsSpecial}"></span>
+							<div align="right"><a href="#gridviewFinalOutComeId" class="btn btn-info btn-sm"><span th:text="#{de.scroll.down.AllBtn}"></span></a> </div>
+
+
+							</strong>
+						</h3>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+
+									<form th:action="@{/departmentalEnquiry/addFinalOutcomeDetails}" id="noticeregisteridmpsc"
+										th:object="${finaloutcomedetailsObj}" method="post" enctype="multipart/form-data">
+										<a th:href="@{|/departmentalEnquiry/finalOutCometails/1?backto=regular|}"  class="btn btn-primary"
+										data-toggle="tooltip" id="backtoregular"
+								       th:title="#{Regular.caseisonewhereConvictionorAquittalisreached}" 
+										th:text="#{de.finalOutcome.backToSpecialCases}">Back to Regular Case</a>
+					<br>	<br>									
+										<p style="color: red;"  th:text="#{casedetails.mandatory.text.de}">* Indicates Mandatory fields</p>
+
+										<div class="row">
+											<!-- <input type="hidden" class="form-control" th:field="*{id}"> -->
+                                            <input type="hidden" class="form-control" th:field="*{id}">
+
+											<div class="col-md-3 mb-3">
+												<label for="systemGenCaseNo" th:text="#{de.filenumber.or.case.no}">DE File No./ Case No.* </label> <input
+													type="text" class="form-control" id="casedetails"
+													placeholder="Enter case no." th:field="${finaloutcomedetailsObj.caseNo}"
+													required="required">
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="FirstName" th:text="#{de.employee.list}">Employee List *</label>
+												
+											<select th:if="${employeeList ne null and !employeeList.isEmpty()}"
+											th:field="${finaloutcomedetailsObj.employeeDataId}"
+													class="form-control" id="employeedata"
+													 required="required">
+                                                 <option value=""  th:text="#{dropdown.select}">Select</option>
+													<option th:each="employee:${employeeList}" 
+														th:value="${employee.id}"
+														th:text="${employee.firstName+' '+employee.middleName+' '+employee.lastName}"></option>
+												</select>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="reasons"><span th:text="#{de.finalOutcome.decisiontaken}">
+														Decision Taken *</span></label>
+												<select id="decisionTaken" name="decisionTaken" class="form-control"
+													th:field="${finaloutcomedetailsObj.decisionTaken.id}" required="required">
+													<option value="" th:text="#{dropdown.select}">Select</option>
+													<option th:each="decision : ${DecisionTakenList}"
+														th:value="${decision.id}"
+														th:text="${decision.decisionNameHindiEn}"></option>
+												</select>
+											</div>
+											
+											<div class="col-md-3 mb-3" id="inquiryData">
+												<label for="inquiryReportReceived" style="margin: 10px" th:text="#{de.finalOutcome.isInquiryReportReceived}"> Is
+													Inquiry Report Received ?</label> &nbsp;
+												<div>
+													&nbsp; &nbsp;
+													 <input class="radio-inline" th:field="*{inquiryReportReceived}" type="radio" name="inquiryReportReceived" 
+															 id="inquiryReportReceivedYes"  value="true"  checked ><span th:text="#{de.boolean.yes}" ></span>
+													<input th:field="*{inquiryReportReceived}" type="radio" name="inquiryReportReceived" 
+															id="inquiryReportReceivedNo" value="false"><span  th:text="#{de.boolean.no}"></span> 
+												</div>
+											</div>
+
+											<div class="col-md-3 mb-3" id="dateofReceiptdata">
+												<label for="date"><span th:text="#{de.finaloutcome.dateOfreceiptofinquiryreport}">Date of Receipt of Inquiry Report </span></label> <input
+													id="dateofReceipt" class="form-control" min="1900-01-01"
+													th:attrappend="max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd',#locale.forLanguageTag('en'))}"  type="date" required
+													th:field="${finaloutcomedetailsObj.dateofReceipt}"
+													 />
+											</div>
+											
+											
+											<div class="col-md-4 mb-3">
+												<label for="inquiryReportReceived" style="margin: 10px"  id="abeyancelabel" th:text="#{de.finaloutcome.whethercasekeptinabeyance}">
+													Whether the Case is kept in Abeyance ?</label> &nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														th:field="*{whethercasekeptinabeyance}" type="radio"
+														name="whethercasekeptinabeyance"
+														id="whethercasekeptinabeyanceYes" value="true" checked><span th:text="#{de.boolean.yes}" ></span>
+													<input th:field="*{whethercasekeptinabeyance}" type="radio"
+														name="whethercasekeptinabeyance"
+														id="whethercasekeptinabeyanceNo" value="false"> <span th:text="#{de.boolean.no}" ></span>
+												</div>
+											</div>
+											
+											<div class="form-group col-sm-3" id="reasonabeyancedata">
+												<label for="reasons"><span>
+														Reason for Keeping the Case in Abeyance *</span></label>
+												<select id="reasonforabeyance" name="reason" class="form-control" required="required"
+													th:field="${finaloutcomedetailsObj.reasonreasonKeepingInAbeyance.id}">
+													<option value="">Select</option>
+													<option th:each="Reason : ${reasonkeptList}" th:value="${Reason.id}"
+														th:text="${Reason.reasonKeepingCaseAbeyanceCodeName}"></option>
+												</select>
+											</div>
+											
+											<!-- <div class="col-md-3 mb-3" id="casefinaldecideddata">
+												<label for="inquiryReportReceived" style="margin: 10px">
+													Whether the Case Finally Decided ?</label> &nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														th:field="*{whetherCaseFinallyDecided}" type="radio"
+														name="whetherCaseFinallyDecided"
+														id="whetherCaseFinallyDecidedYes" value="true" checked> Yes
+													<input th:field="*{whetherCaseFinallyDecided}" type="radio"
+														name="whetherCaseFinallyDecided"
+														id="whetherCaseFinallyDecidedNo" value="false"> No
+												</div>
+											</div> -->
+											
+											
+											
+											
+											
+										<!-- <div class="col-md-3 mb-3" id="CasePendingWithData">
+												<label for="casePendingWith"><span>
+														Case Pending With *</span></label>
+												<select id="casependingwith" name="reason" class="form-control"
+													th:field="${finaloutcomedetailsObj.casePendingWith.id}" required>
+													<option value="">select</option>
+													
+													<option th:each="casePending: ${casependingwithlist}"
+														th:value="${casePending.id}"
+														th:text="${casePending.casePendingNameEn}"></option>
+												</select>
+											</div> -->
+											
+											
+										
+											
+											</div>
+											
+										
+										
+											<div class="row form-group" id="whetherCaseFinallyDecideddata">
+											
+											<!-- <div class="col-md-3 mb-3">
+												<label for="FirstName">Employee List *</label>
+												
+											<select th:if="${employeeList ne null and !employeeList.isEmpty()}"
+											th:field="${finaloutcomedetailsObj.employeeDataId}"
+													class="form-control" id="employeedata"
+													 required="required">
+                                                 <option value="">Select</option>
+													<option th:each="employee:${employeeList}" 
+														th:value="${employee.id}"
+														th:text="${employee.firstName+' '+employee.middleName+' '+employee.lastName}"></option>
+												</select>
+											</div> -->
+
+
+
+                                                   <div class="col-md-3 mb-3" style="display: none;">
+												<label for="systemGenCaseNo">Sevarth id. </label> <input type="hidden"
+													class="form-control" id="sevarthId" placeholder="Enter sevarth id"
+													th:field="*{sevarthId}">
+											</div>
+
+											<!-- <div class="col-md-3 mb-3">
+												<label for="systemGenCaseNo">Employee id. </label> <input type="text"
+													class="form-control" id="empid" placeholder="Enter employee id"
+													th:field="*{employeeId}">
+											</div> -->
+
+											<!-- <div class="col-md-3 mb-3">
+												<label for="systemGenCaseNo">First Name </label> <input type="text"
+													class="form-control" id="firstname" placeholder="Enter first name"
+													th:field="*{firstName}">
+											</div> -->
+											
+											
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="FirstName">First Name *</label>
+												<!--  <select th:if="${finaloutcomedetailsObj.casedetails ne null and finaloutcomedetailsObj.casedetails.employeeList ne null}"
+													class="form-control"  th:field="${finaloutcomedetailsObj.firstName}"
+													id="firstname"  required="required">
+                                                 <option value="">Select</option>
+													<option th:if="${finaloutcomedetailsObj.casedetails ne null and finaloutcomedetailsObj.casedetails.employeeList ne null}" 
+													   th:each="employee:${finaloutcomedetailsObj.casedetails.employeeList}" 
+														th:value="${employee.firstName}"
+														th:text="${employee.firstName}"></option>
+												</select> -->
+												
+												<input type="hidden"
+													class="form-control" id="firstname" placeholder="Enter first name"
+													th:field="${finaloutcomedetailsObj.firstName}" required="required">
+											</div>
+
+
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="middlename">Middle Name</label> <input type="hidden"
+													class="form-control" id="middleName" placeholder="Enter middle name"
+													th:field="*{middleName}">
+											</div>
+
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="lastname">Last Name * </label> <input type="hidden"
+													class="form-control" id="lastName" placeholder="Enter last name"
+													th:field="*{lastName}" required="required">
+											</div>
+
+
+											
+
+
+											
+
+
+											
+
+
+											
+
+
+
+											<!-- <div class="col-md-3 mb-3" id="typeOfPenaltyInflicteddata">
+												<label for="reasons"><span>
+														Type of Penalty Inflicted</span></label>
+												<select id="typeOfPenaltyInflicted" name="typeOfPenaltyInflicted"
+													class="form-control"
+													th:field="${finaloutcomedetailsObj.typeOfPenaltyInflicted.id}">
+													<option value="">Select</option>
+													<option th:each="typeOfPenalty: ${TypeofPenaltylist}"
+														th:value="${typeOfPenalty.id}"
+														th:text="${typeOfPenalty.typeOfPenaltyNameEn}"></option>
+												</select>
+											</div> -->
+
+
+											
+
+										
+										
+											<!-- <div class="col-md-3 mb-3" id="fileiddata">
+												<label for="fileName">
+													<span th:text="#{de.finalOutcome.uploadfile.date}"></span>
+												</label>
+												 <input type="date"  class="form-control"
+												 >
+											</div> -->
+							
+											<div class="col-md-3 mb-3" id="dateofOrderUpload">
+												<label for="date"><span th:text="#{de.finalOutcome.uploadfile.date}"></span></label> <input
+													id="dateoforderupload" class="form-control" min="1900-01-01"
+													th:attrappend="max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd',#locale.forLanguageTag('en'))}"  type="date"
+													th:field="${finaloutcomedetailsObj.dateOfOrder}"
+													 />
+											</div>
+										<div class="col-md-3 mb-3" id="fileiddata">
+												<label for="fileName" th:text="#{de.finaloutcome.uploadOrderOfClosure}">Upload Order of Closure
+												</label> <input type="file" th:field="*{fileName}" class="form-control" accept=".pdf">
+											</div>
+										
+										
+										
+										
+
+											
+											
+											
+											
+											
+
+
+										</div>
+										
+										
+										
+										<br>
+										<div class="btn-toolbar mr-1" role="toolbar" aria-label="Basic example">
+											<button type="submit" th:value="save" class="btn btn-primary">
+											<span th:text="#{de.casedetails.saveformbtn}">Save</span></button>
+											&nbsp;
+											<button type="button" th:value="addcourtcase" th:name="action" onclick="myFunction()"
+													id="addmore" class="btn btn-primary"> <span th:text="#{de.add.more.final.outcome}">Add More Final Outcome </span></button>
+													
+													&nbsp;
+													<button  th:if="${finaloutcomedetailsObj.caseNo}"   type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
+                        								             
+									          <span  th:text="#{casedetails.preview.button}"> Preview</span>
+						                           	</button>
+										</div>
+
+
+									</form>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+
+					<div class="row" id="gridviewFinalOutComeId">
+
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+
+
+									<div class="table-responsive">
+                                        <!--     <div align="right"> <b style="color: blue"> <span >Total No. of Finaloutcome :</span> <span th:text="${totalItems}"></span></b>
+										
+								                </div> -->
+										<label>
+											<label><h4  style="margin-top: 3px;"  th:text="#{de.listof.finaloutcome}">List of Final Outcome:</h4></label>
+										</label>
+                                            
+                                            
+									<!-- 	<label>
+											<h3 style="color: darkslateblue;">List of Final Outcome:</h3>
+										</label> -->
+										<table class="table table-bordered dark table-sm">
+											<thead>
+												<tr>
+													<th width="5%"> <span th:text="#{de.enquiry.srno}"></span></th>
+
+													<!--  <th width="5%">Case Number </th> -->
+													<th width="7%"><span th:text="#{de.enquiry.caseno}"></span> </th>
+													<th class="text-wrap"  width="7%"><center><span th:text="#{de.firstName.labels}"></span></center></th>
+													<th class="text-wrap"  width="7%"><center><span th:text="#{de.middleName.label}"></span></center></th>
+													<th class="text-wrap"  width="7%"><center><span th:text="#{de.lastName.labels}"></span></center></th>
+													<th width="6%" class="text-wrap"> <span th:text="#{de.finaloutcome.isInquiryReportReceived}"></span></th>
+													<th  width="7%"  class="text-wrap"><span th:text="#{de.finaloutcome.dateOfreceiptofinquiryreport}"></span></th>
+													<!-- <th class="text-wrap">Case Pending With </th> -->
+													<th width="6%" class="text-wrap"><span th:text="#{de.finaloutcome.whetherCaseFinallyDecided}"></span></th>
+													<th class="text-wrap"><span th:text="#{de.finalOutcome.decisiontakens}"></span></th>
+													<th class="text-wrap"><span th:text="#{de.finalOutcome.typeOfPenaltyInflicteddata}"></span></th>
+													<th class="text-wrap">
+														<span th:text="#{de.finalOutcome.uploadorder}"></span>
+													</th>
+													<th width="4%">
+															<center><span th:text="#{de.empdetails.action}"></span></center>
+													</th>
+
+
+												</tr>
+
+											</thead>
+											<tbody>
+												<tr th:each="article,iState:${FinalOutComeList}">
+
+													<td th:text="${pageIndex+iState.index}"></td>
+
+
+													<td>
+														<span th:text="${article.casedetails.caseNo}"></span>
+													</td>
+													<td class="text-wrap">
+														<span th:text="${article.firstName}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:text="${article.middleName}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:text="${article.lastName}"></span>
+													</td>
+													<td class="text-wrap">
+														<span th:if="${article.inquiryReportReceived}"
+															th:text="#{de.boolean.yes}"></span>
+														<span th:unless="${article.inquiryReportReceived}"
+															th:text="#{de.boolean.no}"></span>
+													</td>
+													<td class="text-wrap">
+														<span th:if="${article.dateofReceipt ne null}" th:text="${#temporals.format(article.dateofReceipt, 'dd-MM-yyyy')}"></span>
+													</td>
+													
+													
+													<!-- <td class="text-wrap">
+														<span th:if="${article.casePendingWith ne null}"
+															th:text="${article.casePendingWith.casePendingNameEn}"></span>
+													</td> -->
+													
+													
+													
+													<td class="text-wrap">
+														<span th:if="${article.whetherCaseFinallyDecided}"
+															th:text=#{de.boolean.yes}></span>
+														<span th:unless="${article.whetherCaseFinallyDecided}"
+															th:text=#{de.boolean.no}></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:if="${article.decisionTaken ne null}"
+															th:text="${article.decisionTaken.decisionNameHindiEn}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:if="${article.typeOfPenaltyInflicted ne null}"
+															th:text="${article.typeOfPenaltyInflicted.typeOfPenaltyNameEn}"></span>
+													</td>
+
+
+													<td>
+														<strong><a th:if="${article.fileName ne null}" 
+														th:href="@{|/departmentalEnquiry/DocuploadOrderofFinalOutcome/${article.id}|}" target="_blank">
+														<span th:text="${article.fileName}"></span>
+													<!-- <span th:text="#{de.finaloutcome.viewOrder}"></span> -->
+													</a></strong>
+													</td>
+													
+
+													<td>
+														<span><a
+																th:href="@{|/departmentalEnquiry/editfinalOutcomeDtlsRecords/${article.id} /${currentPage}|}">
+																<button class="btn btn-primary" ><span sec:authorize="!hasAnyRole('SUPERADMIN','SECRETARY')" th:text="#{de.edit.button.all}"></span>
+                                                     <span sec:authorize="hasAnyRole('SUPERADMIN','SECRETARY')">View</span></button></a></span>
+													</td>
+
+												<!-- 	<td><span>
+															<a
+																th:href="@{| /departmentalEnquiry/deletefinalOutComeDetailsRecords/${article.id} |}"><img
+																	th:src="@{/img/delete.png}" alt="logo" /></a>
+
+
+														</span>
+													</td> -->
+
+
+
+
+												</tr>
+
+											</tbody>
+
+
+										</table>
+									</div>
+
+									<!-- // adding pagination -->
+									<br>
+									
+										<div><a href="#headidfo"  class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+									
+									<div class="row" th:fragment="pagination">
+										<div class="col-md-3">
+											<b style="color: blue"><span  th:text="#{de.finaloutcome.totalnooffinaloutcome}"></span><span th:text="${totalItems}"></span></b>
+										</div>
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item" th:if="${currentPage > 1}">
+														<a class="page-link"
+															th:href="@{|/departmentalEnquiry/finalOutCometails/1|}"
+															th:text="#{pages.first}">First</a>
+														<span th:unless="${currentPage > 1}"
+															th:text="#{pages.first}">First</span>
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage > 1}"
+															th:href="@{|/departmentalEnquiry/finalOutCometails/${currentPage - 1}|}"
+															th:text="#{pages.previous}">Previous</a>
+														<span th:unless="${currentPage > 1}"
+															th:text="#{pages.previous}">Previous</span>
+													</li>
+
+													<li class="page-item" th:each="i: ${#numbers.sequence(begin, end)}"
+														th:if="${begin<end}">
+														<a th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}"
+															th:href="@{|/departmentalEnquiry/finalOutCometails/${i}|}"
+															th:text="${i}"></a>
+
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}"
+															th:href="@{|/departmentalEnquiry/finalOutCometails/${currentPage + 1}|}"
+															th:text="#{pages.next}">Next</a>
+														<span th:unless="${currentPage < totalPages}"
+															th:text="#{pages.next}">Next</span>
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}"
+															th:href="@{|/departmentalEnquiry/finalOutCometails/${totalPages}|}"
+															th:text="#{pages.last}">Last</a>
+														<span th:unless="${currentPage < totalPages}"
+															th:text="#{pages.last}">Last</span>
+													</li>
+
+												</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+									<!-- ending pagination -->
+
+
+
+
+
+								</div>
+							</div>
+						</div>
+
+
+
+					</div>
+
+
+
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+	
+	<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+					</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%" height="500"
+								style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+		<!-- this code for view pdf  -->
+	
+	<script th:inline="javascript">
+	var disableprosection =  [[${{disableprosecution}}]];
+	var disablepresenting =  [[${{disablepresentingofficer}}]];	
+	if(disablepresenting != null && JSON.parse(disablepresenting)) {
+		$('#presentingofficer').addClass('disabled');
+	}
+	if(disableprosection != null && JSON.parse(disableprosection)) {
+		$('#prosecution').addClass('disabled');
+	}
+	
+	
+// 	added on 13/01/2023 as per DE Requirements
+
+	function printDivforInsidePreview(printdata) {	
+	    var printContents = document.getElementById(printdata).innerHTML;
+	     jQuery.noConflict();
+	    var originalContents = document.body.innerHTML;
+	   document.body.innerHTML = printContents;
+	  var modalid='#myModal2';
+    	$(modalid).modal('hide');	
+      window.print();		
+       $(modalid).modal('hide');	
+	 document.body.innerHTML = originalContents; 	  		 			   
+	} 
+	
+	function closeModalForce(){
+		location.reload();
+	    var l=new Loading()
+		$('#myModalprint').modal('hide');
+		$('#myModal2').hide();
+		$('.modal-backdrop').remove();
+	}
+
+	
+	var modalid = null;
+	
+	$("#decisionTaken option[value='1']").remove();
+	$("#decisionTaken option[value='2']").remove();
+	
+	var rule = /*[[${{ruleid}}]]*/;
+	if(rule != null && rule == '3') {
+		var chargesheetIssued = /*[[${{chargesheetissued}}]]*/;
+		if(chargesheetIssued != null) {
+			var charge = JSON.parse(chargesheetIssued);
+			if(!charge) {
+				$('#chargesheet').addClass('disabled');
+				$('#inquiryofficer').addClass('disabled');
+//				$('#final').addClass('disabled');
+				$('#presentingofficer').addClass('disabled');
+				$('#prosecution').addClass('disabled');
+				$('#courtcase').addClass('disabled');
+				$('#abeyance').addClass('disabled');
+			}
+		}		
+	} 
+	if(rule != null && (rule == '2')) {
+		
+		var subRule = /*[[${{subruleid}}]]*/;
+		if(subRule != null && subRule == '1') {
+			$('#inquiryofficer').addClass('disabled');
+			$('#presentingofficer').addClass('disabled');
+			$('#prosecution').addClass('disabled');
+			$('#courtcase').addClass('disabled');			
+		}		
+	}
+	
+	
+	
+	var misconduct = /*[[${{miscodunctid}}]]*/;
+	if(misconduct != null && misconduct == '1') {
+		$('#prosecution').addClass('disabled');
+	}
+	
+	var single = /*[[${{single}}]]*/;
+	if(single != null) {
+		$('#addmore').hide();
+	}
+	
+	var retired = /*[[${{retired}}]]*/;
+	if(retired != null) {
+		$('#suspension').addClass('disabled');
+		$('#reinstated').addClass('disabled');
+	}
+	var enableRe = /*[[${reinstateEnable}]]*/;
+	if(enableRe != null) {
+		$('#reinstated').removeAttr('disabled');
+	} else {
+		$('#reinstated').addClass('disabled');
+	}
+	function downloadlistForCaseDetailsviewPdf(){
+		modalid = '#myModal2';
+		var ff = new FormData();
+		var printdata = '#printdata';
+		var mymodal2 = '#myModal2';
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal2).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	</script>
+					
+	
+		<script th:inline="javascript">
+
+		
+		
+		
+		
+		var whethercasekeptinabeyance = JSON.parse($('input[name="whethercasekeptinabeyance"]:checked').val());	
+		
+		if(whethercasekeptinabeyance) {
+			$('#reasonabeyancedata').show();
+		} else {
+			$('#reasonabeyancedata').hide();
+			$('#reasonforabeyance').val('');
+		}	
+		
+		
+		
+		$('input[name="whethercasekeptinabeyance"]').click(function(){
+			var whethercasekeptinabeyance = JSON.parse($('input[name="whethercasekeptinabeyance"]:checked').val());	
+			if(whethercasekeptinabeyance) {
+				$('#reasonabeyancedata').show();
+			} else {
+				$('#reasonabeyancedata').hide();
+				$('#reasonforabeyance').val('');
+			}
+		});
+
+		
+		var inquiryReportReceived = JSON.parse($('input[name="inquiryReportReceived"]:checked').val());
+		if(inquiryReportReceived) {
+			$('#dateofReceiptdata').show();
+			$('#reasondata').show();
+		} else {
+			$('#dateofReceiptdata').hide();
+			$('#reasondata').hide();
+			$('#dateofReceipt').val('');
+		}
+		
+		$('input[name="inquiryReportReceived"]').click(function(){
+			var inquiryReportReceived = JSON.parse($('input[name="inquiryReportReceived"]:checked').val());
+			if(inquiryReportReceived) {
+				$('#dateofReceiptdata').show();
+				$('#reasondata').show();
+			} else {
+				$('#dateofReceiptdata').hide();
+				$('#reasondata').hide();
+				$('#dateofReceipt').val('');
+			}
+		});
+		
+
+	try{  
+		var ss = /*[[${{session.caseid}}]]*/;
+		if(ss != null) {
+			$('#casedetails').attr('readonly',true);
+			/* $("#casedetails").attr('disabled', true);  */
+			
+		}
+	} catch(error){  
+		 
+	}
+	</script>
+	
+	<script  th:inline="javascript">
+	
+	
+	
+	/* this function for reset button */
+	function myFunction() {
+		var caseno = $('#casedetails').val();
+		    $('#empgroupid').val('');
+			$('#empid').val('');
+			$('#firstname').val('');
+			$('#middleName').val('');
+			$('#lastName').val('');
+			$('#dateofReceipt').val(null);
+			$('#reason').val('');
+			$('#decisionTaken').val('').trigger('change');
+			$('#typeOfPenaltyInflicted').val('').trigger('change');
+			$('#fileName').val(null);
+			$('#employeedata').val('');
+			$('#whetherCaseFinallyDecidedNo').prop('checked',true);
+			$('#CasePendingWithData').show();
+//			$('#inquiryReportReceiveddata').hide();
+			$('#inquiryReportReceivedNo').prop('checked',true);
+			var inquiryReportReceived = JSON.parse($('input[name="inquiryReportReceived"]:checked').val());
+			if(inquiryReportReceived) {
+				$('#dateofReceiptdata').show();
+			} else {
+				$('#dateofReceiptdata').hide();
+				$('#dateofReceipt').val('');
+			}
+			$('#whethercasekeptinabeyanceNo').prop('checked',true);
+			$('#reasonabeyancedata').hide();
+			$('#reasonforabeyance').val('');
+//			$('#dateofReceiptdata').hide();
+			$('#decisionTakendata').hide();
+			$('#decisionTaken').val('');
+			$('#fileiddata').hide();
+			$('#whethercasekeptinabeyanceNo').removeAttr('disabled');
+			$('#whethercasekeptinabeyanceYes').removeAttr('disabled');
+			
+				$('#id').val(null);
+		$('#casedetails').val(caseno);
+		
+	}
+	
+	
+	var decisionTaken = $('#decisionTaken').val();
+	if(decisionTaken != null && decisionTaken == '3') {
+		$('#inquiryData').show();
+	} 
+	if(decisionTaken != null && decisionTaken == '4') {
+		$('#inquiryData').hide();
+		$('#inquiryReportReceivedNo').prop('checked',true);
+		$('#dateofReceiptdata').hide();
+		$('#dateofReceipt').val('');
+	}
+	if(decisionTaken != null && decisionTaken == '5') {
+		$('#inquiryData').show();
+	}
+	
+	
+	$('#decisionTaken').change(function(){
+		var decisionTaken = $('#decisionTaken').val();
+		if(decisionTaken != null && decisionTaken == '3') {
+			$('#inquiryData').show();
+		} 
+		if(decisionTaken != null && decisionTaken == '4') {
+			$('#inquiryData').hide();
+			$('#inquiryReportReceivedNo').prop('checked',true);
+			$('#dateofReceiptdata').hide();
+			$('#dateofReceipt').val('');
+		}
+		if(decisionTaken != null && decisionTaken == '5') {
+			$('#inquiryData').show();
+		}
+	});
+	
+		var mess = [[${{message}}]];
+		if (mess != null) {
+			swal(mess);
+		}
+		$("#final").attr("class", "btn btn-info");
+		
+		var employeeData = $('#employeedata').val();
+		if(employeeData != null&& employeeData != '') {
+			getdata('/de/departmentalEnquiry/getEmployeeDetailsJson?caseid='+encodeURIComponent(employeeData), function(data) {
+				$('#sevarthId').val(data.sevarthId);
+				$('#firstname').val(data.firstName);
+				$('#middleName').val(data.middleName);
+				$('#lastName').val(data.lastName);
+			});
+		} 
+		
+		
+	 	$('#employeedata').change(function(){
+			var employeeData = $('#employeedata').val();
+			if(employeeData != null&& employeeData != '') {
+				getdata('/de/departmentalEnquiry/getEmployeeDetailsJson?caseid='+encodeURIComponent(employeeData), function(data) {
+					$('#sevarthId').val(data.sevarthId);
+					$('#firstname').val(data.firstName);
+					$('#middleName').val(data.middleName);
+					$('#lastName').val(data.lastName);
+				});
+			}
+		});
+
+		
+
+	</script>
+	
+	<script sec:authorize="hasAnyRole('SUPERADMIN','SECRETARY')">
+/* 		$("#noticeregisteridmpsc :input").prop("disabled", true);
+		$("#noticeregisteridmpsc :select").prop("disabled", true); */
+		$("#noticeregisteridmpsc :button").prop("disabled", true);
+		$("#noticeregisteridmpsc :input").prop("disabled", true);
+		$("#noticeregisteridmpsc :select").prop("disabled", true);
+	</script>
+	<script th:if="${cases ne null && cases.currentUser ne null && cases.currentUser.email ne currentUser}" th:inline="javascript">
+	$("#noticeregisteridmpsc :button").prop("disabled", true);
+    $("#noticeregisteridmpsc :input").prop("disabled", true);
+	$("#noticeregisteridmpsc :select").prop("disabled", true); 
+	</script>
+	
+	<!-- this code for preview screen  added on    date :: 27/10/2022 -->
+<th:block th:include="DeptInquiryViews/Fragments/FinalOutcomePreviewListRecords.html:: FinalOutcomePreviewListRecords"></th:block>
+	
+<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+
+</html>

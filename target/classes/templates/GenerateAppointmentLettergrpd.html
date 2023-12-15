@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="fragments/ehrms_headerlib.html :: headerlib">
+<title>e-HRMS : Generate Appointment Letters</title>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+
+		
+			<div class="container-scroller" sec:authorize="isAuthenticated()">
+		      <!-- partial:partials/_sidebar.html -->
+		      
+		       <!-- ========== Left Sidebar Start ========== -->
+						 <nav th:insert="ehrms_sidebar3_2_5.html :: ehrms_sidebar3_2_5"> </nav> 
+		       <!-- Left Sidebar End -->
+		      
+		      <!-- partial -->
+		      <div class="container-fluid page-body-wrapper">
+		        <!-- partial:partials/_settings-panel.html -->
+		         
+		        <div th:insert="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+		        
+		        <!-- partial -->
+		        <!-- partial:partials/_navbar.html -->
+		        <nav th:insert="fragments/ehrms_navbar.html :: navbar"> </nav> 
+		        
+		        <div class="main-panel">
+		        	
+		        	<div class="content-wrapper">
+		        		
+		        		<div class="page-header">
+		        		
+				              <h3 class="page-title"><b><span th:text="#{Sidebar.Generate Appointment Letters}">Generating Appointment Letter
+				              		</span></b></h3>
+				              <nav aria-label="breadcrumb">
+				                <ol class="breadcrumb">
+				<!--                   <li class="breadcrumb-item"><a href="#">Tables</a></li> -->
+				<!--                   <li class="breadcrumb-item active" aria-current="page"> Basic tables </li> -->
+				                  
+				                 	  <li class="breadcrumb-item"><a href="#"><span th:text="#{inbox.Recruitment Module}"></span></a></li>
+									  <li class="breadcrumb-item"><a href="#"><span th:text="#{inbox.Recruitment of Group D posts}"></span></a></li>
+									  <li class="breadcrumb-item" ><a href="#"><span th:text="#{Sidebar.Generate Appointment Letters}"></span></a></li>
+				                </ol>
+				              </nav>
+				              
+				         </div>
+				         
+				          <div class="row">
+				
+				              <div class="col-md-10 offset-md-1 grid-margin stretch-card">
+				                <div class="card">
+				                  <div class="card-body">
+				                  	
+					                  	<form class="col" method="post"
+											enctype="multipart/form-data" id="noticeregisterid">
+											<div class="form-group">
+												<label><span th:text=#{Form.Editor}></span></label>
+												<textarea id="editor" th:text="${tableContent}"></textarea>
+											</div>
+					
+								
+					<!-- 						<button type="submit" class="btn btn-primary">
+												<span>SAVE</span>
+											</button>
+											<button type="button" class="btn btn-primary" name="preview"
+												onclick="generate()">
+												<span th:text=#{Preview}></span>
+											</button>
+					 -->				</form>
+				                  
+				                	  </div>
+				                  
+		        					</div>
+		        	
+		        				</div>
+		        			
+		        			</div>
+		        	
+		        	</div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+           <!-- remove from footer -->
+			    <div th:replace="fragments/ehrms_footer.html :: footer"></div>
+		    <!-- remove from footer -->
+
+       <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+        
+ <!-- container-scroller -->
+    <div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+		        
+		 
+</body>
+</html>

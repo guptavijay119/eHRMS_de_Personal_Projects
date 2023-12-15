@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>EmployeeList</title>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div th:fragment="ListEmployee">
+
+
+		<div class="table-responsive text-center justify-content-center">
+			<table id="link-list"  class="table table-striped table-bordered table-sm">
+				<caption></caption>
+				<thead>
+					<tr>
+						<th scope="row" width="5%" class="text-wrap"><span th:text="#{ListEmployee.index}">Index</span></th>
+						<th scope="row" class="text-wrap"><span th:text="#{ListEmployee.Employee Id}">Employee
+								Id</span></th>
+
+						<th scope="row" class="text-wrap"><span th:text="#{ListEmployee.Employee Name}">Employee
+								Name</span></th>
+						<th scope="row" class="text-wrap"><span th:text="#{inbox.status}">Status</span></th>
+
+						<th scope="row" class="text-wrap"><span th:text="#{ListEmployee.isservicebookclose}">isServiceBook close</span></th>
+
+						<th scope="row" class="text-wrap"><span th:text="#{ListEmployee.Informed}">Informed to family</span>?</th>
+
+						<th scope="row" class="text-wrap"><span th:text="#{ListEmployee.informedDate}">Informed
+								Date</span></th>
+						<th scope="row" class="text-wrap"><span th:text="#{inbox.Apply}"></span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="article,iState : ${employeeList}">
+						<td th:text="${pageIndex+iState.index}"></td>
+						<td><a class="btn btn-primary btn-sm"
+							href="javascript:void();"
+							th:href="@{|/compassionate/editemployeedetail/${article.id}|}">
+								<span th:text="${{article.id}}"></span>
+						</a></td>
+						<td class="text-wrap" th:text="${{article.name}}"></td>
+						<td><a href="javascript:void(0);" th:if="${{article.active}}"
+							class="btn btn-outline-success"><span
+								th:text="#{ListEmployee.Active}"></span></a> <a
+							href="javascript:void(0);" th:if="${{!article.active}}"
+							class="btn btn-outline-warning"><span
+								th:text="#{ListEmployee.Inactive}"></span></a></td>
+
+						<!-- <td><a class="btn btn-primary btn-sm"
+							href="javascript:void();"
+							th:href="@{|/compassionate/editemployeedetail/${article.id}|}">
+								<span th:text="#{ListEmployee.close}"></span>
+						</a></td> -->
+						<td><a href="javascript:void(0);"
+							th:if="${{article.dateOfClose ne null}}"
+							class="btn btn-outline-success"><span
+								th:text="#{ListEmployee.Yes}"></span></a> <a
+							href="javascript:void(0);" th:unless="${{article.dateOfClose ne null}}"
+							class="btn btn-outline-warning"><span
+								th:text="#{ListEmployee.No}"></span></a></td>
+
+						<td><a href="javascript:void(0);"
+							th:if="${{article.informedFamily}}"
+							class="btn btn-outline-success"><span
+								th:text="#{ListEmployee.Yes}"></span></a> <a
+							href="javascript:void(0);" th:if="${{!article.informedFamily}}"
+							class="btn btn-outline-warning"><span
+								th:text="#{ListEmployee.No}"></span></a></td>
+						<td><span th:if="${article.informedFamilyDate ne null}"
+							th:text="${{#temporals.format(article.informedFamilyDate,'dd-MM-yyyy')}}"></span>
+							<span th:unless="${article.informedFamilyDate ne null}" th:text="#{ListEmployee.notinformed}"></span></td>
+
+
+						<td><a 
+							class="btn btn-primary btn-sm" href="javascript:void(0)"
+							th:href="@{|/compassionate/getIntimationFormat/${article.id}/|}"
+							th:if="${!article.informedFamily}"> <span
+								th:text="#{ListEmployee.sendintimation}"></span>
+						</a>
+						<a 
+							class="btn btn-primary btn-sm" href="javascript:void(0)"
+							th:href="@{|/compassionate/getIntimationFormat/${article.id}/|}"
+							th:if="${article.informedFamily}"> <span
+								th:text="#{ListEmployee.viewintimation}"></span>
+						</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+		<div class="row" th:fragment="pagination">
+			<div class="col-md-2"><span th:text="#{pages.totalemp}"></span>: [[${totalItems}]]</div>
+			<div class="col-md-8">
+				<nav aria-label="Pagination">
+					<ul class="pagination justify-content-center">
+						<li class="page-item" th:if="${currentPage > 1}"><a
+							class="page-link"
+							th:href="@{|/compassionate/closeservicebook/page/1?auth=${auth}|}"
+							th:text="#{pages.first}">First</a> <span
+							th:unless="${currentPage > 1}" th:text="#{pages.first}">First</span>
+						</li>
+
+						<li class="page-item"><a class="page-link"
+							th:if="${currentPage > 1}"
+							th:href="@{|/compassionate/closeservicebook/page/${currentPage - 1}?auth=${auth}|}"
+							th:text="#{pages.previous}">Previous</a> <span
+							th:unless="${currentPage > 1}" th:text="#{pages.previous}">Previous</span>
+						</li>
+
+						<li class="page-item"
+							th:each="i: ${#numbers.sequence(begin, end)}"
+							th:if="${begin<end}"><a th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}" 
+							th:href="@{|/compassionate/closeservicebook/page/${i}?auth=${auth}|}"
+							th:text="${i}">Range Page</a></li>
+
+						<li class="page-item"><a class="page-link"
+							th:if="${currentPage < totalPages}"
+							th:href="@{|/compassionate/closeservicebook/page/${currentPage + 1}?auth=${auth}|}"
+							th:text="#{pages.next}">Next</a> <span
+							th:unless="${currentPage < totalPages}" th:text="#{pages.next}">Next</span>
+						</li>
+
+						<li class="page-item"><a class="page-link"
+							th:if="${currentPage < totalPages}"
+							th:href="@{|/compassionate/closeservicebook/page/${totalPages}?auth=${auth}|}"
+							th:text="#{pages.last}">Last</a> <span
+							th:unless="${currentPage < totalPages}" th:text="#{pages.last}">Last</span>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+<!--<script type="text/javascript" th:inline="javascript">
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+        $('table#link-list').DataTable({
+//            ajax: '/compassionate/employeescloseservicebook',
+            ajax: {
+                contentType: 'application/json',
+                url: '/compassionate/employeescloseservicebook',
+                type: 'POST',
+                beforeSend : function(xhr) 
+					{
+						xhr.setRequestHeader(header, token); 
+					},
+                data: function (d) {
+                    return JSON.stringify(d);
+                }
+            },
+            processing: true,
+            serverSide: true,
+            columns: [
+                {
+                    data: 'id',
+                   
+                },
+                {
+                    data: 'name',
+                   
+                },
+                {
+                    data: 'active',
+                    render: function (data) { return data ? 'active' : 'inactive'; }
+                },
+                {
+					data: 'id',
+					render: function(data) { return "<a class='btn btn-primary btn-sm' href='/compassionate/editemployeedetail/"+data+"' th:href='@{|/compassionate/editemployeedetail/data|}'> <span th:text='#{ListEmployee.closeServiceBook}'></span></a>"}	
+				}
+            ]
+        });
+    </script >-->
+    
+<!-- <script>
+    $("table#link-list").DataTable({
+						'aoColumnDefs': [{
+        				'bSortable': false,
+        				'aTargets': [-1] /* 1st one, start by the right */
+    				}]
+				});
+    
+    </script>-->
+	</div>
+	
+</body>
+</html>

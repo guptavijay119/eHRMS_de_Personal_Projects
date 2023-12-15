@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 17
+Implementation-Title: eHRMS_de
+Implementation-Version: 4
+Created-By: Maven Integration for Eclipse
+Logging-Profile: de-profile
+

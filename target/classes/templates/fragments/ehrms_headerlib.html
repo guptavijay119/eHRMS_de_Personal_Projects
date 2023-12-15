@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="headerlib" >
+	<title>eHRMS_de (Government of Maharashtra)</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="_csrf" id="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" id="_csrf_header" th:content="${_csrf.headerName}" />
+     <title>e-HRMS</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" th:href="@{/othercontent/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/othercontent/flag-icon.min.css}">
+    <link rel="stylesheet" th:href="@{/othercontent/vendor.bundle.base.css}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" th:href="@{/othercontent/css-stars.css}" />
+    <link rel="stylesheet" th:href="@{/othercontent/font-awesome.min.css}" />
+    <link rel="stylesheet" th:href="@{/othercontent/modal-loading.css}" />
+    <link rel="stylesheet" th:href="@{/othercontent/modal-loading-animate.css}" />
+ <link rel="stylesheet" th:href="@{/othercontent/custom-confirm.css}" />
+ <link rel="stylesheet" th:href="@{/othercontent/bootstrap-datetimepicker.min.css}" />
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" th:href="@{/othercontent/style.css}" />
+    <!-- End layout styles -->
+        <link rel="stylesheet" th:href="@{/othercontent/bootstrap-table.min.css}">
+   
+    <link type="text/css" rel="stylesheet" th:href="@{/othercontent/jquery-ui.min.css}">
+
+	<link type="text/css" rel="stylesheet" th:href="@{/othercontent/main.css}">
+	
+	<link type="text/css" rel="stylesheet" th:href="@{/othercontent/alertify.core.css}">
+	<link type="text/css" rel="stylesheet" th:href="@{/othercontent/select2.min.css}">
+
+	<link type="text/css" rel="stylesheet" th:href="@{/othercontent/alertify.default.css}">
+<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+ <!-- 
+<script type="text/javascript" th:src="@{/othercontent/jquery-3.5.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/othercontent/jquery.dataTables.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/dataTables.bootstrap.min.js}"></script>
+		  <script type="text/javascript" th:src="@{/othercontent/jquery.spring-friendly.js}"></script>
+<script type="text/javascript" th:src="@{/othercontent/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/othercontent/jquery.autocomplete.min.js}"></script>
+<script type="text/javascript" th:src="@{/othercontent/modal-loading.js}"></script>
+ <script type="text/javascript" th:src="@{/othercontent/jquery.serializejson.min.js}"></script>
+ <script type="text/javascript" th:src="@{/othercontent/jquery.table.transpose.min.js}"></script>
+  <script type="text/javascript" th:src="@{/othercontent/jquery.tabletojson.js}"></script>
+ <script type="text/javascript" th:src="@{/othercontent/jquery.confirmModal.min.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/summernote-lite.js}"></script>
+
+	<script type="text/javascript" th:src="@{/othercontent/bootbox.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/bootbox.locales.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/httpcalls.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/moment.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/alertify.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/messageResource.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/jquery.validate.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/additional-methods.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/js.cookie.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/sweetalert.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/custom-confirm.js}"></script>-->
+		
+			<script th:src="@{/othercontent/vendor.bundle.base.js}"></script>		
+			<script type="text/javascript" th:src="@{/othercontent/jquery.table2excel.min.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/jquery-3.6.0.min.js}"></script>
+	<!-- <link type="text/css" rel="stylesheet" th:href="@{/othercontent/dataTables.bootstrapnew.min.css}"> -->
+	<link rel="stylesheet" type="text/css" th:href="@{/othercontent/jquery.dataTablesnew.css}">
+			<script type="text/javascript" th:src="@{/othercontent/jquery.dataTablesnew.min.js}"></script>
+		<!-- 	<script type="text/javascript" th:src="@{/othercontent/dataTables.bootstrapnew.min.js}"></script> -->
+	
+<!-- 	<script type="text/javascript" th:src="@{/othercontent/jquery.dataTables.min.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/dataTables.bootstrap.min.js}"></script> -->
+	<script type="text/javascript" th:src="@{/othercontent/jquery.spring-friendly.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/jquery-ui.min.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/jquery.cookie-1.4.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/jquery.autocomplete.min.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/modal-loading.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/jquery.serializejson.min.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/jquery.table.transpose.min.js}"></script>
+<!-- 	<script type="text/javascript" th:src="@{/othercontent/jquery.tabletojson.js}"></script> -->
+	
+	<script type="text/javascript" th:src="@{/othercontent/summernote-lite.js}"></script>
+		<link type="text/css" rel="stylesheet" th:href="@{/othercontent/summernote-lite.css}">
+	<script type="text/javascript" th:src="@{/othercontent/main.js}"></script>
+	<script th:src="@{/othercontent/jquery.barrating.min.js}"></script>
+	<script th:src="@{/othercontent/Chart.min.js}"></script>
+	<script th:src="@{/othercontent/jquery.flot.js}"></script>
+	<script th:src="@{/othercontent/jquery.flot.resize.js}"></script>
+	<script th:src="@{/othercontent/jquery.flot.categories.js}"></script>
+	<script th:src="@{/othercontent/jquery.flot.fillbetween.js}"></script>
+	<script th:src="@{/othercontent/jquery.flot.stack.js}"></script>
+	<script th:src="@{/othercontent/off-canvas.js}"></script>
+	<script th:src="@{/othercontent/hoverable-collapse.js}"></script>
+	<script th:src="@{/othercontent/hoverable-collapse2.js}"></script>
+<!--	<script th:src="@{/othercontent/misc.js}"></script>-->
+	<script th:src="@{/othercontent/settings.js}"></script>
+	<script th:src="@{/othercontent/todolist.js}"></script>
+	<script th:src="@{/othercontent/dashboard.js}"></script>
+
+<!-- 	<script type="text/javascript" th:src="@{/othercontent/jquery.confirmModal.min.js}"></script> -->
+	<script type="text/javascript" th:src="@{/othercontent/httpcalls.js}"></script>
+	<script type="text/javascript" th:src="@{/othercontent/moment.js}"></script>
+<!-- <script type="text/javascript" th:src="@{/othercontent/messageResource.min.js}"></script> -->
+	<script type="text/javascript" th:src="@{/othercontent/jquery.validate.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/additional-methods.min.js}"></script>
+<!-- <script type="text/javascript" th:src="@{/othercontent/js.cookie.min.js}"></script> -->
+<script type="text/javascript" th:src="@{/othercontent/modal-loading.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/sweetalert.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/select2.min.js}"></script>
+		
+	<script type="text/javascript" th:src="@{/othercontent/bitoolJS.js}"></script>
+		
+		<script type="text/javascript" th:src="@{/othercontent/jquery.tablesorter.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/multi-animated-counter.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/bootstrap-datetimepicker.min.js}"></script>
+		<script type="text/javascript" th:src="@{/othercontent/chart.js}"></script>
+		
+		
+  </head>
+</html>

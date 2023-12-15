@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>Previous Proposal</title>
+</head>
+
+<style>
+
+::-webkit-input-placeholder { /* Edge */
+  color: red;
+}
+
+:-ms-input-placeholder { /* Internet Explorer */
+  color: red;
+}
+
+::placeholder {
+  color: red;
+}
+</style>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+
+
+	<table class="table table-bordered table-sm" id="staticProp" th:fragment="recruitmenttoptable">
+		<caption></caption>
+		<thead>
+			<tr>
+				<th scope="row" width="10%"><span th:text="#{ApplicantsList.index}"></span></th>
+				<th scope="row"><span th:text="#{description}"></span></th>
+				<th scope="row" width="20%"><span th:text="#{ProposedCalculatedvalue}"></span></th>
+			</tr>
+		</thead>
+		<tbody>
+		
+			<tr  class="danger text-wrap">
+				<td>1.</td>
+				<td th:text="#{Form.Noticeid}"></td>
+				<td>
+					<input type="text" class="text-danger  form-control"  name="noticexId" th:field="*{id}" readonly="readonly"
+						id="noticexId" placeholder="NONE">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>2.</td>
+				<td class="text-wrap" th:text="#{EmployeeDetail.servicegroup}"></td>
+				<td>
+					<input type="text" class="form-control" th:value="${notice.designationObj.serviceGroupId.regionalText}" readonly="readonly" id="depart">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>3.</td>
+				<td th:text="#{Form.Designation}"></td>
+				<td><input type="text" class="form-control" th:value="${notice.designationObj.regionalText}"
+						readonly="readonly" id="depart" placeholder="12345">
+					<input type="hidden" class="form-control" th:field="*{designation}" readonly="readonly" id="departd"
+						placeholder="12345">
+					<input type="hidden" class="form-control" th:value="${notice.designationObj.designation_id}"
+						readonly="readonly" id="designationidvalue" placeholder="12345">
+					<input type="hidden" class="form-control" th:field="${notice.asOnDate}"
+						th:value="${notice.asOnDate}">
+					<input type="hidden" class="form-control" th:field="${notice.noticeid}"
+						th:value="${notice.noticeid}">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>4.</td>
+				<td th:text="#{Form.totalSanctionedByDesignation}"></td>
+				<td><input type="number" readonly="readonly" min="0" id="totalSanctionedByDesignation"
+						th:field="*{totalSanctionedByDesignation}"  class="form-control"
+						placeholder="Enter Vacancy">
+				</td>
+			</tr>
+
+			<tr class="text-wrap">
+			<td>5.</td>
+				<td th:text="#{Form.sanctionedByRecruitmentRules}"></td>
+				<td><input type="number" readonly="readonly" min="0" id="sanctionedByRecruitmentRules"
+						th:field="*{sanctionedByRecruitmentRules}" class="form-control"
+						placeholder="Enter Vacancy">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>6.</td>
+				<td th:text="#{Form.filledPostByRecruitmentRules}" ></td>
+				<td class="alert alert-danger"><input type="number"  min="0" max="9999"
+						id="filledPostByRecruitmentRules" th:field="*{filledPostByRecruitment}" 
+						 th:attr="readonly=${notice.authority}=='DEP' or ${notice.authority} == ''? 'false' : 'true'"
+						  th:attrappend="required=${notice.authority == 'DEP'}?'required'"
+						  th:disabled="${notice.finalApprovedHori}"
+						class="form-control" onchange="changeactualvacancy()" placeholder="Enter Vacancy" required="required">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>7.</td>
+				<td ><span th:text="#{Form.actualvacancy}"></span><span class="font-weight-bold">(5-6)</span></td>
+				<td><input type="number" readonly="readonly" min="0" id="actualVacancy" th:field="*{actualVacancy}"
+						onchange="changeintotalvacancy()" class="form-control"
+						placeholder="Enter Vacancy">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>8.</td>
+				<td><span th:text="#{Form.expectedvacancy}"></span><span class="font-weight-bold" id="expecteddateprop"></span></td>
+				<td class="alert alert-danger"><input type="number" 
+					 th:attr="readonly=${notice.authority}=='DEP' or ${notice.authority} == ''? 'false' : 'true'"
+						th:attrappend="required=${notice.authority == 'DEP'}?'required'"
+						th:disabled="${notice.finalApprovedHori}"
+						id="expectedvacancy" th:field="*{expectedvacancy}" min="0" onchange="changeintotalvacancy()"
+						 class="form-control" placeholder="100"  required="required">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>9.</td>
+				<td th:text="#{Form.extravacancy}"></td>
+				<td class="alert alert-danger"><input type="number" 
+						 th:attr="readonly=${notice.authority}=='DEP' or ${notice.authority} == ''? 'false' : 'true'"
+						  th:attrappend="required=${notice.authority == 'DEP'}?'required'" min="0"
+						id="extravacancy" th:field="*{extravacancy}" onchange="changeintotalvacancy()" 
+						  th:disabled="${notice.finalApprovedHori}" required="required"
+						 class="form-control" placeholder="Enter Vacancy">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>10.</td>
+				<td class="text-wrap" ><span th:text="#{Form.vacancy}"></span><span class="font-weight-bold">(7+8+9)</span></td>
+				<td><input min="0" type="number" id="totalvacancy" th:field="*{totalvacancy}" 
+						readonly="readonly" onchange="changeintotalvacancy()" class="form-control"
+						placeholder="Enter total vacancy">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>11.</td>
+				<td class="text-wrap"><a th:href="@{|/getfinancegrstatic|}" th:text="#{Form.grVacancy4}" target="_blank"></a>
+				<span class="font-weight-bold">(4% of step 5)</span>
+				</td>
+				<td><input min="0" type="number" id="grVacancy4" readonly="readonly" th:field="*{grVacancy4}"
+						 class="form-control" placeholder="Enter total vacancy">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>12.</td>
+				<td class="text-wrap"><a th:href="@{|/getfinancegrstatic|}" th:text="#{Form.grVacancy50}" target="_blank"></a>
+				<span class="font-weight-bold">(50% of step 10)</span>
+				</td>
+				<td><input min="0" type="number" id="grVacancy50" readonly="readonly" th:field="*{grVacancy50}"
+						 class="form-control" placeholder="Enter total vacancy">
+				</td>
+			</tr>
+			<tr class="text-wrap">
+			<td>13.</td>
+				<td class="text-wrap"><a th:href="@{|/getfinancegrstatic|}" th:text="#{Form.actualvacancyminimum}" target="_blank"></a></td>
+				<td class="alert alert-danger"><input min="0" type="number" id="actualvacancyminimum" th:field="*{minimumActualVacancy}" 
+					th:attr="readonly=${notice.authority}=='DEP' or ${notice.authority} == ''? 'false' : 'true'"
+					th:attrappend="required=${notice.authority == 'DEP'}?'required'"  th:disabled="${notice.finalApprovedHori}"
+					onchange="changeactualvacancy()" required="required" class="form-control" placeholder="Enter total vacancy">
+				</td>
+			</tr>
+			
+			
+		</tbody>
+	</table>
+
+
+</body>
+
+</html>

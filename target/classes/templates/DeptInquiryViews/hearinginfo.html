@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+<title>Case Details Entry</title>
+<style>
+.ui-menu .ui-menu-item-wrapper {
+        color: #303030 !important;
+        background-color: #fff !important;
+    }        
+
+    .ui-menu .ui-menu-item-wrapper:hover {
+        color: #303030 !important;
+        background-color: rgb(192, 192, 192) !important;
+        border: #fff 1px solid !important;
+    } 
+
+.ui-widget-content {
+    border: 1px solid #ddd;
+    background: rgb(192, 192, 192) !important;
+    color: #333 !important;
+}
+
+
+@media print {
+  body {
+    zoom: 80% !important;
+  }
+  }
+
+
+
+</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"
+				aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						
+						<!-- Navbar Started here -->
+						<!-- <div th:replace="DeptInquiryViews/Fragments/processfrag.html :: processfrag">
+						
+						</div> -->
+						
+					</div>
+					<div><h3>
+							<strong><span >Hearing Details</span>
+							</strong><br>
+							
+						</h3>
+						
+						</div>
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+									<form th:action="@{/departmentalEnquiry/addhearingdetails}" th:object="${dd}"
+										method="post" enctype="multipart/form-data" id="noticeregisteridmpsc">
+										
+										<div class="row">
+											<div class="col-sm-3 form-group">
+												<label>Case Hearing Id</label>
+												<span th:text="${dd.id}" class="form-control"></span>
+												<input type="hidden" th:field="*{id}">
+											</div>
+										
+											<div class="col-sm-3 form-group">
+												<label>Case No</label>
+												<span th:text="${dd.casedetails.caseNo}" class="form-control"></span>
+											</div>
+										
+											
+											<div class="col-sm-3 form-group">
+												<label>Hearing Date</label>
+												<input id="localdate" class="form-control" placeholder="dd-mm-yyyy"
+														th:attrappend="min=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd',#locale.forLanguageTag('en'))}" type="date"
+													th:field="${dd.hearingDate}"
+													/>
+											</div>
+											<div class="col-sm-3 form-group">
+												<label>Hearing Weblink</label>
+												<input  class="form-control" 
+														 type="text"
+													th:field="${dd.weblink}"
+													/>
+											</div>
+											
+										</div>
+
+						
+										<div class="btn-toolbar mr-1" role="toolbar" aria-label="Basic example">
+											<button type="submit"  class="btn btn-primary " id="save">Save</button>
+											
+										</div>
+										<br>
+										<hr>
+										<div class="form-group table-responsive" th:if="${hearingdetaillist ne null}">
+											<table class="table table-bordered">
+												<caption></caption>
+												<thead>
+													<tr>
+														<th>Hearing Id</th>
+														<th>Hearing Date</th>
+														<th>Hearing Weblink</th>
+														<th>Hearing Status</th>
+														<th>Hearing Summary</th>
+														<th>Documents Uploaded</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="article,iState:${hearingdetaillist}">
+														<td th:text="${article.id}"></td>
+														<td th:text="${#temporals.format(article.hearingDate, 'dd-MM-yyyy')}"></td>
+														<td  class="text-wrap" th:text="${article.webLink}"></td>
+														<td  class="text-wrap">
+															<input type="hidden" th:id="hearingid__${iState.index}__" th:value="${article.id}">
+															<input type="hidden" th:id="hearingStatus__${iState.index}__" th:value="${article.hearingStatus}">
+															<input type="hidden" th:id="hearingSummery__${iState.index}__" th:value="${article.hearingSummery}">
+															<input type="hidden" th:id="hearingDate__${iState.index}__" th:value="${article.hearingDate}">
+															<input type="hidden" th:id="weblink__${iState.index}__" th:value="${article.webLink}">
+															<input type="hidden" th:id="hearingNotice__${iState.index}__" th:value="${article.hearingNotice}">
+															<span th:text="${article.hearingStatus}"></span>
+														</td>
+														<td class="text-wrap">
+																<span th:text="${article.hearingSummery}"></span>
+														</td>
+														<td class="text-wrap">
+																<a th:if="${article.fileName ne null}" target="_blank"
+																th:href="@{|/departmentalEnquiry/gethearingdetailfile/${article.id}|}" th:text="${article.fileName}"></a>
+														</td>
+														<td>
+															<button type="button" th:data-index="${iState.index}" class="btn btn-primary" 
+																th:if="${article.hearingStatus == 'FIXED'}"
+																onclick="updatehearing(this.getAttribute('data-index'))">Update</button><br><br>
+															<!-- <button type="button" th:data-index="${iState.index}" class="btn btn-primary" 
+																th:if="${article.hearingStatus == 'FIXED'}"
+																onclick="addwitness(this.getAttribute('data-index'))">Add/Remove Witness</button><br><br>	 -->
+															<button type="button" th:data-index="${iState.index}" class="btn btn-success" 
+																
+																onclick="sendnotice(this.getAttribute('data-index'))">
+																<span th:if="${article.hearingNoticeSent ne null && article.hearingNoticeSent}">View Notice</span>
+																<span th:unless="${article.hearingNoticeSent ne null && article.hearingNoticeSent}">Send Notice</span>
+																</button>
+																
+																
+																
+																
+														</td>		
+													</tr>
+												</tbody>											
+											</table>										
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+		
+		
+		<!-- Modal print modal -->
+	<div class="modal fade" id="myModalhearing" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+					</h4>
+					<button type="button" class="close" data-dismiss="modal"  onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+								<div class="row">
+								<div class="form-group col-sm-3">
+									<label>Hearing Id:</label>
+									<input type="text" class="form-control" id="hearingidmod" readonly="readonly"></span>
+								</div>
+								<div class="form-group col-sm-3">
+									<label>Hearing Date:</label>
+									<input type="date" class="form-control" id="hearingdatemod" th:attrappend="min=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd',#locale.forLanguageTag('en'))}" ></span>
+								</div>
+								
+								<div class="form-group col-sm-3">
+									<label>Hearing Status :</label>
+									<select id="hearingstatusmod" class="form-control">
+										<option value="">Select</option>
+										<option value="FIXED">FIXED</option>
+										<option value="ADJOURNED">ADJOURNED</option>
+										<option value="COMPLETED">COMPLETED</option>
+									</select>
+								</div>
+								</div>
+								<div class="form-group">
+									<label>Hearing Summary :</label>
+									<textarea class="form-control" id="hearingsummerymod" rows="5" cols="100"></textarea>									
+								</div>
+								<div class="form-group">
+									<label>Document Upload If any :</label>
+									<input type="file" id="filedata" name="filedata"  accept=".pdf" class="form-control">
+								</div>
+								
+								<button type="button" class="btn btn-primary" onclick="updatehearingdata()">Update</button>							
+							
+						
+						
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+		<!-- Modal print modal -->
+	<div class="modal fade" id="myModalnotice" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="text-center">
+					<h4 class="modal-title">
+						Notice Details
+					</h4>
+					</div>
+					<button type="button" class="close" data-dismiss="modal"  onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+						
+								<div class="form-group">
+									<label>Subject : </label>									
+									<input type="text" class="form-control" id="hearingSubject" >
+								</div>
+								<div class="form-group">
+									<label>Hearing Notice : </label>
+									<input type="hidden" id="hearingnoticeid">
+									<textarea class="form-control" id="hearingBody"  rows="5"></textarea>
+								</div>
+								
+								<div class="row form-group table-responsive" th:if="${partlist ne null}">
+									<label>Participants List:</label>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+											<th>Sr. No.</th>
+											<th>Participant Type</th>
+											<th>Name</th>
+											<th>Email</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="article,iState:${partlist}">
+												<td th:text="${iState.index+1}"></td>
+												<td th:text="${article.participantType}"></td>
+												<td>
+													 <span th:switch="${article.participantType}">
+										                <span th:case="'EMP'" th:text="${article.emp.firstName+' '+article.emp.middleName+' '+article.emp.lastName}">User is an administrator</span>
+										                <span th:case="'IO'" th:text="${article.io.firstName+' '+article.io.middelName+' '+article.io.lastName}">User is a manager</span>
+										                <span th:case="'PO'" th:text="${article.po.firstName+' '+article.po.middleName+' '+article.po.lastName}">User is a guest</span>
+										                
+										            </span>
+												</td>
+												<td>
+													 <span th:switch="${article.participantType}">
+										                <span th:case="'EMP'" th:text="${article.emp.email}">User is an administrator</span>
+										                <span th:case="'IO'" th:text="${article.io.email}">User is a manager</span>
+										                <span th:case="'PO'" th:text="${article.po.email}">User is a guest</span>
+										                
+										            </span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								<button type="button" id="sendnoticeid" class="btn btn-primary" onclick="sendhdnotice()">Send Hearing Notice</button>							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+<script th:inline="javascript">
+		var mess = [[${{message}}]];
+		
+		if (mess != null) {
+			swal(mess);
+		}
+		
+		
+		var lasthearingdate = [[${{lasthearingdate}}]];
+		if(lasthearingdate != null) {
+			console.log(lasthearingdate);
+			$('#localdate').attr("min",lasthearingdate);
+		}
+		
+		function updatehearing(index) {
+			jQuery.noConflict();
+			var hearingid = $('#hearingid'+index).val();
+			var hearingstatus = $('#hearingStatus'+index).val();
+			var hearingsummery = $('#hearingSummery'+index).val();
+			
+			var hearingdate = $('#hearingDate'+index).val();
+			//var weblink = $('#weblink'+index).val();
+			$('#hearingidmod').val(hearingid);
+			$('#hearingstatusmod').val(hearingstatus);
+			$('#hearingsummerymod').val(hearingsummery);
+			$('#hearingdatemod').val(hearingdate);
+		//	$('#hearingidmod').val(hearingid);
+			$('#myModalhearing').modal();
+		}
+		function sendnotice(index) {
+			jQuery.noConflict();
+			var hearingid = $('#hearingid'+index).val();
+			var status = $('#hearingStatus'+index).val();
+			if(status != 'FIXED') {
+				$('#sendnoticeid').hide();	
+			} else{
+				$('#sendnoticeid').show();	
+			}
+			$('#hearingnoticeid').val(hearingid);
+			var hearingNotice = $('#hearingNotice'+index).val();
+			$('#hearingBody').val(hearingNotice);
+			$('#myModalnotice').modal();
+		}
+		
+		function sendhdnotice() {
+			var form = new FormData();
+			form.append('hearingSubject',$('#hearingSubject').val());
+			form.append('hearingSummery',$('#hearingBody').val());
+			form.append('id',$('#hearingnoticeid').val());
+			
+			postdata('/de/departmentalEnquiry/sendhearingnotice/',form,function(data) {
+				swal(data)
+				.then((value) => {
+					location.reload();
+				});
+			});
+		}
+		
+		
+		function updatehearingdata(){
+			var form = new FormData();
+			 form.append('id',$('#hearingidmod').val());
+		        form.append('hearingStatus',$('#hearingstatusmod').val());
+		        form.append('hearingSummery',$('#hearingsummerymod').val());
+		        form.append('hearingDate',$('#hearingdatemod').val());
+		        if($('#filedata')[0].files[0] != undefined) {
+		        	form.append('file',$('#filedata')[0].files[0]);
+		        }
+				postdata('/de/departmentalEnquiry/updatehearingdetails/',form,function(data) {
+					swal(data)
+					.then((value) => {
+						location.reload();
+					});
+				});
+		}
+
+        
+   
+	</script>
+
+	
+
+	
+	
+	<!-- this code for view pdf  -->
+	
+	<script th:inline="javascript">
+
+	
+	
+	function printDivforInsidePreview(printdata) {
+		
+	    var printContents = document.getElementById(printdata).innerHTML;
+	       jQuery.noConflict();
+	    var originalContents = document.body.innerHTML;
+	    document.body.innerHTML = printContents;
+
+	    window.print(); 
+		    document.body.innerHTML = originalContents; 	  
+		    
+		    $('.close').click(function(){
+				$('#myModal29').modal('hide');
+				$(modalid).modal('hide');
+				$('.modal-backdrop').remove();
+				location.reload();
+			    var l=new Loading()
+			});
+	} 
+	
+	function closeModalForce(){
+		$('#myModalprint').modal('hide');
+		$('#myModal29').hide();
+		$('.modal-backdrop').remove();
+	}
+		
+	
+	
+	
+	var modalid = null;
+	
+	
+	
+	
+	function downloadlistForCaseDetailsviewPdf(){
+		modalid = '#myModal29';
+		var ff = new FormData();
+		var printdata = '#printdata';
+		var mymodal2 = '#myModal29';
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal2).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+
+	
+	
+	</script>
+	
+
+	<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+
+	
+</body>
+
+</html>

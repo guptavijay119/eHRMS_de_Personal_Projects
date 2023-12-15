@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	
+<nav class="sidebar sidebar-offcanvas" id="sidebar" th:fragment="ehrms_sidebar3_2_5">
+  <ul class="nav" sec:authorize="isAuthenticated()">
+    <li class="nav-item nav-profile border-bottom">
+      <a href="#" class="flex-column">
+        <div class="nav-profile-image">
+<!--           <img src="/image/india-emblem-f.png" alt="profile" /> -->
+				<div class="ellipse"><b><span
+				th:text="#{Government Construction Department}">सरकारी
+					बांधकाम विभाग </span></b>
+				</div> 
+          <!--change to offline or busy as needed-->
+        </div>
+        <div class="nav-profile-text d-flex ml-0 mb-3 flex-column" sec:authorize="isAuthenticated()">
+          <span class="font-weight-semibold mb-1 mt-2 text-center" th:text="#{Welcome}"></span><br/>
+          <span class="text-secondary icon-sm text-center" sec:authentication="principal.username">User</span><br/>
+          <span> <a class="btn btn-danger" th:href="@{/logout}" style="color:white;">Logout</a></span>
+        </div>
+      </a>
+    </li>
+<!--     <li class="nav-item pt-3"> -->
+<!--       <a class="nav-link d-block" href="index.html"> -->
+<!--         <img class="sidebar-brand-logo" src="assets/images/logo.svg" alt="" /> -->
+<!--         <img class="sidebar-brand-logomini" src="assets/images/logo-mini.svg" alt="" /> -->
+<!--         <div class="small font-weight-light pt-1"><span th:text="#{Recruitment}">Recruitment</span></div> -->
+<!--       </a> -->
+<!--     </li> -->
+    <li class="pt-2 pb-1">
+      <span class="nav-item-head"><span th:text="#{Recruitment}">Recruitment</span></span>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/}">
+        <i class="mdi mdi-compass-outline menu-icon"></i>
+        <span class="menu-title"><a th:href="@{/}">Dashboard</a></span>
+      </a>
+    </li>
+  
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/inboxgroupd/ptype/GROUPD/page/1}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" th:text="#{Sidebar3_2_4.Inbox}">Inbox</span>
+      </a>
+    </li>
+    
+    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_DEPARTMENT','ROLE_AA','ROLE_VAC','ROLE_16B','ROLE_BCCELL')">
+      <a class="nav-link"  th:href="@{/selectdDesignation}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_5.Prepare Recruitment Proposal}">Prepare
+						Recruitment Proposal</span>
+      </a>
+    </li>
+  
+    <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link" th:href="@{/candidatelistgroupd/ptype/GROUPD/page/1}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_5.Group D Candidates List}">Group D Candidates List</span>
+      </a>
+    </li>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link"  th:href="@{/groupdcandidateallocation}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar.Revenue Division Allotment}">Revenue Division Allotment</span>
+      </a>
+    </li>
+    
+    <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link"  th:href="@{/generateAppointmentgroupd}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar.Generate Appointment Letters}">Generate
+						Appointment Letters</span>
+      </a>
+    </li>
+    	
+  </ul>
+</nav>
+
+</html>

@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+<!-- 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/form-validation.css">
+ -->
+
+	<title>Departmental Enquiry Case Registration</title>
+	<style>
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		hr.solid {
+			border-top: 3px solid #bbb;
+		}
+
+		.dropdown-submenu {
+			position: relative;
+		}
+
+		.dropdown-submenu .dropdown-menu {
+			top: 0;
+			left: 100%;
+			margin-top: -1px;
+		}
+	</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container">
+		<!-- <div class="text-center row text-white bg-primary">
+			<h3 class="text-center" style="text-align: center;">Departmental Enquiry Case Registration</h3>
+		</div> -->
+
+		<div class="card bg-primary text-white">
+			<div class="card-body text-center" style="height: 60px;"><a href="de_registration.html"
+					style="color: white;">Departmental Enquiry Case
+					Registration</a></div>
+		</div>
+		<br>
+
+		<ul class="nav nav-tabs">
+			<li><button style="width: 300px;"><a href="caseDetails.html">Case Details</a></button></li>
+			<li><button style="width: 300px;"><a href="delinquentEmployeesDetails.html">Employee(s) Details</a></button>
+			</li>
+			<li><button style="width: 300px;"><a href="chargeSheetDetails.html">Charge Sheet Details</a></button></li>
+			<li><button style="width: 300px;"><a href="presentingOfficerDetails.html">Presenting Officer
+						Details</a></button></li>
+			<li><button style="width: 300px;"><a href="enquiryOfficerDetails.html">Enquiry Officer Details</a></button>
+			</li>
+			<li><button style="width: 300px;"><a href="suspensionReinstatedDetails.html">Suspension / Re-instated
+						Details</a></button></li>
+			<li><button style="width: 300px;"><a href="prosecutionProposalDetails.html">Prosecution Proposal
+						Details</a></button></li>
+			<li><button style="width: 300px;"><a href="courtCaseDetails.html">Court Case Details</a></button></li>
+			<li><button style="width: 300px;"><a href="DECaseOutcomeStatus.html">DE Case Outcome / Status</a></button>
+			</li>
+			<li><button style="width: 300px;"><a href="statementOfDefense.html">Statement of Defense
+						Details</a></button></li>
+		</ul>
+		<!-- <div class="dropdown">
+				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Reports
+					<span class="caret"></span></button>
+				<ul class="dropdown-menu">
+					<li class="dropdown-submenu">
+						<a class="test" tabindex="-1" href="#">No. of Cases <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a tabindex="-1" href="#">Administrative Department Wise</a></li>
+							<li><a tabindex="-1" href="#">Division Wise</a></li>
+							<li><a tabindex="-1" href="#">District Wise</a></li>
+							<li><a tabindex="-1" href="#">Rule Wise</a></li>
+							<li class="dropdown-submenu">
+								<a class="test" href="#">Class Wise <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">Class A</a></li>
+									<li><a href="#">Class B</a></li>
+								</ul>
+							</li>
+							<li><a tabindex="-1" href="#">Enquiry Officer Wise</a></li>
+							<li><a tabindex="-1" href="#">Misconduct Wise</a></li>
+						</ul>
+					</li>
+					<li class="dropdown-submenu">
+						<a class="test" tabindex="-1" href="#">Types of Misconduct <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a tabindex="-1" href="#">Administrative Misconduct</a></li>
+							<li class="dropdown-submenu">
+								<a class="test" href="#">Criminal Offence <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">Bribery</a></li>
+									<li><a href="#">Misappropriation</a></li>
+									<li><a href="#">Embesslement</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li><a tabindex="-1" href="#">As per Rules</a></li>
+					<li><a tabindex="-1" href="#">As per Status</a></li>
+				</ul>
+			</div> -->
+
+		<!-- <li class="dropdown">
+				<button style="width: 300px;">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Reports</a>
+				<div class="dropdown-menu">
+				  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">No. of Cases</a>
+				  <div class="dropdown-menu">
+					<a class="dropdown-item" href="#">No. of Cases</a>
+					<a class="dropdown-item" href="#">Another action</a>
+					<a class="dropdown-item" href="#">Something else here</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#">Separated link</a>
+				  </div>
+				  <a class="dropdown-item" href="#">Another action</a>
+				  <a class="dropdown-item" href="#">Something else here</a>
+				  <div class="dropdown-divider"></div>
+				  <a class="dropdown-item" href="#">Separated link</a>
+				</div>
+			</button>
+			  </li> -->
+
+
+		<br>
+
+		<div class="card-header col-sm-12">
+			<h5>Case Details </h5>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-md-3 mb-3">
+				<label for="de_file_no">Sys. Gen. No.</label>
+				<input type="text" class="form-control" id="de_file_no" placeholder="" value="12389" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="de_file_no">DE File No. / Case No.</label>
+				<input type="text" class="form-control" id="de_file_no" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="date">Case Filed Date</label>
+				<input type="date" class="form-control" id="date" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="casetype">Type of Misconduct</label>
+				<select class="form-control" id="casetype">
+					<option>Select</option>
+					<option>Administrative Misconduct</option>
+					<option>Criminal Offence - Bribery (ACB)</option>
+					<option>Criminal Offence - Misappropriation</option>
+					<option>Criminal Offence - Embezzlement</option>
+					<option>Criminal Offence</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="rule">Rule Applicable</label>
+				<select class="form-control" id="rule">
+					<option>Select</option>
+					<option>Rule 8</option>
+					<option>Rule 10</option>
+					<option>Rule 13 (i)</option>
+					<option>Rule 13 (ii)</option>
+					<option>Rule 27</option>
+				</select>
+			</div>
+
+			<div class="col-md-3 mb-3">
+				<label for="de_file_no">Delinquents Involved </label>
+				<select class="form-control" id="rule">
+					<option>Select</option>
+					<option>Single</option>
+					<option>Multiple</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="card-header col-sm-12">
+			<h5>Delinquent Employee(s) Details </h5>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-md-3 mb-3">
+				<label for="firstName">Sevarth ID</label>
+				<input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="firstName">Employee Name</label>
+				<input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+			</div>
+
+			<div class="col-md-3 mb-3">
+				<label for="gender">Gender</label>
+				<select class="form-control" id="designation">
+					<option>Select</option>
+
+					<option>Male</option>
+					<option>Female</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="dob">Date of Birth</label>
+				<input type="date" class="form-control" id="dob" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="dor">Date of Superannuation</label>
+				<input type="date" class="form-control" id="dor" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="doj">Date of Joining in Gov. Serv.</label>
+				<input type="date" class="form-control" id="doj" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="designation">Designation</label>
+				<select class="form-control" id="designation">
+					<option>Select</option>
+
+					<option>Clerk-cum-Typist</option>
+					<option>Assistant Section Officer</option>
+					<option>Section Officer</option>
+					<option>Under Secretary</option>
+					<option>Deputy Secretary</option>
+					<option>Joint Secretary</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="servicegroup">Service Group</label>
+				<select class="form-control" id="servicegroup">
+					<option>Select</option>
+					<option>Group A</option>
+					<option>Group B</option>
+					<option>Group C</option>
+					<option>Group D</option>
+				</select>
+			</div>
+
+			<div class="col-md-3 mb-3">
+				<label for="servicegroup">Pay Commission</label>
+				<select class="form-control" id="servicegroup">
+					<option>Select</option>
+					<option>7th Pay Commission</option>
+					<option>6th Pay Commission</option>
+					<option>5th Pay Commission</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="payscale">Pay Scale / Pay Band</label>
+				<select class="form-control" id="payscale">
+					<option>Select</option>
+					<option>S-1</option>
+					<option>S-2</option>
+					<option>S-3</option>
+					<option>S-4</option>
+					<option>S-5</option>
+					<option>S-6</option>
+					<option>S-7</option>
+					<option>S-8</option>
+					<option>S-9</option>
+					<option>S-10</option>
+					<option>S-11</option>
+					<option>S-12</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="dob">Grade Pay </label>
+				<select class="form-control" id="payscale">
+					<option>Select</option>
+					<option>4800</option>
+					<option>6600</option>
+					<option>7600</option>
+					<option>8700</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="firstName">Basic Pay</label>
+				<input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for=" department">Department Name</label>
+				<select class="form-control" id="payscale">
+					<option>Select</option>
+					<option>General Administration Department</option>
+					<option>Home Department</option>
+					<option>Food, Civil Supply and Consumer Protection Department</option>
+					<option>Medical Education and Drug Department</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="subdepartment">Sub-Department Name</label>
+				<select class="form-control" id="payscale">
+					<option>Select</option>
+					<option>Forest</option>
+					<option>Revenue</option>
+					<option>Energy</option>
+					<option>Industry</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="subdepartment">Allied Office / Field Office</label>
+				<input type="text" class="form-control" id="subdepartment" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="revenuedivision">Revenue Division</label>
+				<select class="form-control" id="subdepartment">
+					<option>Select</option>
+					<option>Konkan</option>
+					<option>Pune</option>
+					<option>Nashik</option>
+					<option>Aurangabad</option>
+					<option>Arnravati </option>
+					<option>Nagpur </option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="dob">Office Name</label>
+				<input type="text" class="form-control" id="subdepartment" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="dob">Office Address</label>
+				<input type="text" class="form-control" id="subdepartment" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="city">City / Town</label>
+				<input type="text" class="form-control" id="city" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="district">District</label>
+				<select class="form-control" id="subdepartment">
+					<option>Select</option>
+					<option>Mumbai City</option>
+					<option>Mumbai Suburban</option>
+					<option>Thane</option>
+					<option>Palghar</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="district">State</label>
+				<select class="form-control" id="subdepartment">
+					<option>Maharashtra</option>
+					<option>Rajasthan</option>
+					<option>Goa</option>
+					<option>Gujrat</option>
+				</select>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="district">Pincode</label>
+				<input type="text" class="form-control" id="city" placeholder="" value="" required>
+			</div>
+			<br>
+
+			<!-- <button class="btn btn-success btn-lg float-right"
+			type="submit">
+		 Submit
+	</button> -->
+		</div>
+
+		<div class="row">
+			<a class="btn btn-primary text-align" href="#" role="button" style="text-align: right">Add More Employee</a>
+		</div>
+
+		<br>
+		<div class="card-header col-sm-12">
+			<h5>Charge Sheet Details</h5>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="firstName" style="margin: 10px">Charge Sheet Filed?</label>
+				<!-- <div>
+					<input type="radio" id="chargesheet" style="margin: 10px">Yes
+					<input type="radio" id="chargesheet1" style="margin: 10px">No
+				</div> -->
+				<div>
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetYes"
+						value="chargesheetYes" checked> Yes
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetNo"
+						value="chargesheetNo"> No
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="chargesheetdate">Charge Sheet Date</label>
+				<input type="date" class="form-control" id="chargesheetdate" placeholder="" value="" required>
+
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="chargesheetdate">Upload Charge Sheet</label>
+				<input type="file">
+			</div>
+		</div>
+
+		<div class="card-header col-sm-12">
+			<h5>Presenting Officer Details</h5>
+		</div>
+		<div class="row">
+			<div class="col-md-3 mb-3">
+				<label for="presentingofficer" style="margin: 10px">Appointed?</label>
+				<div>
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetYes"
+						value="chargesheetYes" checked> Yes
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetNo"
+						value="chargesheetNo"> No
+				</div>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for=" department">Presenting Officer Name</label>
+				<input type="text" class="form-control" id="department" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="chargesheetdate">Appointment Date</label>
+				<input type="date" class="form-control" id="presentingofficerdate" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="chargesheetdate">Upload Order / File</label>
+				<input type="file">
+			</div>
+		</div>
+
+		<div class="card-header col-sm-12">
+			<h5>Enquiry Officer Details</h5>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficer" style="margin: 10px">Appointed?</label>
+				<div>
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetYes"
+						value="chargesheetYes" checked> Yes
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetNo"
+						value="chargesheetNo"> No
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for=" department">Enquiry Officer Name</label>
+				<select class="form-control" id="rule">
+					<option>Select</option>
+					<option>Konkan Div. Enquiry Officer Name</option>
+					<option>Pune Div. Enquiry Officer Name</option>
+					<option>Nashik Div. Enquiry Officer Name</option>
+					<option>Aurangabad Div. Enquiry Officer Name</option>
+					<option>Arnravati Div. Enquiry Officer Name </option>
+					<option>Nagpur Div. Enquiry Officer Name </option>
+				</select>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Appointment Date</label>
+				<input type="date" class="form-control" id="enquiryofficerdate" placeholder="" value="" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Upload Order / File</label>
+				<input type="file">
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Date of Physical Files Received</label>
+				<input type="date" class="form-control" id="enquiryofficerdate" placeholder="" value="" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Date of Enquiry Report Submission</label>
+				<input type="date" class="form-control" id="enquiryofficerdate" placeholder="" value="" required>
+			</div>
+		</div>
+
+		<div class="card-header col-sm-12">
+			<h5>Suspension / Re-instated Details</h5>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Sevarth ID</label>
+				<input type="text" class="form-control" id="enquiryofficerdate" placeholder="" value="" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Employee Name</label>
+				<input type="text" class="form-control" id="enquiryofficerdate" placeholder="" value="" required>
+			</div>
+			<!-- <div class="col-md-4 mb-3">
+					<label for="enquiryofficerdate">DE File No. / Case No.</label>
+					<input type="text" class="form-control" id="enquiryofficerdate" placeholder="" value="" required>
+				</div> -->
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficer" style="margin: 10px">Is Suspended ? </label>
+				<div>
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetYes"
+						value="chargesheetYes" checked> Yes
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetNo"
+						value="chargesheetNo"> No
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Suspension Date</label>
+				<input type="date" class="form-control" id="enquiryofficerdate" placeholder="" value="" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Upload Order / File</label>
+				<input type="file">
+			</div>
+
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficer" style="margin: 10px">Is Re-instated ? </label>
+				<div>
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetYes"
+						value="chargesheetYes" checked> Yes
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetNo"
+						value="chargesheetNo"> No
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Re-instated Date</label>
+				<input type="date" class="form-control" id="enquiryofficerdate" placeholder="" value="" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficerdate">Upload Order / File</label>
+				<input type="file">
+			</div>
+		</div>
+
+		<div class="card-header col-sm-12">
+			<h5>Prosecution Proposal Details</h5>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="presentingofficer" style="margin: 10px">Sanction for Prosecution Asked ?</label>
+				<div>
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetYes"
+						value="chargesheetYes" checked> Yes
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetNo"
+						value="chargesheetNo"> No
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="presentingofficer" style="margin: 10px">Sanction Granted?</label>
+				<div>
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetYes"
+						value="chargesheetYes" checked> Yes
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetNo"
+						value="chargesheetNo"> No
+				</div>
+			</div>
+			<!-- <div class="col-md-3 mb-3">
+					<label for=" department">Presenting Officer Name</label>
+					<input type="text" class="form-control" id="department" placeholder="" value="" required>
+				</div> -->
+			<div class="col-md-4 mb-3">
+				<label for="chargesheetdate">Sanction Granted / Denied Letter Date</label>
+				<input type="date" class="form-control" id="presentingofficerdate" placeholder="" value="" required>
+			</div>
+			<div class="col-md-3 mb-3">
+				<label for="chargesheetdate">Upload Letter Copy</label>
+				<input type="file">
+			</div>
+		</div>
+
+		<div class="card-header col-sm-12">
+			<h5>Court Case Details</h5>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficer" style="margin: 10px">Any Related Court Case(s) exists ?</label>
+				<div>
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetYes"
+						value="chargesheetYes" checked> Yes
+					<input class="radio-inline" type="radio" name="chargesheet" id="chargesheetNo"
+						value="chargesheetNo"> No
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="courtcaseno">Court Case Number</label>
+				<input type="text" class="form-control" id="courtcaseno" placeholder="" value="" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="date">Court Case Filed Date</label>
+				<input type="date" class="form-control" id="date" placeholder="" value="" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="courtname">Court Name</label>
+				<select class="form-control" id="rule">
+					<option>Select</option>
+					<option>Supreme Court</option>
+					<option>High Court</option>
+					<option>Session Court</option>
+					<option>District Court</option>
+					<option>Special Court</option>
+				</select>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="courtname">Court Address</label>
+				<input type="text" class="form-control" id="courtname" placeholder="" value="">
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="courtname">Upload File</label>
+				<input type="file">
+			</div>
+		</div>
+
+		<div class="card-header col-sm-12">
+			<h5>DE Case Outcome / Status</h5>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label for="enquiryofficer" style="margin: 10px">DE Case Status</label>
+				<select class="form-control" id="rule">
+					<option>Select</option>
+					<option>Pending</option>
+					<option>Enquiry Completed</option>
+					<option>Kept in Abeyance</option>
+					<option>Closed - Punishment Implemented</option>
+					<option>Closed - Acquitted</option>
+					<option>Closed - Due to Death of Delinquent</option>
+				</select>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="courtname">Penalty Awarded</label>
+				<select class="form-control" id="rule">
+					<option>Select</option>
+					<option>Major</option>
+					<option>Minor</option>
+
+				</select>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="courtname">Upload File Decision / Order Copy</label>
+				<input type="file">
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="firstName">Sevarth ID</label>
+				<input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label for="firstName">Employee Name</label>
+				<input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+			</div>
+		</div>
+
+		<br>
+		<div class="text-center">
+			<button type="button" class="btn btn-primary">Save</button>
+		</div>
+		<br><br><br>
+		</form>
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<!-- <script>
+        $(document).ready(function () {
+            $('.dropdown-submenu a.test').on("click", function (e) {
+                $(this).next('ul').toggle();
+                e.stopPropagation();
+                e.preventDefault();
+            });
+        });
+    </script> -->
+	<script src="js/jquery-3.2.1.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>

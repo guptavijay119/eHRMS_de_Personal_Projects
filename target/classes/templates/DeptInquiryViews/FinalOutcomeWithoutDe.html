@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>Final Outcome Details</title>
+	<style>
+		.ui-menu .ui-menu-item-wrapper {
+			color: #303030 !important;
+			background-color: #fff !important;
+		}
+
+		.ui-menu .ui-menu-item-wrapper:hover {
+			color: #303030 !important;
+			background-color: rgb(192, 192, 192) !important;
+			border: #fff 1px solid !important;
+		}
+
+		.ui-widget-content {
+			border: 1px solid #ddd;
+			background: rgb(192, 192, 192) !important;
+			color: #333 !important;
+		}
+	</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar" aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar" aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper" id="up">
+					<div class="page-header">
+					</div>
+					<div>
+						<h3>
+							<strong><span th:text="#{de.finaloutcomelabel}"></span>
+							<div align="right"><a href="#gridviewFinalOutComeId" class="btn btn-info btn-sm"><span th:text="#{de.scroll.down.AllBtn}"></span></a> </div>
+
+
+							</strong>
+						</h3>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+
+									<form th:action="@{/departmentalEnquiry/addFinalOutcomeDetailsWithoutDe}" id="noticeregisteridmpsc"
+										th:object="${finaloutcomedetailsObj}" method="post" enctype="multipart/form-data">
+
+										<p style="color: red;"><span th:text="#{casedetails.mandatory.text.de}"></span></p>
+
+										<div class="row">
+											<!-- <input type="hidden" class="form-control" th:field="*{id}"> -->
+                                            <input type="hidden" class="form-control" th:field="*{id}">
+
+											 <div class="col-md-3 mb-3" id="withoutde">
+												<label for="systemGenCaseNo" data-toggle="tooltip" 
+													title="Number of file on which procedure for sanction to prosecution has been initiated"><span th:text="#{de.fileno.text}"></span></label> <input
+													type="text" class="form-control" id="fileno" readonly="readonly"
+													
+													th:placeholder="#{case.casedetails.fileno.placeholder}"   th:field="${finaloutcomedetailsObj.fileNo}"
+													data-placement="right"
+													required="required">
+											</div>
+											
+											<div class="col-md-4 mb-3">
+												<label for="inquiryReportReceived" style="margin: 10px" th:if="${processflow ne null && processflow == '3'}">
+													<span th:text="#{de.finaloutcome.wherthercasedecidedwithoutde}"></span></label> &nbsp;
+												<label for="inquiryReportReceived" style="margin: 10px" th:if="${processflow ne null && processflow == '4'}">
+													<span th:text="#{de.finaloutcome.wherthercasedecidedwithoutde27}"></span></label> &nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														th:field="*{whetherCaseFinallyDecided}" type="radio"
+														name="whetherCaseFinallyDecided"
+														id="whetherCaseFinallyDecidedYes" value="true" checked> <span th:text="#{de.chargesheetissued.yes}"></span>
+													<input th:field="*{whetherCaseFinallyDecided}" type="radio"
+														name="whetherCaseFinallyDecided" class="ml-4"
+														id="whetherCaseFinallyDecidedNo" value="false"> <span th:text="#{de.chargesheetissued.no}"></span>
+												</div>
+											</div>
+											</div>
+											
+										
+										
+											<div class="row form-group" id="whetherCaseFinallyDecideddata">
+                                                   <div class="col-md-3 mb-3">
+												<label for="systemGenCaseNo"><center><span th:text="#{de.sevarth.id}"></span> </center></label> <input type="text"
+													class="form-control" id="empgroupid"   th:placeholder="#{case.casedetails.placeholder.sevarthid}"
+													th:field="*{sevarthId}">
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="FirstName"><span th:text="#{de.firstName.label}"></span></label>
+												<input type="text"
+													class="form-control" id="firstname"   th:placeholder="#{fname.placeholder}" 
+													th:field="${finaloutcomedetailsObj.firstName}" required="required">
+											</div>
+
+
+											<div class="col-md-3 mb-3">
+												<label for="middlename"><center><span th:text="#{de.middleName.label}"></span></center></label> <input type="text"
+													class="form-control" id="middleName"   th:placeholder="#{mname.placeholder}"
+													th:field="*{middleName}">
+											</div>
+
+											<div class="col-md-3 mb-3">
+												<label for="lastname"><span th:text="#{de.lastName.label}"></span></label> <input type="text"
+													class="form-control" id="lastName" th:placeholder="#{de.lastName.placeholder}"
+													th:field="*{lastName}" required="required">
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="inquiryReportReceived" style="margin: 10px">
+													<span th:text="#{de.finalorderissued.label}"></span></label> &nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														th:field="*{whetherfinalorderIssued}" type="radio"
+														name="whetherfinalorderIssued"
+														id="whetherfinalorderIssuedYes" value="true" checked> <span th:text="#{de.chargesheetissued.yes}"></span>
+													<input th:field="*{whetherfinalorderIssued}" type="radio"
+														name="whetherfinalorderIssued" class="ml-4"
+														id="whetherfinalorderIssuedNo" value="false"> <span th:text="#{de.chargesheetissued.no}"></span>
+
+												</div>
+											</div>
+											
+											<div class="col-md-3 mb-3" id="dateoforderdata">
+												<label for="date"><span th:text="#{de.dateoforder.label}">
+													</span></label> <input id="dateOfFinalOrder"
+													class="form-control" min="1900-01-01" th:attrappend="max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd',#locale.forLanguageTag('en'))}"  type="date"
+													th:field="${finaloutcomedetailsObj.dateOfFinalOrder}" />
+											</div>
+
+											<div class="col-md-3 mb-3" id="decisiontake">
+												<label for="casePendingWith"><span>
+														<span th:text="#{de.finalOutcome.decisiontakens}"></span></span></label>
+												<select id="decision" name="decision" class="form-control"
+													th:field="${finaloutcomedetailsObj.decisionTakenWithoutDe}">
+													<option value=""  th:text="#{dropdown.select}">select</option>
+													<option value="Major Penalty Inflicted">Major Penalty Inflicted</option>
+													<option value="Minor Penalty Inflicted">Minor Penalty Inflicted</option>
+													<option value="Other decision">Other decision</option>
+													
+												</select>
+											</div>
+											
+											<div class="col-md-3 mb-3" id="otherdecision">
+												<label for="lastname"><span th:text="#{de.others.decision}"></span></label> <input type="text"
+													class="form-control" id="otherdecisionid" placeholder="Enter Other Decision"
+													th:field="*{otherdecision}">
+											</div>
+
+											<div class="col-md-3 mb-3" id="fileiddata">
+												<label for="fileName"><span th:text="#{de.uploadorder.label}"></span>
+												</label> <input type="file" accept=".pdf" th:field="*{fileName}" class="form-control">
+											</div>
+
+
+
+
+										</div>
+										
+										<div id="CasePendingWithData">
+										<div class="col-md-3 mb-3">
+												<label for="casePendingWith">
+												<span th:text="#{de.casependingwith.label}">
+														</span></label>
+												<select id="reason" name="reason" class="form-control"
+													th:field="${finaloutcomedetailsObj.casePendingWith.id}">
+													<option value="" th:text="#{dropdown.select}" >select</option>
+													
+													<option th:each="casePending: ${casependingwithlist}"
+														th:value="${casePending.id}"
+														th:text="${casePending.casePendingNameEn}"></option>
+												</select>
+											</div>
+										
+										
+										</div>
+										<div class="col-md-12 mb-4" id="remarkdata">
+												<label for="Remarks"><span th:text="#{de.finalOutcome.remarks}"></span></label>
+													
+												<textarea rows="3" cols="200" class="form-control  col-md-12"  th:field="*{remark}" th:placeholder="#{enter.fileno.ifprosecutionproceedings.initiated.onthefileotherthandefile}"  ></textarea>
+											</div>
+										
+										<br>
+										<div class="btn-toolbar mr-1" role="toolbar" aria-label="Basic example">
+											<button type="submit" th:value="save" class="btn btn-primary"><span th:text="#{de.casedetails.saveformbtn}"></span></button>
+											&nbsp;
+											<button type="button" th:value="addcourtcase" th:name="action" onclick="myFunction()"
+													id="addmore" class="btn btn-primary"><span th:text="#{de.add.more.final.outcome}"></span></button>
+													
+													&nbsp;
+													<button  th:if="${finaloutcomedetailsObj.fileNo}"   type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
+                        								             
+									          <span> <span th:text="#{casedetails.preview.button}"> Preview</span></span>
+						                           	</button>
+										</div>
+
+									</form>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+
+					<div class="row" id="gridviewFinalOutComeId">
+
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+
+
+									<div class="table-responsive">
+                                            <div> <b style="color: blue;float: right;"> <span th:text="#{totalfinaloutcomewithoutde}"></span> <span th:text="${totalItems}"></span></b>
+								              
+								              <label><h4 style="margin-top: 3px;" th:text="#{de.listof.finaloutcome}"></h4></label>
+								                </div>
+											
+										<table class="table table-bordered dark table-sm">
+											<thead>
+												<tr>
+													<th width="5%"> <center><span th:text="#{de.enquiry.srno}"></span></center></th>
+													<th width="7%"><span th:text="#{de.file.no.labels}"></span> </th>
+													<!--  <th width="5%">Case Number </th> -->
+													<th width="7%"><center><span th:text="#{de.enquiry.caseno}"></span></center></th>
+													
+													<!-- <th width="6%" class="text-wrap">Inquiry Report Received</th>
+													<th class="text-wrap">Date of Receipt</th> -->
+													<th class="text-wrap"><span th:text="#{de.finaloutcome.casependingwiths}"></span></th>
+													<th width="6%" class="text-wrap"><span th:text="#{de.finaloutcome.whetherthecasefinallydecided}"></span></th>
+													<th width="7%" class="text-wrap"><center><span th:text="#{de.sevarth.id}"></span> </center></th>
+													<th width="7%" class="text-wrap"><center><span th:text="#{de.firstName.labels}"></span></center></th>
+													<th width="7%" class="text-wrap"><center><span th:text="#{de.middleName.label}"></span></center></th>	
+													<th width="7%" class="text-wrap"><center><span th:text="#{de.lastName.labels}"></span></center></th>
+													<!-- <th class="text-wrap">Decision Taken </th>
+													<th class="text-wrap">Type of Penalty Inflicted</th> -->
+													<th class="text-wrap">
+														<span th:text="#{de.uploadedorder}"></span>
+													</th>
+													<th width="4%">
+														<center><center><span th:text="#{de.empdetails.action}"></span></center></center>
+													</th>
+
+
+												</tr>
+
+											</thead>
+											<tbody>
+												<tr th:each="article,iState:${FinalOutComeList}">
+
+													<td th:text="${pageIndex+iState.index}"></td>
+
+													<td th:text="${article.fileNo}"></td>
+													<td>
+														<span th:if="${article.casedetails ne null}" th:text="${article.casedetails.caseNo}"></span>
+													</td>
+													
+													<!-- <td class="text-wrap">
+														<span th:if="${article.inquiryReportReceived}"
+															th:text="#{de.boolean.yes}"></span>
+														<span th:unless="${article.inquiryReportReceived}"
+															th:text="#{de.boolean.no}"></span>
+													</td>
+													<td class="text-wrap">
+														<span th:if="${article.dateofReceipt ne null}" th:text="${#temporals.format(article.dateofReceipt, 'dd-MM-yyyy')}"></span>
+													</td> -->
+													
+													
+													<td class="text-wrap">
+														<span th:if="${article.casePendingWith ne null}"
+															th:text="${article.casePendingWith.casePendingNameEn}"></span>
+													</td>
+													
+													
+													
+													<td class="text-wrap">
+														<span th:if="${article.whetherCaseFinallyDecided}"
+															th:text=#{de.boolean.yes}></span>
+														<span th:unless="${article.whetherCaseFinallyDecided}"
+															th:text=#{de.boolean.no}></span>
+													</td>
+													
+													<td >
+														<span 
+														th:text="${article.sevarthId}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:text="${article.firstName}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:text="${article.middleName}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:text="${article.lastName}"></span>
+													</td>
+
+													<!-- <td class="text-wrap">
+														<span th:if="${article.decisionTaken ne null}"
+															th:text="${article.decisionTaken.decisionNameHindiEn}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:if="${article.typeOfPenaltyInflicted ne null}"
+															th:text="${article.typeOfPenaltyInflicted.typeOfPenaltyNameEn}"></span>
+													</td> -->
+
+
+													<td>
+														<strong><a th:if="${article.fileName ne null}" 
+														th:href="@{|/departmentalEnquiry/DocuploadOrderofFinalOutcome/${article.id}|}" target="_blank">
+														<span th:text="${article.fileName}"></span>
+														<!-- View Order -->
+													</a></strong>
+													</td>
+													
+
+													<td>
+														<span><a
+																th:href="@{|/departmentalEnquiry/editfinalOutcomeDtlsRecordsWithoutDe/${article.id} /${currentPage}|}">
+																<button class="btn btn-primary" ><span th:text="#{de.edit.button.all}"></span></button></a></span>
+													</td>
+
+												<!-- 	<td><span>
+															<a
+																th:href="@{| /departmentalEnquiry/deletefinalOutComeDetailsRecords/${article.id} |}"><img
+																	th:src="@{/img/delete.png}" alt="logo" /></a>
+
+
+														</span>
+													</td> -->
+
+
+
+
+												</tr>
+
+											</tbody>
+
+
+										</table>
+									</div>
+									
+									<br>
+									<div><a href="#up"  class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+									
+									<div class="row" th:fragment="pagination">
+										<div>
+											<b style="color: blue"><span><span th:text="#{totalfinaloutcomewithoutde}"></span></span> <span th:text="${totalItems}"></span></b>
+										</div>
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item" th:if="${currentPage > 1}">
+														<a class="page-link"
+															th:href="@{|/departmentalEnquiry/finalOutCometailswithoutde/1|}"
+															th:text="#{pages.first}">First</a>
+														<span th:unless="${currentPage > 1}"
+															th:text="#{pages.first}">First</span>
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage > 1}"
+															th:href="@{|/departmentalEnquiry/finalOutCometailswithoutde/${currentPage - 1}|}"
+															th:text="#{pages.previous}">Previous</a>
+														<span th:unless="${currentPage > 1}"
+															th:text="#{pages.previous}">Previous</span>
+													</li>
+
+													<li class="page-item" th:each="i: ${#numbers.sequence(begin, end)}"
+														th:if="${begin<end}">
+														<a th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}"
+															th:href="@{|/departmentalEnquiry/finalOutCometailswithoutde/${i}|}"
+															th:text="${i}"></a>
+
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}"
+															th:href="@{|/departmentalEnquiry/finalOutCometailswithoutde/${currentPage + 1}|}"
+															th:text="#{pages.next}">Next</a>
+														<span th:unless="${currentPage < totalPages}"
+															th:text="#{pages.next}">Next</span>
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}"
+															th:href="@{|/departmentalEnquiry/finalOutCometailswithoutde/${totalPages}|}"
+															th:text="#{pages.last}">Last</a>
+														<span th:unless="${currentPage < totalPages}"
+															th:text="#{pages.last}">Last</span>
+													</li>
+
+												</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+									<!-- ending pagination -->
+
+
+
+
+
+								</div>
+							</div>
+						</div>
+
+
+
+					</div>
+
+
+
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+	
+	<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+					</h4>
+					<button type="button" class="close" data-dismiss="modal"  onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%" height="500"
+								style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+		<!-- this code for view pdf  -->
+	
+	<script th:inline="javascript">
+	
+	/* added on 19/01/2023  as per DE requirements ...  */
+	
+	function printDivforInsidePreview(printdata) {	
+	    var printContents = document.getElementById(printdata).innerHTML;
+	     jQuery.noConflict();
+	    var originalContents = document.body.innerHTML;
+	   document.body.innerHTML = printContents;
+	  var modalid='#myModal2';
+    	$(modalid).modal('hide');	
+      window.print();		
+       $(modalid).modal('hide');	
+	 document.body.innerHTML = originalContents; 	  	
+	       location.reload();
+	        var l=new Loading();
+	} 
+	
+	function closeModalForce(){
+		$('#myModalprint').modal('hide');
+		$('#myModal2').hide();
+		$('.modal-backdrop').remove();
+	}
+	
+	
+	var modalid = null;
+	
+	function downloadlistForCaseDetailsviewPdf(){
+		modalid = '#myModal2';
+		var ff = new FormData();
+		var printdata = '#printdata';
+		var mymodal2 = '#myModal2';
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal2).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	</script>
+					
+	
+		<script th:inline="javascript">
+	/* 	whetherCaseFinallyDecidedNo */
+		
+		/* var whetherCaseFinallyDecidedNo = JSON.parse($('input[name="whetherCaseFinallyDecidedNo"]:checked').val());
+		if(whetherCaseFinallyDecidedNo) {
+			$('#whetherCaseFinallyDecideddata').show();
+			/* $('#addmore').show(); */
+		//} */
+		
+		
+		var isorderfinal = JSON.parse($('input[name="whetherfinalorderIssued"]:checked').val());	
+		if(isorderfinal) {
+			$('#dateoforderdata').show();
+			$('#fileiddata').show();
+			$('#decisiontake').show();
+		} else {
+			$('#dateoforderdata').hide();
+			$('#fileiddata').hide();
+			$('#decisiontake').hide();
+			$('#otherdecision').hide();
+			$('#decision').val('');
+			$('#otherdecisionid').val('');
+		}
+		$('input[name="whetherfinalorderIssued"]').change(function(){
+			var isorderfinal = JSON.parse($('input[name="whetherfinalorderIssued"]:checked').val());	
+			if(isorderfinal) {
+				$('#dateoforderdata').show();
+				$('#fileiddata').show();
+				$('#decisiontake').show();
+			} else {
+				$('#dateoforderdata').hide();
+				$('#fileiddata').hide();
+				$('#decisiontake').hide();
+				$('#otherdecision').hide();
+				$('#decision').val('');
+				$('#otherdecisionid').val('');
+			}
+		});
+		
+		
+		var decision = $('#decision').val();
+		if(otherdecision != null && otherdecision == 'Major Penalty Inflicted') {
+			$('#otherdecision').hide();
+			$('#otherdecisionid').val('');
+		}
+		if(otherdecision != null && otherdecision == 'Minor Penalty Inflicted') {
+			$('#otherdecision').hide();
+			$('#otherdecisionid').val('');
+		}
+		if(decision != null && decision == 'Other decision') {
+			$('#otherdecision').show();
+		}
+		if(decision != null && decision == '') {
+			$('#otherdecision').hide();
+			$('#otherdecisionid').val('');
+		}
+		
+		$('#decision').change(function(){
+			var decision = $('#decision').val();
+			 if(decision != null && decision == 'Major Penalty Inflicted') {
+				 $('#otherdecision').hide();
+				$('#otherdecisionid').val('');
+			}
+			if(decision != null && decision == 'Minor Penalty Inflicted') {
+				$('#otherdecision').hide();
+				$('#otherdecisionid').val('');		
+			}
+			if(decision != null && decision == 'Other decision') {
+				$('#otherdecision').show();
+			}
+			if(decision != null && decision == '') {
+				$('#otherdecision').hide();
+				$('#otherdecisionid').val('');
+			}
+		});
+		
+		var chargesheetIssued = JSON.parse($('input[name="whetherCaseFinallyDecided"]:checked').val());	
+		if(chargesheetIssued) {
+			$('#whetherCaseFinallyDecideddata').show();
+			$('#CasePendingWithData').hide();
+			$('#addmore').show();
+		} else {
+			$('#whetherCaseFinallyDecideddata').hide();
+			/* $('#CasePendingWithData').hide(); */
+			$('#addmore').hide();
+		}		
+		
+		$('input[name="whetherCaseFinallyDecided"]').click(function(){
+			var chargesheetIssued = JSON.parse($('input[name="whetherCaseFinallyDecided"]:checked').val());
+			if(chargesheetIssued) {
+				$('#whetherCaseFinallyDecideddata').show();
+				$('#CasePendingWithData').hide();
+				$('#addmore').show();
+			} else {
+				$('#whetherCaseFinallyDecideddata').hide();
+				$('#addmore').hide();
+				$('#CasePendingWithData').show();
+				$('#reasondata').show();
+				
+			}	
+		});
+		
+		var inquiryReportReceived = JSON.parse($('input[name="inquiryReportReceived"]:checked').val());
+		if(inquiryReportReceived) {
+			$('#dateofReceiptdata').show();
+			$('#reasondata').show();
+			$('#decisionTakendata').show();
+			$('#typeOfPenaltyInflicteddata').show();
+			$('#fileiddata').show();
+		} else {
+			$('#dateofReceiptdata').hide();
+			$('#reasondata').hide();
+			$('#decisionTakendata').hide();
+			$('#typeOfPenaltyInflicteddata').hide();
+			$('#fileiddata').hide();
+		}
+		
+		$('input[name="inquiryReportReceived"]').click(function(){
+			var inquiryReportReceived = JSON.parse($('input[name="inquiryReportReceived"]:checked').val());
+			if(inquiryReportReceived) {
+				$('#dateofReceiptdata').show();
+				$('#reasondata').show();
+				
+			} else {
+				$('#dateofReceiptdata').hide();
+				$('#reasondata').hide();
+				$('#decisionTakendata').hide();
+				$('#typeOfPenaltyInflicteddata').hide();
+				$('#fileiddata').hide();
+			}
+		});
+		
+		
+		var reasondata = $('#reason').val();
+		if(reasondata == -1 || reasondata == 0) {
+			$('#decisionTakendata').hide();
+			$('#typeOfPenaltyInflicteddata').hide();
+			$('#fileiddata').hide();
+		} else {
+			$('#decisionTakendata').show();
+			$('#typeOfPenaltyInflicteddata').show();
+			$('#fileiddata').show();
+		}
+		
+		
+		
+		
+		/* $('#reason').change(function(){
+			var reasondata = $('#reason').val();
+			if(reasondata == -1 || reasondata == 0) {
+				$('#decisionTakendata').hide();
+				$('#typeOfPenaltyInflicteddata').hide();
+				$('#fileiddata').hide();
+			} else {
+				$('#decisionTakendata').show();
+				$('#typeOfPenaltyInflicteddata').show();
+				$('#fileiddata').show();
+			}
+		}); */
+		
+		
+		
+	try{  
+		var ss = /*[[${{session.caseid}}]]*/;
+		if(ss != null) {
+			$('#casedetails').attr('readonly',true);
+			/* $("#casedetails").attr('disabled', true);  */
+			
+		}
+	} catch(error){  
+		 
+	}
+	</script>
+	
+	<script  th:inline="javascript">
+	
+	
+	
+	/* this function for reset button */
+	function myFunction() {
+		var caseno = $('#casedetails').val();
+		    $('#empgroupid').val('');
+			$('#empid').val('');
+			$('#firstname').val('');
+			$('#middleName').val('');
+			$('#lastName').val('');
+			$('#dateofReceipt').val(null);
+			$('#reason').val('');
+			$('#decisionTaken').val('').trigger('change');
+			$('#typeOfPenaltyInflicted').val('').trigger('change');
+			
+//			$('#whetherCaseFinallyDecidedNo').prop("checked",true);
+			$('#fileName').val(null);
+				$('#id').val(null);
+		$('#casedetails').val(caseno);
+		
+	}
+	
+	
+	
+	
+	
+	$('#decisionTaken').change(function(){
+		var selected = $('#decisionTaken').val();
+		if(selected == 1) {
+			$('#typeOfPenaltyInflicted').prop('disabled',false);
+		} else {
+			$('#typeOfPenaltyInflicted').prop('disabled',true);
+		}
+	});
+	
+		var mess = [[${{message}}]];
+		if (mess != null) {
+			swal(mess);
+		}
+		$("#final").attr("class", "btn btn-info");
+
+		$("#fileno").autocomplete({
+			source: function (request, response) {
+				$.ajax({
+					url: "/de/departmentalEnquiry/getFileNojson",
+					dataType: "json",
+					data: {
+						q: request.term
+					},
+					success: function (data) {
+						//alert(data);
+						response(data);
+					}
+				});
+			},
+			select: function (event, ui) {   //must be cleared with function parameter
+				getdata('/de/departmentalEnquiry/getfilenodetailJsons?caseid=' + ui.item.label, function (data) {
+					if (data.error != null) {
+						swal(data.error);
+						
+
+					} else {
+						$('#sevarthId').val(data.sevarthId);
+						$('#firstname').val(data.firstname);
+						$('#middleName').val(data.middleName);
+						$('#lastName').val(data.lastName);
+					}
+				});
+
+
+
+			}
+		});
+		
+		$("#casedetails").autocomplete({
+			source: function (request, response) {
+				$.ajax({
+					url: "/de/departmentalEnquiry/getCaseListjson",
+					dataType: "json",
+					data: {
+						q: request.term
+					},
+					success: function (data) {
+						//alert(data);
+						response(data);
+					}
+				});
+			},
+			select: function (event, ui) {   //must be cleared with function parameter
+				getdata('/de/departmentalEnquiry/getfinaloutcomeJsons?caseid=' + ui.item.label, function (data) {
+					if (data.error != null) {
+						swal(data.error);
+
+					} else {
+						$('#id').val(data.id);
+						$('#casedetails').val(data.casedetails);
+						$('#dateofReceipt').val(data.dateofReceipt);
+						$('#reason').val(data.reason);
+						$('#decisionTaken').val(data.decisionTaken);
+						$('#typeOfPenaltyInflicted').val(data.getTypeOfPenaltyInflicted);
+					
+						if (data.inquiryReportReceived) {
+							$('#inquiryReportReceivedYes').prop('checked', true);
+						} else {
+							$('#inquiryReportReceivedYes').prop('checked', false);
+						}
+						
+						if (data.whetherCaseFinallyDecided) {
+							$('#whetherCaseFinallyDecidedYes').prop('checked', true);
+							$('#')
+						} else {
+							$('#whetherCaseFinallyDecidedYes').prop('checked', false);
+						}
+
+
+					}
+				});
+
+
+
+			}
+		});
+
+	</script>
+	
+	<script sec:authorize="hasAnyRole('SUPERADMIN','SECRETARY')">
+/* 		$("#noticeregisteridmpsc :input").prop("disabled", true);
+		$("#noticeregisteridmpsc :select").prop("disabled", true); */
+		$("#noticeregisteridmpsc :button").prop("disabled", true);
+		$("#noticeregisteridmpsc :input").prop("disabled", true);
+		$("#noticeregisteridmpsc :select").prop("disabled", true);
+	</script>
+	
+	
+	<!-- this code for preview screen  added on    date :: 02/01/2022 -->
+<th:block th:include="DeptInquiryViews/Fragments/FinalOutcomeListRecordWithoutDEPreview.html:: FinalOutcomeListRecordWithoutDEPreview"></th:block>
+	
+<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+
+</html>

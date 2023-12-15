@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<footer class="footer fixed-bottom" th:fragment="footer">
+	  <div class="d-sm-flex justify-content-center justify-content-sm-between">
+	    <span class="text-center text-sm-left d-block d-sm-inline-block"><b><span th:text="#{de.visitercopyright}"></span> </b> &copy; 2023 <a th:href="@{|/|}" target="_blank"><span th:text="#{de.header.labelsname}"></span></a></span>
+		<span><a
+				class="dropdown-toggle" id="profileDropdown"
+				 href="javascript:void(0);" data-toggle="dropdown">
+					<strong th:text="#{de.contactdetails.labes.footer}"></strong>
+			</a>
+				<div class="dropdown-menu center navbar-dropdown" style="background-color: rgb(255, 255, 255);color: blue;"
+					aria-labelledby="profileDropdown">
+					<strong>
+					<span
+						>Joint Secretary,</span> GAD(11-A),<br><span> Phone : 022-22023024 ,</span> <br><span>Email  : desk11a-gad@mah.gov.in</span>
+					</strong>
+					
+				</div></span>	
+					
+	    <span><a th:href="@{|/|}" target="_blank"><strong th:text="#{de.user.manual.label}" ></strong></a></span>
+	     <span><b><span th:text="#{de.visitercount}"></span> </b> <span id="visitorcount"></span></span>
+	   <span> <b><span th:text="#{de.site}"></span></b> : <!-- <span th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy')}"></span> -->
+	   <span id="siteupdatedate"></span>
+	   </span>
+	   <!--  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span> -->
+	  </div>
+	  
+	  
+	  <div class="modal fade" id="myModalcontact" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div class="container">
+					        <button type="button" class="close" data-dismiss="modal"
+							th:id="myModal2">&times;</button>
+							
+						
+						
+							<br><br>
+						
+						
+						
+						
+						
+						
+						
+						<br>
+						<h3>
+							<strong><span  >Contact Details</span></strong>
+						</h3>
+						
+						
+						
+
+
+						<div class="row">
+							<span
+						>Joint Secretary,</span> GAD(11-A),<br><span> Phone : 022-22023024 ,</span> <br><span>Email  : desk11a-gad@mah.gov.in</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<script type="text/javascript" th:inline="javascript">
+			console.log("footer");
+			$(document).ready(function(){
+				
+					 getdata('/de/departmentalEnquiry/getVisitorCount', function(data) {
+					    	$('#visitorcount').text(data.visitorCount);
+					    	var formatdate = 'DD-MMM-YYYY';
+							date = moment(data.siteupdatedate).format(formatdate);
+					    	$('#siteupdatedate').text(date);
+					    });
+						
+				
+			   
+			});
+    
+    </script>
+	  
+	  
+	  
+	</footer>
+
+</html>

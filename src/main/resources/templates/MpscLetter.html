@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!-- <head th:replace="header::header">
+ -->
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+</head>
+<title>Generate Appointment Letter</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+		<nav th:insert="ehrms_sidebar.html :: ehrms_sidebar"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title">
+							<b><span th:text="#{Sidebar.mpscletter}">MPSC Letter</span></b>
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{/}"><span
+										th:text="#{inbox.Recruitment Module}"></span></a></li>
+								<li class="breadcrumb-item"><a th:href="@{|/recruitmentmpsc/inbox/page/1|}"><span
+										th:text="#{inbox.Recruitment by Individual Departments through MPSC}">
+									</span></a></li>
+								<li class="breadcrumb-item"><a th:href="@{|/recruitmentmpsc/selectDesignation|}"><span
+										th:text="#{Sidebar.newproposal}"> </span></a></li>
+							</ol>
+						</nav>
+
+
+					</div>
+					<div class="row">
+						<div class="col-md grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div class="row">
+										<p th:text="${message}" id="testingxyz"
+											th:if="${message ne null}" class="alert alert-danger"></p>
+									</div>
+
+									<div th:if="${gr ne null}">
+										<form method="post" enctype="multipart/form-data"
+											id="noticeregisterid" th:action="@{|/recruitmentmpsc/saveGr/${proposalId}|}" th:object="${gr}">
+											<div class="form-group">
+							  					<label for="ProposalId"><span th:text="#{candidatelist.Noticeid}"></span></label>
+							  					<input type="text" class="form-control" th:value="${proposalId}" id="proposalId" readonly="readonly">
+							  				</div>
+											<div class="form-group">
+												<label><span th:text=#{Form.Editor}></span></label>
+												<span >
+												<textarea th:field="*{grData}" id="editorletter"></textarea></span>
+												<input type="hidden" th:field="${gr.candidateList}" th:value="${gr.candidateList}">
+												<input type="hidden" th:field="${gr.id}" th:value="${gr.id}">
+											</div>
+											<button type="submit" class="btn btn-primary"><span th:text="#{Form.Save}"></span></button>
+											<a th:if="${gr.id ne null}" href="javascript:void(0);" th:href="@{|/recruitmentmpsc/previewPdf/${gr.id}|}" class="btn btn-primary" target="_blank">Preview</a>
+										</form>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+
+</body>
+</html>

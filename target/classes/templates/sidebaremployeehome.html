@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	
+<nav class="sidebar sidebar-offcanvas" id="sidebar" th:fragment="sidebaremployeehome" th:object="${employee}">
+  <ul class="nav" sec:authorize="isAuthenticated()">
+  <li class="nav-item nav-profile border-bottom">
+      <!-- <a href="#" class="flex-column">
+        <div class="nav-profile-image">
+          <img src="/image/india-emblem-f.png" alt="profile" />
+				<div class="ellipse"><b><span
+				th:text="#{Government Construction Department}">सरकारी
+					बांधकाम विभाग </span></b>
+				</div> 
+          change to offline or busy as needed
+        </div>
+        <div class="nav-profile-text d-flex ml-0 mb-3 flex-column" sec:authorize="isAuthenticated()">
+          <span class="font-weight-semibold mb-1 mt-2 text-center" th:text="#{Welcome}"></span><br/>
+          <span class="text-secondary icon-sm text-center" sec:authentication="principal.username">User</span><br/><br/>
+          <span> <a class="btn btn-danger" th:href="@{/logout}">Logout</a></span>
+        </div>
+      </a> -->
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/}">
+        <i class="mdi mdi-compass-outline menu-icon"></i>
+        <span class="menu-title"><a th:href="@{/}"><span th:text="#{Sidebar.home}"></span></a></span>
+      </a>
+    </li>
+  
+    <li class="nav-item">
+      <a class="nav-link"  th:href="@{/employee/getEmployeeDetails}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" th:text="#{ListEmployee.detailemployee}">Employee Detail</span>
+      </a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/employee/requestPromotion}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{ListEmployee.requestPromotion}">ListEmployee.requestPromotion</span>
+      </a>
+    </li>
+    
+    <!-- <li class="nav-item">
+      <a class="nav-link" th:href="@{/employee/vieworder/}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_8.View Order}">View Order</span>
+      </a>
+    </li> -->
+    
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/probation/viewOrderemp/}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_8.View Probation Order}">View Probation Order</span>
+      </a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/permanency/viewOrderemp/}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_8.viewpermanencyorder}">View Permanency Order</span>
+      </a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/seniority/viewSeniorityList/}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Recruitment.ViewSeniorityList}">View Seniority List</span>
+      </a>
+    </li>
+  
+<!--     <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link"  th:href="@{/candidateslist/page/1}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar.MPSC Candidates List}">MPSC Candidates List</span>
+      </a>
+    </li> -->
+<!--     <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link"  th:href="@{/mpsccandidateallocation}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar.Revenue Division Allotment}">Revenue Division Allotment</span>
+      </a>
+    </li> -->
+    
+<!--     <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link"  th:href="@{/generateAppointment}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar.Generate Appointment Letters}">Generate
+						Appointment Letters</span>
+      </a>
+    </li>
+ -->    	
+  </ul>
+</nav>
+
+</html>

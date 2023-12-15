@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!-- <head th:replace="header::header">
+ -->
+ <head>
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+<title>Employee Dashboard</title>
+
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller">
+		<nav th:insert="sidebaremployeehome.html :: sidebaremployeehome" aria-label="sidebar label"></nav>		
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar" aria-label="sidebar label"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title">
+							
+							<strong><span th:text="#{Sidebar.home}" sec:authorize="hasAnyRole('ROLE_EMPLOYEE')">Home</span></strong>									
+						</h3>
+						<nav aria-label="breadcrumb" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{CompassionateRecruitment.Recruitment Module}"></span></a></li>
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{CompassionateRecruitment}"> </span></a></li>
+								<li class="breadcrumb-item"><a href="#"><span
+										th:text="#{CompassionateRecruitment.Close Service Book}">
+											Close Service Book</span></a></li>
+							</ol>
+						</nav>
+
+						<div class="row">
+							<p th:text="${message}" id="testingxyz"
+								th:if="${message ne null}" class="alert alert-danger"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+			</div>
+
+		</div>
+
+	</div>
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+
+</body>
+</html>
+
+

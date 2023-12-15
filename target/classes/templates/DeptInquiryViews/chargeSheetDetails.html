@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+<title>Chargesheet Details</title>
+<style>
+.ui-menu .ui-menu-item-wrapper {
+        color: #303030 !important;
+        background-color: #fff !important;
+    }        
+
+    .ui-menu .ui-menu-item-wrapper:hover {
+        color: #303030 !important;
+        background-color: rgb(192, 192, 192) !important;
+        border: #fff 1px solid !important;
+    } 
+
+.ui-widget-content {
+    border: 1px solid #ddd;
+    background: rgb(192, 192, 192) !important;
+    color: #333 !important;
+}
+
+
+
+
+</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()" id="caseentry">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"
+				aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+					
+					<div th:replace="DeptInquiryViews/Fragments/processfrag.html :: processfrag">
+						
+						</div>
+						
+					</div>
+					
+					
+		
+						
+						
+
+					
+					<div><h3>
+							<strong><span th:text="#{deptenq.chargesheetdetails.entry}"></span>
+								<div align="right"><a href="#gridviewChargesheetId" class="btn btn-info btn-sm"><span th:text="#{de.scroll.down.AllBtn}"></span></a>
+								 </strong>
+						</h3></div>
+
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+									<form th:action="@{/departmentalEnquiry/addchargeSheetdetails}"
+										th:object="${chargeSheetObj}" method="post" id="noticeregisteridmpsc"
+										enctype="multipart/form-data">
+
+										<p style="color: red;"><span th:text="#{casedetails.mandatory.text.de}"></span></p>
+										<div class="form-group row">
+											<div class="col-sm-3">
+											
+											<input type="hidden" class="form-control" th:field="*{id}">											
+												<label><span th:text="#{de.filenumber.or.case.no}"></span></label>
+												 <input
+													type="text" class="form-control" id="casedetails"
+													th:placeholder="#{case.casedetails.placeholder}"   th:field="${chargeSheetObj.caseNo}"
+													required="required">
+											</div>
+											&nbsp;&nbsp;
+											
+											
+											
+										
+											
+										<!-- 	<div class="btn-toolbar mr-1" role="toolbar"
+											aria-label="Basic example">
+											<button type="button"  class="btn btn-primary" id="fetchdata">Fetch</button>
+										</div> -->
+										
+										<div class=" col-sm-3">
+												<label for="chargesheet" style="margin: 10px"><span th:text="#{de.chargesheetissued}"></span></label>
+												
+												&nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														th:field="*{chargesheetIssued}" type="radio" 
+														name="chargesheetIssued2" id="chargesheetYes"
+														value="true" checked>  <span th:text="#{de.chargesheetissued.yes}"></span><input
+														  th:field="*{chargesheetIssued}"
+														type="radio" name="chargesheetIssued2" id="chargesheetNo"
+														value="false">  <span th:text="#{de.chargesheetissued.no}"></span>
+												</div>
+											</div>
+										
+										<div class="col-md-3 mb-3" id="employeedatadiv">
+												<label for="FirstName"><span th:text="#{de.suspension.employeelistselect}"></span></label>
+											<select th:if="${employeeList ne null and !employeeList.isEmpty()}"
+											th:field="${chargeSheetObj.employeeDataId}"
+													class="form-control" id="employeedata"
+													 required="required">
+                                                 <option value="">Select</option>
+													<option th:each="employee:${employeeList}" 
+														th:value="${employee.id}"
+														th:text="${employee.firstName+' '+employee.middleName+' '+employee.lastName}"></option>
+												</select>
+											</div>
+										
+											
+											
+											
+											
+											
+										</div>
+					          	
+										<div class="form-group row" id="chargesheetdata">
+											
+											
+											
+											<div class="col-md-3 mb-3" style="display:none;">
+												<label for="systemGenCaseNo"><span th:text="#{de.sevarth.id}"></span></label> <input type="hidden"
+													class="form-control" id="empgroupid" th:placeholder="#{case.casedetails.placeholder.sevarthid}" 
+													th:field="*{sevarthId}">
+											</div>
+
+											
+											<div class="col-md-3 mb-3"  style="display:none;">
+												<label for="FirstName"><span th:text="#{de.firstName.label}"></span></label>
+												 
+												<input type="hidden"
+													class="form-control" id="firstname"  th:placeholder="#{fname.placeholder}"
+													th:field="${chargeSheetObj.firstName}" required="required">
+											</div>
+											
+
+
+
+											<div class="col-md-3 mb-3" style="display:none;">
+												<label for="systemGenCaseNo"><span th:text="#{de.middleName.label}"></span></label> <input type="hidden"
+													class="form-control" id="middleName" placeholder="Enter middle name"
+													th:field="*{middleName}">
+											</div>
+
+											<div class="col-md-3 mb-3" style="display:none;">
+												<label for="systemGenCaseNo"><span th:text="#{de.lastName.label}"></span> </label> <input type="hidden"
+													class="form-control" id="lastName"  th:placeholder="#{de.lastName.placeholder}"
+													th:field="*{lastName}" required="required">
+											</div>
+
+
+
+											<div class="col-sm-3  mb-3" id="dateid">
+												<label for="date">
+												<span
+													th:text="#{candidatelist.chargesheetDate}"></span></label> <input id="localdate" class="form-control" placeholder="dd-mm-yyyy"
+													min="1900-01-01"	th:attrappend="max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd',#locale.forLanguageTag('en'))}" type="date"
+													th:field="${chargeSheetObj.chargesheetDate}"
+													/>
+											</div>
+
+
+
+											<div class="col-sm-3  mb-3" id="fileid">
+												<label for="chargesheetFile"><span th:text="#{de.chargesheetupload.copy}"></span></label> <input
+													type="file" id="fileName"  th:field="*{fileName}"   class="form-control" accept=".pdf">
+											</div>
+											
+											
+											<div class=" col-sm-4  mb-3">
+												<label for="chargesheet" style="margin: 10px"><span th:text="#{de.chargesheet.revisedchargesheet}"></span></label>
+												
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														th:field="*{revisedChargesheetIssued}" type="radio" 
+														name="revisedChargesheetIssued" id="revisedChargesheetIssuedYes"
+														value="true" checked>  <span th:text="#{de.chargesheetissued.yes}"></span> <input
+														  th:field="*{revisedChargesheetIssued}"
+														type="radio" name="revisedChargesheetIssued" id="revisedChargesheetIssuedNo"
+														value="false">  <span th:text="#{de.chargesheetissued.no}"></span>
+												</div>
+											</div>
+											
+											
+											<div class="col-sm-3  mb-3" id="reviseddateid">
+												<label for="date"><span th:text="#{de.chargesheet.dateofsupplementary.revisedchargesheet}"></span>
+												</label> <input id="revisedChargesheetDate" class="form-control"
+													min="1900-01-01" th:attrappend="max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd',#locale.forLanguageTag('en'))}" type="date" placeholder="dd-mm-yyyy"
+													th:field="${chargeSheetObj.revisedChargesheetDate}" 
+													data-date="" data-date-format="DD-MM-YYYY"/>
+											</div>
+
+
+											<div class="col-sm-3  mb-3" id="revisedfileid">
+												<label for="chargesheetFile"><span th:text="#{de.chargesheet.dateofsupplementary.revisedchargesheet.uploadCopy}"></span></label> <input
+													type="file" id="revisedfileName"  th:field="*{revisedfileName}"   class="form-control" accept=".pdf">
+											</div>
+											
+											
+											
+											
+											
+											<!-- <div class="col-sm-3" id="viewfilename">
+											<a th:href="@{|/departmentalEnquiry/viewfileName/|}" id="fileLink" target="_blank">
+												<span id="viewfile"></span>
+												</a>
+											</div> -->
+
+
+										</div>
+
+										<br>
+										<div class="btn-toolbar mr-1" role="toolbar"
+											aria-label="Basic example" id="buttonid">
+											<button type="submit" th:value="save" class="btn btn-primary"><span th:text="#{de.casedetails.saveformbtn}"></span></button>
+											&nbsp;
+											<button type="button" th:value="addmore" th:name="action" onclick="myFunction()"
+													id="addmore" class="btn btn-primary"><span th:text="#{de.chargesheet.addmorechargesheet}"></span></button>
+													
+													&nbsp;
+													<button  th:if=" ${chargeSheetObj.caseNo ne null  }"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2" >
+                        								             
+									          <span th:text="#{casedetails.preview.button}"></span>
+						                           	</button>
+										</div>
+
+
+									</form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					
+					
+				<!-- 	starting grid part here -->
+				
+					<div class="row" >
+						<div class="col-lg-12 grid-margin stretch-card">
+							
+							<div class="card">
+								<div class="card-body">
+								
+									<div class="table-responsive">
+									
+<!-- 									<div align="right"> <b style="color: blue"> <span>Total Chargesheet</span> : <span th:text="${totalItems}"></span></b>
+										
+								                </div> -->
+										<label>
+											<h4  style="margin-top: 3px;"  th:text="#{de.chargesheet.listofchargesheet}"></h4>
+										</label>
+									
+										<table class="table table-bordered dark table-sm" id="gridviewChargesheetId" >
+											<thead>
+											
+												<tr>
+													 <th   width="3%"> <center><span th:text="#{de.enquiry.srno}"></span></center></th>
+									                 <th  width="4%"><center><span th:text="#{de.enquiry.caseno}"></span></center> </th>
+									                  <th class="text-wrap"  width="7%"><center><span th:text="#{de.sevarth.id}"></span> </center></th>
+													<!-- <th class="text-wrap"  width="7%">Employee id.</th> -->
+									                 <th class="text-wrap"  width="7%"><center><span th:text="#{de.firstName.labels}"></span></center></th>
+													<th class="text-wrap"  width="7%"><center><span th:text="#{de.middleName.label}"></span></center></th>
+													<th class="text-wrap"  width="7%"><center><span th:text="#{de.lastName.labels}"></span></center></th>
+											    	<th class="text-wrap" width="7%"><center><span th:text="#{candidatelist.chargesheetDate}"></span></center></th>	
+											    	<th class="text-wrap" width="7%"><center><span th:text="#{de.chargesheet.dateofsupplementary.revisedchargesheet}"></span></center></th>	
+											    	<th class="text-wrap" width="7%"><center><span th:text="#{de.chargesheet.dateofsupplementary.revisedchargesheet.uploadCopy}"></span></center></th>
+											    	<th class="text-wrap" width="1%"><center><span th:text="#{de.empdetails.action}"></span></center></th>	
+												</tr>
+												
+												
+											</thead>
+											<tbody>
+												<tr th:each="article,iStat:${chargesheetList}">
+												 <td th:text="${pageIndex+iStat.index}"></td>
+														
+													
+													<td>
+														<span th:text="${article.caseDetails.caseNo}" ></span>
+													</td>
+													
+													<td class="text-wrap">
+														<span th:text="${article.sevarthId}"></span>
+													</td>
+
+													<!-- <td class="text-wrap">
+														<span th:text="${article.employeeId}"></span>
+													</td> -->
+													
+													
+													<td class="text-wrap">
+														<span th:text="${article.firstName}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:text="${article.middleName}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:text="${article.lastName}"></span>
+													</td>
+														
+														
+														<td class="text-wrap">
+														<span th:text="${#temporals.format(article.chargesheetDate, 'dd-MM-yyyy')}"></span>
+													</td>
+													
+													<td class="text-wrap">
+														<span th:if="${article.revisedChargesheetDate ne null}" th:text="${#temporals.format(article.revisedChargesheetDate, 'dd-MM-yyyy')}"></span>
+													</td>
+													
+													
+													<td class="text-wrap">
+													<span th:if="${article.fileName ne null}"><span style="font-weight: bold;">Chargesheet : </span>
+													<a th:href="@{|/departmentalEnquiry/downloadDoc/${article.id}|}" target="_blank" >
+														<span th:text="${article.fileName}"></span>
+													</a>
+													<br><br>
+													</span>
+													<span th:if="${article.revisedfileName ne null}"><span style="font-weight: bold;">Revised Chargesheet : </span>
+													<a th:href="@{|/departmentalEnquiry/downloadDocChargesheet2/${article.id}|}" target="_blank" >
+														<span th:text="${article.revisedfileName}"></span>
+													</a>
+													</span>
+													</td>
+													 <td>
+													 <input type="hidden" th:id="chargesheetDetailId__${iStat.index}__" th:value="${article.id}">
+													  <input type="hidden" th:id="mailTo__${iStat.index}__" th:value="${article.empData.email}">
+													   <input type="hidden" th:id="chargesheetFile__${iStat.index}__" th:value="${article.fileName}">
+													 
+													 <span><a  th:href="@{| /departmentalEnquiry/editchargesheetDtlsRecords/${article.id} /${currentPage}|}"><button class="btn btn-primary" ><span sec:authorize="!hasAnyRole('SUPERADMIN','SECRETARY')" th:text="#{de.edit.button.all}"></span>
+                                                     <span sec:authorize="hasAnyRole('SUPERADMIN','SECRETARY')">View</span></button></a></span>
+                                                   
+<!--                                                      <br><br> -->
+<!-- 														<span sec:authorize="!hasAnyRole('SUPERADMIN','SECRETARY')" th:if="${article.fileName != null}"><button type="button" th:if="${article.mailTransaction.isEmpty()}" th:data-index="${iStat.index}" class="btn btn-primary"  -->
+<!-- 																onclick="sendEmail(this.getAttribute('data-index'))">Send E-mail</button>  </span> -->
+																
+<!-- 													   <span sec:authorize="!hasAnyRole('SUPERADMIN','SECRETARY')" th:if="${article.fileName != null}"><button type="button" th:unless="${article.mailTransaction.isEmpty()}" th:data-index="${iStat.index}" -->
+<!-- 													   th:data-mailTo="${article.mailTransaction[0].mailTo}" th:data-mailSubject="${article.mailTransaction[0].mailSubject}" th:data-mailBody="${article.mailTransaction[0].mailBody}" class="btn btn-success"  -->
+<!-- 																onclick="reSendEmail(this.getAttribute('data-index'),this.getAttribute('data-mailTo'),this.getAttribute('data-mailSubject'),this.getAttribute('data-mailBody'))">ReSend E-mail</button>  </span> -->
+																
+																                                                  </td>
+														<!-- <td><span> <a  th:href="@{| /departmentalEnquiry/deleteChargesheetDetailsRecords/${article.id} |}"><img th:src="@{/img/delete.png}" alt="logo"  /></a></span></td> -->
+												</tr>
+												
+											</tbody>
+										</table>
+									</div>
+									
+										
+									
+			
+								<br> 
+									<div><a href="#caseentry"  class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+									<div class="row" th:fragment="pagination">
+										<div>
+											<b style="color: blue"><span th:text="#{de.total.chargesheet}"></span>  <span th:text="${totalItems}"></span></b>
+										</div>
+									
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item" th:if="${currentPage > 1}">
+														<a  class="page-link" th:href="@{|/departmentalEnquiry/chargesheetDetails/1|}" th:text="#{pages.first}">First</a>
+														<span th:unless="${currentPage > 1}" th:text="#{pages.first}">First</span>
+													</li>
+													
+													<li class="page-item">															
+														<a class="page-link" th:if="${currentPage > 1}" th:href="@{|/departmentalEnquiry/chargesheetDetails/${currentPage - 1}|}" 
+															th:text="#{pages.previous}">Previous</a>
+														<span th:unless="${currentPage > 1}" th:text="#{pages.previous}">Previous</span>
+													</li>	
+														
+														<li class="page-item" th:each="i: ${#numbers.sequence(begin, end)}" th:if="${begin<end}">
+														    <a th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}" th:href="@{|/departmentalEnquiry/chargesheetDetails/${i}|}" th:text="${i}"></a>
+
+														</li>
+													
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}" 
+															th:href="@{|/departmentalEnquiry/chargesheetDetails/${currentPage + 1}|}" 
+															th:text="#{pages.next}">Next</a>
+															<span th:unless="${currentPage < totalPages}" th:text="#{pages.next}">Next</span>
+													</li>	
+													
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}" th:href="@{|/departmentalEnquiry/chargesheetDetails/${totalPages}|}" 
+															th:text="#{pages.last}">Last</a>
+															<span th:unless="${currentPage < totalPages}" th:text="#{pages.last}">Last</span>
+													</li>
+													
+												</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+									<!-- ending pagination  -->
+									<div>
+										
+									</div>
+									
+								</div>
+							</div>
+						</div>
+
+					</div>
+				
+				
+				
+				
+					
+				<!-- 	ending grid part here -->
+					
+					
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+	
+		<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+					</h4>
+					<button type="button" class="close" data-dismiss="modal"   onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%" height="500"
+								style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="modal fade" id="myModalchargesheetId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="min-width:55%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><span>Send E-mail</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body container">
+      
+ 
+			<div class="row mrg_bottom">
+			
+				<input type="hidden" class="form-control" id="chargesheetDetailId">				
+				
+				<div class="col-md-12">
+					<label for="systemGenCaseNo"><span>Email To</span></label> 					
+					<input type="text" class="form-control" id="mailTo">
+				</div>
+				
+				<div class="col-md-12">
+					<label for="systemGenCaseNo"><span>Subject</span></label> 					
+					<input type="text" class="form-control" id="mailSubject">
+				</div>
+				
+				<div class="col-md-12">
+					<label for="systemGenCaseNo"><span>Body</span></label> 					
+					<textarea class="form-control" id="mailBody"  rows="5"></textarea>
+				</div>
+				
+				<div class="col-md-12">
+					<label for="systemGenCaseNo"><span>ChargeSheet File</span></label> 			
+					<strong>
+						<a  id ="chargesheetFileId" target="_blank" style="border:none; text-decoration: underline;" class="text-primary"><span id="chargesheetFile"></span></a>
+					</strong>							
+				</div>
+				
+				<div class="col-md-12">
+					<button type="submit" class="btn btn-primary" id="sendEmailtoEmployees">Send E-mail</button>   
+				</div>
+				
+
+			</div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	
+		<!-- this code for view pdf  -->
+	
+	<script th:inline="javascript" > 
+	
+		
+	function sendEmail(index) {
+		jQuery.noConflict();
+		var chargesheetDetailId = $('#chargesheetDetailId'+index).val();
+		var mailTo = $('#mailTo'+index).val();
+		var chargesheetFile = $('#chargesheetFile'+index).val();
+		$('#chargesheetDetailId').val(chargesheetDetailId);
+		$('#mailTo').val(mailTo);
+		$('#chargesheetFile').text(chargesheetFile);
+		$("#chargesheetFileId").attr('href', '/de/departmentalEnquiry/downloadDoc/' + chargesheetDetailId)
+		$('#myModalchargesheetId').modal();
+	}
+	
+	function reSendEmail(index, mailTo, mailSubject, mailBody) {
+		jQuery.noConflict();
+		var chargesheetDetailId = $('#chargesheetDetailId'+index).val();
+		var chargesheetFile = $('#chargesheetFile'+index).val();
+		$('#chargesheetDetailId').val(chargesheetDetailId);
+		$('#mailTo').val(mailTo);
+		$('#mailSubject').val(mailSubject);
+		$('#mailBody').val(mailBody);
+		$('#chargesheetFile').text(chargesheetFile);
+		$("#chargesheetFileId").attr('href', '/de/departmentalEnquiry/downloadDoc/' + chargesheetDetailId)
+		$('#myModalchargesheetId').modal();
+	}
+	
+// 	$(document).ready(function() {
+// 		$('#mailBody').summernote({
+// 			tabsize : 2,
+// 			height : 100,
+// 			spellcheck : false,
+// 		});
+// 	});
+	
+	$('#sendEmailtoEmployees').click( function() {
+		var formvalidation = false;
+		var formvalidationSubject = false;
+		var formvalidationBody = false;
+		
+		if ($("#mailTo").val() != null && $("#mailTo").val().length >= 1) {
+			formvalidation = true;
+		} else {
+			swal({	
+				text: "Enter Mail To",
+				button: {
+				    text: "ok",
+				  },
+			})
+		}
+		if ($("#mailSubject").val() != null && $("#mailSubject").val().length >= 1) {
+			formvalidationSubject = true;
+		} else {
+			swal({	
+				text: "Enter Mail Subject",
+				button: {
+				    text: "ok",
+				  },
+			})
+		}
+		if ($("#mailBody").val() != null && $("#mailBody").val().length >= 1) {
+			formvalidationBody = true;
+		} else {
+			swal({	
+				text: "Enter Mail Body",
+				button: {
+				    text: "ok",
+				  },
+			})
+		}
+// 		if ($('#mailBody').summernote('isEmpty')) {	
+// 			swal({	
+// 				text: "Enter Mail Body",
+// 				button: {
+// 				    text: "ok",
+// 				  },
+// 			})
+// 		} else {
+// 			formvalidationBody = true;
+// 		}
+		var mailData = new FormData();
+
+		mailData.append("mailTo", $("#mailTo").val())
+		mailData.append("mailSubject", $("#mailSubject").val())
+		mailData.append("mailBody",$("#mailBody").val());
+
+		mailData.append("chargesheetDetailId", $("#chargesheetDetailId").val());
+
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		if (formvalidation && formvalidationSubject && formvalidationBody) {
+			swal({	
+				text: "confirm send mail",
+				buttons: true,
+				dangerMode: true,
+				buttons: ["no", "yes"],
+			}).then(function(isConfirm) {
+				if (isConfirm) {
+				swal({
+	                text: "sending mail please wait",
+// 	                icon: "/sc/statutorycompliance/images/spinner.gif",
+	                buttons: false,      
+	                closeOnClickOutside: false,
+	            });
+			$.ajax({
+				url : "/de/departmentalEnquiry/sendEmail",
+				type : "POST",
+				data : mailData,
+				processData : false,
+				contentType : false,
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header,token);
+				},
+				success : function(d) {
+					swal({
+						text : "success mail",
+						type : "success",
+						button: {
+						    text: "ok",
+						  },
+					}).then(function() {
+						location.reload(1);
+					});
+				},
+				error : function(error) {
+					swal("error");
+				}
+			});
+			}
+			
+			});
+		}
+	})
+	
+	
+	var modalid = null;
+	
+	function downloadlistForCaseDetailsviewPdf(){
+		modalid = '#myModal2';
+		var ff = new FormData();
+		var printdata = '#printdata';
+		var mymodal2 = '#myModal2';
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal2).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	function closeModalForce(){
+		location.reload();
+	    var l=new Loading()
+		$('#myModalprint').modal('hide');
+		$('#myModal2').hide();
+		$('.modal-backdrop').remove();
+		
+	}
+		
+	
+	</script>
+	
+	
+	
+	<script th:inline="javascript">
+
+
+	function printDivforInsidePreview(printdata) {	
+		    var printContents = document.getElementById(printdata).innerHTML;
+		     jQuery.noConflict();
+		    var originalContents = document.body.innerHTML;
+		   document.body.innerHTML = printContents;
+		  var modalid='#myModal2';
+	    	$(modalid).modal('hide');	
+	      window.print();		
+	       $(modalid).modal('hide');	
+		 document.body.innerHTML = originalContents; 	  		 			   
+		} 
+	
+
+	var rule = /*[[${{ruleid}}]]*/;
+	if(rule != null && rule == '3') {
+		var chargesheetIssued = /*[[${{chargesheetissued}}]]*/;
+		if(chargesheetIssued != null) {
+			var charge = JSON.parse(chargesheetIssued);
+			if(!charge) {
+				$('#chargesheet').addClass('disabled');
+				$('#inquiryofficer').addClass('disabled');
+//				$('#final').addClass('disabled');
+				$('#presentingofficer').addClass('disabled');
+				$('#prosecution').addClass('disabled');
+				$('#courtcase').addClass('disabled');
+				$('#abeyance').addClass('disabled');
+			}
+		}		
+	} 
+	if(rule != null && (rule == '2')) {
+		
+		var subRule = /*[[${{subruleid}}]]*/;
+		if(subRule != null && subRule == '1') {
+			$('#inquiryofficer').addClass('disabled');
+			$('#presentingofficer').addClass('disabled');
+			$('#prosecution').addClass('disabled');
+			$('#courtcase').addClass('disabled');			
+		}		
+	}
+	
+	
+	
+	var misconduct = /*[[${{miscodunctid}}]]*/;
+	if(misconduct != null && misconduct == '1') {
+		$('#prosecution').addClass('disabled');
+	}
+	
+	var single = /*[[${{single}}]]*/;
+	if(single != null) {
+		$('#addmore').hide();
+	}
+	var retired = /*[[${{retired}}]]*/;
+	if(retired != null) {
+//		$('#suspension').addClass('disabled');
+//		$('#reinstated').addClass('disabled');
+	}
+	var enableRe = /*[[${reinstateEnable}]]*/;
+	if(enableRe != null) {
+		$('#reinstated').removeAttr('disabled');
+	} else {
+		$('#reinstated').addClass('disabled');
+	}
+	var chargesheetIssued = JSON.parse($('input[name="chargesheetIssued"]:checked').val());
+	if(chargesheetIssued) {
+		$('#chargesheetdata').show();
+		$('#buttonid').show();
+		$('#employeedata').removeAttr('disabled');
+		$('#employeedatadiv').show();
+	} else {
+		$('#chargesheetdata').hide();
+		$('#buttonid').hide();
+		$('#employeedata').prop('disabled', 'disabled');
+		$('#employeedata').val('');
+		$('#employeedatadiv').hide();
+		
+	}
+	
+	$('input[name="chargesheetIssued"]').click(function(){
+		var chargesheetIssued = JSON.parse($('input[name="chargesheetIssued"]:checked').val());
+		if(chargesheetIssued) {
+			$('#chargesheetdata').show();
+			$('#buttonid').show();
+			$('#employeedata').removeAttr('disabled');
+			$('#employeedatadiv').show();
+		} else {
+			$('#chargesheetdata').hide();
+			$('#buttonid').hide();
+			$('#employeedata').prop('disabled', 'disabled');
+			$('#employeedata').val('');
+			$('#employeedatadiv').hide();
+		}
+	});
+	
+	
+	var revisedChargesheetIssued = JSON.parse($('input[name="revisedChargesheetIssued"]:checked').val());
+	if(revisedChargesheetIssued) {
+		$('#reviseddateid').show();
+		$('#revisedfileid').show();
+	} else {
+		$('#revisedChargesheetDate').val('');
+		$('#reviseddateid').hide();
+		$('#revisedfileid').hide();
+		
+	}
+	
+	$('input[name="revisedChargesheetIssued"]').click(function(){
+		var revisedChargesheetIssued = JSON.parse($('input[name="revisedChargesheetIssued"]:checked').val());
+		if(revisedChargesheetIssued) {
+			$('#reviseddateid').show();
+			$('#revisedfileid').show();
+		} else {
+			$('#revisedChargesheetDate').val('');
+			$('#reviseddateid').hide();
+			$('#revisedfileid').hide();
+			
+		}
+	});
+	
+	try{  
+		var ss = /*[[${{session.caseid}}]]*/;
+		if(ss != null) {
+			$('#casedetails').attr('readonly',true);
+			/* $("#casedetails").attr('disabled', true); */ 
+		}
+		
+	} catch(error){  
+		 
+	}
+	
+	</script>
+	
+	
+	<script th:inline="javascript">
+/* 	$("#localdate").datepicker({
+		  dateFormat: 'dd-mm-yyyy',
+		  onSelect: function(dateText, inst) {
+		    $(inst).val(dateText); // Write the value in the input
+		  }
+		}); */
+
+		
+	
+/* 	this coding for add more employee  */
+	
+	
+		function myFunction() {
+//			  document.getElementById("myForm").reset();
+			
+			var caseno = $('#casedetails').val();
+//			document.getElementById('noticeregisteridmpsc').reset();
+//			$('#noticeregisteridmpsc')[0].reset();
+  					$('#firstname').val('');
+  					$('#empgroupid').val('');
+					$('#middleName').val('');
+					$('#lastName').val('');
+					$('#empid').val('');
+//					$('#localdate').val(null);
+					$('#fileName').val(null);
+					$('#employeedata').val('');
+					/* $('#revenueDivision').val(null);
+					$('#globalorg').val('').trigger('change');
+					$('#subDepartmentName').val(null);
+					$('#servicegroup').val(null);
+					$('#designation').val('').trigger('change'); */
+					$('#id').val(null);
+			$('#casedetails').val(caseno);
+			
+		}
+	
+	
+	
+	$("#chargesheet").attr("class","btn btn-info");
+/* 	$('#dateid').hide();
+	$('#fileid').hide();
+	$('#viewfilename').hide();
+	var value = JSON.parse($("input[type=radio][name=chargesheetIssued]:checked").val());
+	if(value != undefined && value) {
+		$('#dateid').show();
+		$('#fileid').show();
+		$('#viewfilename').show();
+		
+	} else if(value != undefined && !value){
+		$('#dateid').hide();
+		$('#fileid').hide();
+		$('#viewfilename').hide();
+		
+	}
+ */	
+/* 	$('input[type=radio][name=chargesheetIssued]').change(function(){
+		var value = JSON.parse($("input[type=radio][name=chargesheetIssued]:checked").val());
+		if(value != undefined && value) {
+			$('#dateid').show();
+			$('#fileid').show();
+			$('#viewfilename').show();
+			
+		} else if(value != undefined && !value){
+			$('#dateid').hide();
+			$('#fileid').hide();
+			$('#viewfilename').hide();
+			
+		}
+	});
+	 */
+	
+	
+	
+	$('#fetchdata').click(function(){
+		var caseid = $('#caseDetails').val();
+		getdata('/de/departmentalEnquiry/getchargesheetDetailsJson?caseid='+caseid, function(data) {
+			if(data != null) {
+				$('chargesheetIssued').val(data.chargesheetIssued);
+				if(data.chargesheetIssued) {
+					$('#chargesheetYes').prop('checked',true);
+					$('#chargesheetNo').prop('checked',false);
+					$('#dateid').show();
+					$('#fileid').show();
+					$('#viewfilename').show();
+					$('#id').val(data.id);
+				} else {
+					$('#chargesheetYes').prop('checked',false);
+					$('#chargesheetNo').prop('checked',true);
+					$('#dateid').hide();
+					$('#fileid').hide();
+					$('#viewfilename').hide();
+					
+				}
+				$('#localdate').val(data.chargesheetDate);
+				$('#viewfilename').show();
+				$('#viewfile').text(data.fileName);
+				$('#fileLink').attr('href','/de/departmentalEnquiry/downloadDoc/'+data.id);
+			}
+		});
+		
+	});
+	
+		var mess = [[${{message}}]];
+		var disableprosection =  [[${{disableprosecution}}]];
+		var disablepresenting =  [[${{disablepresentingofficer}}]];	
+		if(disablepresenting != null && JSON.parse(disablepresenting)) {
+			$('#presentingofficer').addClass('disabled');
+		}
+		if(disableprosection != null && JSON.parse(disableprosection)) {
+			$('#prosecution').addClass('disabled');
+		}
+		
+		if (mess != null) {
+			swal(mess);
+		}
+		
+//		var employeeL = [];
+		
+//		employeeL = [[${{employeeList}}]];
+		
+		var employeeData = $('#employeedata').val();
+		if(employeeData != null&& employeeData != '') {
+			getdata('/de/departmentalEnquiry/getEmployeeDetailsJson?caseid='+encodeURIComponent(employeeData), function(data) {
+				$('#firstname').val(data.firstName);
+				$('#empgroupid').val(data.sevarthId);
+				$('#middleName').val(data.middleName);
+				$('#lastName').val(data.lastName);
+			});
+		} 
+		
+		
+	 	$('#employeedata').change(function(){
+			var employeeData = $('#employeedata').val();
+			if(employeeData != null && employeeData != '') {
+				getdata('/de/departmentalEnquiry/getEmployeeDetailsJson?caseid='+encodeURIComponent(employeeData), function(data) {
+					$('#firstname').val(data.firstName);
+					$('#empgroupid').val(data.sevarthId);
+					$('#middleName').val(data.middleName);
+					$('#lastName').val(data.lastName);
+					
+					/* $('#localdate').val(null);
+					$('#fileName').val(null); */
+					
+				});
+			}
+		});
+		
+		$("#casedetails").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getCaseList",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+				getdata('/de/departmentalEnquiry/getchargesheetDetailsJson?caseid='+encodeURIComponent(ui.item.label), function(data) {
+					if(data != null && data != "") {
+						$('chargesheetIssued').val(data.chargesheetIssued);
+						if(data.chargesheetIssued) {
+							$('#chargesheetYes').prop('checked',true);
+							$('#chargesheetNo').prop('checked',false);
+							$('#dateid').show();
+							$('#fileid').show();
+							$('#viewfilename').show();
+							$('#id').val(data.id);
+						} else {
+							$('#chargesheetYes').prop('checked',false);
+							$('#chargesheetNo').prop('checked',true);
+							$('#dateid').hide();
+							$('#fileid').hide();
+							$('#viewfilename').hide();
+							
+						}
+						$('#localdate').val(data.chargesheetDate);
+						$('#viewfilename').show();
+						$('#viewfile').text(data.fileName);
+						$('#fileLink').attr('href','/de/departmentalEnquiry/downloadDoc/'+data.id);
+					} else {
+						swal("Data not found");
+					}
+				});
+		    
+		
+		    }
+        });
+/* 		$('.date').datepicker({
+			dateFormat: 'dd-mm-yy',
+			maxViewMode: 1,
+			forceParse:false,
+			todayHighlight:true,
+            autoclose:true,
+			maxDate: moment().format('DD-MM-YYYY'),
+			 icons: {
+			        time: "fa fa-clock-o",
+			        date: "fa fa-calendar",
+			        up: "fa fa-arrow-up",
+			        down: "fa fa-arrow-down",
+			        previous: "fa fa-chevron-left",
+			        next: "fa fa-chevron-right",
+			        today: "fa fa-clock-o",
+			        clear: "fa fa-trash-o"
+			    }
+		}).on('changeDate', function() {
+		    $(this).valid();
+		}); */
+	
+	</script>
+	
+			<script sec:authorize="hasAnyRole('SUPERADMIN','SECRETARY')">
+	$("#noticeregisteridmpsc :button").prop("disabled", true);
+	$("#noticeregisteridmpsc :input").prop("disabled", true);
+	$("#noticeregisteridmpsc :select").prop("disabled", true);
+	</script>
+	
+	<script th:if="${cases ne null && cases.currentUser ne null && cases.currentUser.email ne currentUser}" th:inline="javascript">
+	$("#noticeregisteridmpsc :button").prop("disabled", true);
+    $("#noticeregisteridmpsc :input").prop("disabled", true);
+	$("#noticeregisteridmpsc :select").prop("disabled", true); 
+	</script>
+	
+	
+	<!-- this code for preview screen  added on     date :: 21/10/2022 -->
+<th:block th:include="DeptInquiryViews/Fragments/ChargesheetListPreviewRecords.html :: ChargesheetListPreviewRecords"></th:block>
+	
+<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+
+</html>

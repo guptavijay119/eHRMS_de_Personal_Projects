@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="VigilanceCertificateDataModal">
+	<div class="modal fade" th:id="myModalCompact__${article.id}__"   role="dialog"  th:each="article,iStat:${nodecertificaterepolist}">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="width: 1019px;margin-left: 18%;">
+                   
+				<div class="modal-body" >
+				 <button type="button" class="close" data-dismiss="modal"   th:data-idmodal="myModalCompact__${article.id}__"
+					 th:id="myModalCompact__${article.id}__"   onclick="closeModalForce(this.getAttribute('data-idmodal'))">&times;</button>
+					<div class="container">
+						
+						
+										
+						
+						<div   th:id="printdata__${article.id}__">
+						<!-- <h4 style="margin-top: 6px;color: black;text-align: center;">
+							<strong><span th:text="#{You can view employee vigilance certificate.empcertificate}"></span></strong>
+						</h4><br> -->
+                              <span th:utext="${article.grData}"></span>
+						</div>
+						<br>
+						
+							<center>
+						<button type="button"  class="btn btn-primary"  th:data-idprint="printdata__${article.id}__"
+							  onclick="printDivforInsidePreview(this.getAttribute('data-idprint'))"  target="_blank"
+							style="border-radius: 5px;">	
+						<span th:text="#{view.pdf.label}">View PDF</span>
+						</button>
+						</center>
+					
+						<br> <br />
+
+
+					</div>
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</html>

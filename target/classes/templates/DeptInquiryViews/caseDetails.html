@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+<title>Case Details Entry</title>
+<style>
+.ui-menu .ui-menu-item-wrapper {
+        color: #303030 !important;
+        background-color: #fff !important;
+    }        
+
+    .ui-menu .ui-menu-item-wrapper:hover {
+        color: #303030 !important;
+        background-color: rgb(192, 192, 192) !important;
+        border: #fff 1px solid !important;
+    } 
+
+.ui-widget-content {
+    border: 1px solid #ddd;
+    background: rgb(192, 192, 192) !important;
+    color: #333 !important;
+}
+
+
+@media print {
+  body {
+    zoom: 80% !important;
+  }
+  }
+
+
+
+</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"
+				aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						
+						<!-- Navbar Started here -->
+						<div th:replace="DeptInquiryViews/Fragments/processfrag.html :: processfrag">
+						
+						</div>
+						
+					</div>
+					<div><h3>
+							<strong><span th:text="#{deptenq.casedetailsentry}"></span>
+							</strong><br>
+							
+						</h3>
+						
+						</div>
+<!-- 					<div class="row">
+					
+						<div class="col-sm-9">
+							<strong style="color: blue;" th:if="${totalemployee ne null}"><span>Total No. of Employees Involved : <span th:text="${totalemployee}"></span></span></strong>
+						</div>
+						<div class="col-sm">
+							<strong style="color: blue;" th:if="${entered ne null}"><span>Total No. of Employees Entered :<span th:text="${entered}"></span></span></strong>
+						</div>
+						
+					</div>	
+ -->					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+									<form th:action="@{/departmentalEnquiry/addcasedetails}" th:object="${cases}"
+										method="post" enctype="multipart/form-data" id="noticeregisteridmpsc">
+										
+										<p style="color: red;"><span th:text="#{casedetails.mandatory.text.de}"></span></p>
+										<p th:if="${cases.approved}"><button type="button" class="btn btn-success btn-sm">Approved By Verifier</button></p>
+										
+										<div class="row">
+											<!-- <input type="text" class="form-control" th:field="*{id}"> -->
+										
+											
+											
+												<input type="hidden" class="form-control" th:field="*{id}">
+											<div class="col-md-2 mb-3" th:if="${cases.id ne null}">
+												<label for="deFileNo"><span th:text="#{masterData.SystemGeneratedCaseId}"></span></label> <span class="form-control" data-toggle="tooltip"
+													title="This is a System Generated Unique ID Number which must be mentioned on the Docket Sheet of the file to be sent to GAD"
+													style="background-color: #e5e1e1;"> <span>DEM/</span><span
+													th:text="${cases.id}"></span>
+												</span>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span th:text="#{de.filenumber.or.case.no}"></span></label> <input
+													type="text" class="form-control" th:field="${cases.caseNo}"
+													th:value="${cases.caseNo}"
+												th:placeholder="#{case.casedetails.placeholder}" required>
+											</div>
+											
+											
+											
+											<div class="col-md-9">
+												<label for="fileSubject"><span th:text="#{de.filenumber.or.case.fileSubjects}"></span></label> <input
+													type="text" class="form-control" th:field="${cases.fileSubject}"
+													th:value="${cases.fileSubject}" 
+					                        	th:placeholder="#{case.casedetails.placeholder.filesubject}"  required>
+											</div>
+										
+											<div class="col-md-3 mb-3">
+												<label for="typeOfMisconduct"><span th:text="#{de.caseDetails.MisconductType}"></label>
+												 <select
+													class="form-control"  th:field="${cases.misConductType.id}"
+													id="misConductType"  required="required">
+                                                 <option value="">Select</option>
+													<option th:each="misconduct:${misConductType}"
+														th:value="${misconduct.id}"
+														th:text="${misconduct.misconductName}"></option>
+												</select>
+											</div>
+											
+											
+											
+											<div class="col-md-3 mb-3">
+												<label for="ruleApplicable"><span th:text="#{de.casedetails.ruleapplicable}"></span></label> 
+												<select
+													class="form-control" th:field="${cases.ruleApplicable.id}"
+													id="ruleApplicable" required="required">
+                                                         <option value="">Select</option>
+													<option th:each="rules:${rulesapplicable}"
+														data-toggle="tooltip" 
+															th:attr="title=${rules.ruleDescription}" 
+														th:value="${rules.id}" th:text="${rules.ruleName}"></option>
+												</select>
+											</div>
+											
+											<div class=" col-sm-3" id="showchargesheetdata">
+
+												<label for="chargesheet" style="margin: 10px"><span th:text="#{de.casedetails.whetherChargesheetIssued}"></span></label>
+												
+												&nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														th:field="*{whetherChargesheetIssued}" type="radio" 
+														name="chargesheetIssued2" id="chargesheetYes"
+														value="true" checked> Yes <input
+														  th:field="*{whetherChargesheetIssued}"
+														type="radio" name="chargesheetIssued2" id="chargesheetNo"
+														value="false"> No
+												</div>
+											</div>
+											
+											<div class="col-md-3 mb-3" id="subruledata">
+												<label for="ruleApplicable"><span th:text="#{de.casedetails.subruleapplicable}"></span></label> 
+												<select
+													class="form-control" th:field="${cases.subRule.id}"
+													id="subruleApplicable" required="required">
+                                                         <option value="">Select</option>
+													<option th:each="rules:${subrulesapplicable}"
+														data-toggle="tooltip" 
+															th:attr="data-title=${rules.ruleDescription}" 
+														th:value="${rules.id}" th:text="${rules.ruleName}"></option>
+												</select>
+											</div>
+
+
+
+											<div class="col-md-3 mb-3">
+												<label for="delinquentsInvolved"><span th:text="#{de.casedetails.employeeType}"></span>
+												 </label> <select class="form-control"
+													th:field="${cases.employeeType.id}" id="delinquentsInvolved" required="required">
+													<option value="">Select</option>
+													<option th:each="employee:${employeeType}"
+														th:value="${employee.id}"
+														th:text="${employee.employeeType}"></option>
+												</select>
+											</div>
+											
+											
+											<div class="col-md-3 mb-3">
+												<label for="fileSubject"><span th:text="#{de.casedetails.totalNoOfEmployee}"></span></label> <input
+													type="number" class="form-control" th:field="${cases.totalNoOfEmployee}"
+													th:value="${cases.totalNoOfEmployee}" required="required" id="totalNoOfEmployee"
+													max="999" min="1" maxlength="999" minlength="1"
+													pattern="[0-9]+" onKeyPress="if(this.value.length==3) return false;"
+													placeholder="Enter total no of employee"  >
+											</div>
+											
+											
+											<div class="col-md-3 mb-3">
+												<label for="division"><span th:text="#{de.casedetails.division}" data-toggle="tooltip"
+						title="Mention the Revenue Division to which the case pertains"></span> *</label> <select
+													class="form-control" th:field="*{division}"
+													id="division" required="required">
+													<option value="">Select</option>
+													<option th:each="division:${divisiondata}" 
+													        th:value="${division.id}"
+														th:text="${division.divisionName}"></option>
+												</select>
+											</div>
+											
+											
+												<div class="col-md-3 mb-3">
+												<label for="district"><span th:text="#{de.casedetails.district}"></span></label> <select
+													class="form-control" th:field="*{district}"
+													id="district" required="required">
+													<option value="">Select</option>
+													<option th:each="district:${districtdata}" th:value="${district.id}"
+														th:text="${district.districtName}"></option>
+												</select>
+											</div>
+											
+											
+											<div class=" col-sm-3" id="enabletransfer">
+												<label for="chargesheet" style="margin: 10px"><span th:text="#{de.transfercaseyesno}"></span></label>
+												
+												&nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														th:field="*{activeForTransfer}" type="radio" 
+														name="activeForTransfer" id="activeForTransferYes"
+														value="true" checked>  <span th:text="#{de.chargesheetissued.yes}"></span><input
+														  th:field="*{activeForTransfer}"
+														type="radio" name="activeForTransfer" id="activeForTransferNo"
+														value="false">  <span th:text="#{de.chargesheetissued.no}"></span>
+												</div>
+											</div>
+											<div class="col-md-3 mb-3" id="transferorg">
+												<label for="district"><span th:text="#{noticeinboxgad.departmentlist}"></span></label> <select
+													class="form-control" th:field="*{globalorg}"
+													id="globalorg" required="required">
+													<option value="">Select</option>
+													<option th:each="org:${orgList}" th:value="${org.id}"
+														th:text="${org.globalOrgName}"></option>
+												</select>
+											</div>
+											<div class="col-md-3 mb-3" id="tranfertype">
+												<label for="district"><span th:text="#{de.reasonfortransfer}"></span></label> <select
+													class="form-control" th:field="*{reasonForTransfer}"
+													id="reasonForTransfer" required="required">
+													<option value="">Select</option>
+													<option value="Promotion and Transfer">Promotion and Transfer</option>
+													<option value="General Transfer">General Transfer</option>
+												</select>
+											</div>
+											
+											<div class="col-sm-3  mb-3" id="approvaltransferupload">
+												<label for="chargesheetFile"><span th:text="#{de.documentfortransfer}"></span></label> 
+												<input
+													type="file" id="fileNameTransferApproval"  name= "fileNameTransferApproval"  
+													class="form-control" accept=".pdf">
+											</div>
+											
+											
+											<div class="col-md-3 mb-3"></div>
+											<div class="col-md-3 mb-3"></div>
+											
+											<div class="col-md-12 mb-4" >
+												<label for="caseSummary"><span th:text="#{de.casedetails.caseSummary}"></span></label>
+												<textarea rows="5" cols="100" class="form-control  col-md" th:field="*{caseSummary}"   required="required"   th:placeholder="#{caseSummary.in.caseDetails.placeholder}" ></textarea>
+												<label for="caseSummary"><span th:text="#{de.otherthangovserv}"></span></label>
+												<textarea rows="5" cols="100" class="form-control  col-md" 
+												th:placeholder="#{de.otherthangov}"
+												th:field="*{otherThanGovServ}"></textarea>
+											</div>
+											
+											
+											
+										</div>
+										
+										<div class="col-sm-3  mb-3" id="fileid" th:if=" ${cases.caseNo ne null  }">
+												<label for="chargesheetFile"><span th:text="#{de.SuspensionDetails.uploadOrderextension}"></span></label> <input
+													type="file" id="fileName" name="fileName"    class="form-control" accept=".pdf">
+											</div>
+										
+										
+										<div class="form-group" sec:authorize="hasAnyRole('ROLE_VERIFICATION')">
+											<div class="custom-control custom-radio custom-control-inline">
+												<input type="radio" id="option1" name="option1" class="custom-control-input" value=true th:field="*{approved}">
+												<label class="custom-control-label" for="option1">
+												<span th:text="#{Form.Approved}"></span></label>
+											</div>
+											<div class="custom-control custom-radio custom-control-inline">
+												<input type="radio" id="option2" name="option2" class="custom-control-input" value=false th:field="*{approved}">
+												<label class="custom-control-label" for="option2">
+												<span th:text="#{Form.Not Approved}"></span></label>
+											</div>
+										</div>
+
+						
+										<div class="btn-toolbar mr-1" role="toolbar" aria-label="Basic example">
+											<button type="submit" th:value="save" class="btn btn-primary " id="save"><span th:text="#{de.casedetails.saveformbtn}"></span></button>
+											<button type="button" class="btn btn-primary" id="transfer"><span th:text="#{de.transferbutton}"></span></button>
+											
+											
+										                 	&nbsp;
+													<button  th:if=" ${cases.caseNo ne null  }" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal29">
+                        								             
+									          <span th:text="#{casedetails.preview.button}"></span>
+						                           	</button>
+											
+											<!-- <button type="submit" th:value="save" class="btn btn-primary">Next</button> -->
+										</div>
+										
+
+									</form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+		
+		
+		<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+					</h4>
+					<button type="button" class="close" data-dismiss="modal"  onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%" height="500"
+								style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<script th:inline="javascript">
+		var mess = [[${{message}}]];
+		var disableprosection =  [[${{disableprosecution}}]];
+		var disablepresenting =  [[${{disablepresentingofficer}}]];	
+		if(disablepresenting != null && JSON.parse(disablepresenting)) {
+			$('#presentingofficer').addClass('disabled');
+		}
+		if(disableprosection != null && JSON.parse(disableprosection)) {
+			$('#prosecution').addClass('disabled');
+		}
+		
+		if (mess != null) {
+			swal(mess);
+		}
+		
+		
+		
+		$("#caseentry").attr("class","btn btn-info");
+		
+	
+		
+		
+		/* $("#caseNo").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getCaseListjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+				getdata('/de/departmentalEnquiry/getcasedetailJsons?caseid='+ui.item.label, function(data) {
+					if(data != null) {
+						$('#id').val(data.id);
+						$('#caseNo').val(data.caseNo);
+						$('#fileSubject').val(data.fileSubject);
+						$('#misConductType').val(data.misConductType);
+						$('#ruleApplicable').val(data.ruleApplicable);
+						$('#delinquentsInvolved').val(data.delinquentsInvolved);
+						$('#totalNoOfEmployee').val(data.totalNoOfEmployee);
+						$('#caseSummary').val(data.caseSummary);
+					}
+				});
+		    
+		
+		    }
+        }); */
+		
+		$('#delinquentsInvolved').change(function(){
+			var type = $('#delinquentsInvolved').val();
+			if(type==1) {
+				$('#totalNoOfEmployee').val(1);
+			} else {
+				$('#totalNoOfEmployee').val('');
+			}
+		})
+        
+   
+	</script>
+<script sec:authorize="hasAnyRole('SUPERADMIN','SECRETARY')" th:inline="javascript">
+	$("#noticeregisteridmpsc :button").prop("disabled", true);
+    $("#noticeregisteridmpsc :input").prop("disabled", true);
+	$("#noticeregisteridmpsc :select").prop("disabled", true); 
+	</script>
+	
+	<script th:if="${cases ne null && cases.currentUser ne null && cases.currentUser.email ne currentUser}" th:inline="javascript">
+	$("#noticeregisteridmpsc :button").prop("disabled", true);
+    $("#noticeregisteridmpsc :input").prop("disabled", true);
+	$("#noticeregisteridmpsc :select").prop("disabled", true); 
+	</script>
+	
+	
+	
+	<script th:inline="javascript">
+	
+	//$('#district').select2();
+	
+	try{  
+		var ss = /*[[${{session.caseid}}]]*/;
+		var status = /*[[${{cases.transferStatus}}]]*/;
+		if(ss != null) {
+			if(status == null) {
+				$('#caseNo').attr('readonly',true);
+			}
+			/* $("#caseNo").attr('disabled', true);  */
+		
+		} else {
+			$('#employee').addClass('disabled');
+			$('#chargesheet').addClass('disabled');
+			$('#suspension').addClass('disabled');
+			$('#reinstated').addClass('disabled');
+			$('#inquiryofficer').addClass('disabled');
+			$('#presentingofficer').addClass('disabled');
+			$('#prosecution').addClass('disabled');
+			$('#courtcase').addClass('disabled');
+			$('#abeyance').addClass('disabled');
+			$('#final').addClass('disabled');
+		}
+		
+		
+	} catch(error){  
+		 
+	}
+	
+	</script>
+
+	
+	
+	<!-- this code for view pdf  -->
+	
+	<script th:inline="javascript">
+
+	
+	
+	function printDivforInsidePreview(printdata) {
+		
+	    var printContents = document.getElementById(printdata).innerHTML;
+	       jQuery.noConflict();
+	    var originalContents = document.body.innerHTML;
+	    document.body.innerHTML = printContents;
+
+	    window.print(); 
+		    document.body.innerHTML = originalContents; 	  
+		    
+		    $('.close').click(function(){
+				$('#myModal29').modal('hide');
+				$(modalid).modal('hide');
+				$('.modal-backdrop').remove();
+				location.reload();
+			    var l=new Loading()
+			});
+	} 
+	
+	function closeModalForce(){
+		$('#myModalprint').modal('hide');
+		$('#myModal29').hide();
+		$('.modal-backdrop').remove();
+	}
+		
+	
+	
+	
+	var modalid = null;
+	
+	
+	
+	
+	function downloadlistForCaseDetailsviewPdf(){
+		modalid = '#myModal29';
+		var ff = new FormData();
+		var printdata = '#printdata';
+		var mymodal2 = '#myModal29';
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal2).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	$('#subruledata').hide();
+	var rule = $('#ruleApplicable').val();
+	if(rule != null && rule == '3') {
+		var chargesheetIssued = JSON.parse($('input[name="whetherChargesheetIssued"]:checked').val());
+		if(!chargesheetIssued) {
+			$('#chargesheet').addClass('disabled');
+			$('#inquiryofficer').addClass('disabled');
+//			$('#final').addClass('disabled');
+			$('#presentingofficer').addClass('disabled');
+			$('#prosecution').addClass('disabled');
+			$('#courtcase').addClass('disabled');
+			$('#abeyance').addClass('disabled');
+		}
+		$('#showchargesheetdata').show();
+	} else {
+		$('#showchargesheetdata').hide();
+	}
+	if(rule != null && (rule == '2')) {
+		$('#subruledata').show();
+		var subRule = $('#subruleApplicable').val();
+		if(subRule != null && subRule == '1') {
+			$('#inquiryofficer').addClass('disabled');
+			$('#presentingofficer').addClass('disabled');
+			$('#prosecution').addClass('disabled');
+			$('#courtcase').addClass('disabled');			
+		}		
+	}
+	
+	$('#ruleApplicable').change(function(){
+		var rule = $('#ruleApplicable').val();
+		if(rule != null && (rule == '2')) {
+			$('#subruledata').show();		
+		} else {
+			$('#subruledata').hide();
+		}
+		if(rule != null && rule == '3') {
+			$('#showchargesheetdata').show();
+		} else {
+			$('#showchargesheetdata').hide();
+		}
+	});
+	
+	var misconduct = $('#misConductType').val();
+	if(misconduct != null && misconduct == '1') {
+		$('#prosecution').addClass('disabled');
+	}
+	
+	var retired = /*[[${{retired}}]]*/;
+	if(retired != null) {
+//		$('#suspension').addClass('disabled');
+//		$('#reinstated').addClass('disabled');
+	}
+	$('#enabletransfer').hide();
+	var totalemployee = /*[[${{totalemployee}}]]*/;
+	var entered = /*[[${{entered}}]]*/;
+	if(totalemployee != null && entered != null) {
+		totalemployee = JSON.parse(totalemployee);
+		if(totalemployee==1) {
+			$('#enabletransfer').hide();
+		} else {
+			$('#enabletransfer').hide();
+		}
+		entered = JSON.parse(entered);
+		if(totalemployee > entered) {
+			$('#suspension').addClass('disabled');
+			$('#reinstated').addClass('disabled');
+			$('#chargesheet').addClass('disabled');
+			$('#inquiryofficer').addClass('disabled');
+	//		$('#final').addClass('disabled');
+			$('#presentingofficer').addClass('disabled');
+			$('#prosecution').addClass('disabled');
+			$('#courtcase').addClass('disabled');
+			$('#abeyance').addClass('disabled');
+			$('#final').addClass('disabled');
+//			swal("Please Enter all Employees Details first to Proceed further !");
+		}
+	}
+	
+	var enableRe = /*[[${reinstateEnable}]]*/;
+	if(enableRe != null) {
+		$('#reinstated').removeAttr('disabled');
+	} else {
+		$('#reinstated').addClass('disabled');
+	}
+	
+	var selections = $("#division :selected").val();
+	var districtId = /*[[${{cases.district.id}}]]*/;
+	$('#district').empty();
+	$('#district').append('<option value="">Select</option>');
+	if(selections != null && selections != '') {
+		
+		getdata('/de/departmentalEnquiry/getDistrictjson/'+selections, function(data) {
+			
+			$.each(data, function (i, d) {
+				// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+				if(districtId != null && districtId == d.id) {
+					$('#district').append('<option value="' + d.id + '" selected>' + d.name + '</option>');
+				} else {
+					$('#district').append('<option value="' + d.id + '">' + d.name + '</option>');
+				}
+			});
+		});
+	}
+	$('#division').change(function () {
+		var selections = $("#division :selected").val();
+		$('#district').empty();
+		$('#district').append('<option value="">Select</option>');
+		getdata('/de/departmentalEnquiry/getDistrictjson/'+selections, function(data) {
+			
+			$.each(data, function (i, d) {
+				// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+				if(districtId != null && districtId == d.id) {
+					$('#district').append('<option value="' + d.id + '" selected>' + d.name + '</option>');
+				} else {
+					$('#district').append('<option value="' + d.id + '">' + d.name + '</option>');
+				}
+			});
+		});
+		
+		/* var urlx = "/de/departmentalEnquiry/getDistrictjson";
+		var loading = new Loading();
+		$.ajax({
+			url: urlx + '/' + selections,
+			type: "GET",
+			processData: false, //prevent jQuery from automatically transforming the data into a query string
+			contentType: false,
+			beforeSend: function (xhr) {
+				// here it is
+				xhr.setRequestHeader(header, token);
+			},
+			success: function (data) {
+				loadingOut(loading);
+				$.each(data, function (i, d) {
+					// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+					$('#district').append('<option value="' + d.id + '">' + d.value + '</option>');
+				});
+
+			}
+
+		}); */
+
+	});
+	
+ 	$('#transfer').click(function(){
+		swal({
+			title: "Do you want to transfer case?",
+			text: "",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+			buttons: ["No", "Yes"]
+		}).then(function(isConfirm) {
+//			var form = $('#noticeregisteridmpsc')[0];
+
+//		    var data = new FormData(form);
+			var form = new FormData();
+			console.log($('#fileNameTransferApproval')[0].files[0]);
+	        form.append('id',$('#id').val());
+	        form.append('globalorg',$('#globalorg').select2().val());
+	        form.append('reason',$('#reasonForTransfer').val());
+	        form.append('otherThanGovServ',$('#otherThanGovServ').val());
+	        form.append('file',$('#fileNameTransferApproval')[0].files[0]);
+			postdata('/de/departmentalEnquiry/transfercasedetails/',form,function(data) {
+				swal(data)
+				.then((value) => {
+					location.reload();
+				});
+			});
+			/* const submitFormFunction = Object.getPrototypeOf(form).submit;
+			submitFormFunction.call(form);
+			var loading = new Loading(); */
+//			$('#newformid').submit();
+		});
+		 
+	}); 
+	
+	$('#globalorg').select2();
+	var activeForTransfer = JSON.parse($('input[name="activeForTransfer"]:checked').val());
+	var originalFormAction = '/de/departmentalEnquiry/addcasedetails';
+	var originalformid = 'noticeregisteridmpsc';
+	if(activeForTransfer) {
+		$('#transferorg').show();
+		$('#tranfertype').show();
+		$('#save').hide();
+		$('#transfer').show();
+		$('#approvaltransferupload').show();
+		/* $('#noticeregisteridmpsc').attr('action', '/de/departmentalEnquiry/transfercasedetails');
+		$('#noticeregisteridmpsc').attr('id','newformid'); */
+	} else {
+		$('#transferorg').hide();
+		$("#transferorg").val('').trigger('change');
+		$('#tranfertype').hide();
+		$('#save').show();
+		$('#approvaltransferupload').hide();
+		$('#transfer').hide();
+		/* $('#noticeregisteridmpsc').attr('action', originalFormAction);
+		$('#noticeregisteridmpsc').attr('id',originalformid); */
+	}
+	
+	
+	$('input[name="activeForTransfer"]').click(function(){
+		var activeForTransfer = JSON.parse($('input[name="activeForTransfer"]:checked').val());
+//		var originalFormAction = $('#noticeregisteridmpsc').attr('action');
+		if(activeForTransfer) {
+			$('#transferorg').show();
+			$('#tranfertype').show();
+			$('#save').hide();
+			$('#transfer').show();
+			$('#approvaltransferupload').show();
+		/* 	$('#noticeregisteridmpsc').attr('action', '/de/departmentalEnquiry/transfercasedetails');
+			$('#noticeregisteridmpsc').attr('id','newformid'); */
+		} else {
+			$('#transferorg').hide();
+			$("#transferorg").val('').trigger('change');
+			$('#tranfertype').hide();
+			$('#save').show();
+			$('#approvaltransferupload').hide();
+			$('#transfer').hide();
+/* 			$('#noticeregisteridmpsc').attr('action', originalFormAction);
+			$('#noticeregisteridmpsc').attr('id',originalformid); */
+		}
+	});
+	
+	
+	</script>
+	
+	
+	<!-- this code for preview screen  added on    date :: 31/10/2022 -->
+
+	<script sec:authorize="hasAnyRole('ROLE_VERIFICATION')" th:inline="javascript">
+//	$("#noticeregisteridmpsc :button").prop("disabled", true);
+	</script>
+	<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+
+	
+	
+	<!-- this code for preview screen  added on    date :: 28/10/2022 -->
+
+<th:block th:include="DeptInquiryViews/Fragments/CaseEntryPreviewListRecords.html:: CaseEntryPreviewListRecords"></th:block>
+
+	
+	
+	
+	
+</body>
+
+</html>

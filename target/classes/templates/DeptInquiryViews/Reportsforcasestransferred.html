@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+<title>Case Details Entry</title>
+<style>
+.ui-menu .ui-menu-item-wrapper {
+	color: #303030 !important;
+	background-color: #fff !important;
+}
+
+.ui-menu .ui-menu-item-wrapper:hover {
+	color: #303030 !important;
+	background-color: rgb(192, 192, 192) !important;
+	border: #fff 1px solid !important;
+}
+
+.ui-widget-content {
+	border: 1px solid #ddd;
+	background: rgb(192, 192, 192) !important;
+	color: #333 !important;
+}
+</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()" id="viewtop">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"
+				aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3>
+							<strong><!-- <span th:if="${viewreport == null}" th:text="#{de.inbox.listCasesEntered}"
+								>List of DE Cases Entered</span> -->
+								<span th:text="#{de.casestransferred}"></span>
+								
+							</strong>
+						</h3>
+						<a href="#gridview" class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.scroll.down.AllBtn}"></span></a>
+						
+
+
+
+
+
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+
+									<div class="row">
+
+										<div class="col-md-3 mb-3" th:if="${viewreport == null}">
+											<label for="deFileNo" th:text="#{de.inbox.deFileCaseNo }" >DE File No. / Case No</label> <input
+												type="text" class="form-control" id="caseno"
+												th:field="${caseno}" th:placeholder="#{de.search.placeholder }">
+										</div>
+
+										<div class="col-md-9" align="right">
+
+										
+												
+												
+											
+											<a class="btn" style="color: blue;;margin-top: 4%;" href="javascript:void(0);">
+											<h5>
+											<span  th:text="#{de.inbox.totalNoOfCases}"
+												>Total No. of Cases</span> : <span
+												th:text="${totalItems}"></span></h5>
+												</a>	
+												
+										</div>
+									</div>
+
+									
+									
+									<div class="table-responsive">
+										<table class="table table-bordered dark">
+											<thead>
+												<tr>
+													<th width="5%" class="text-wrap"><center> <span th:text="#{srNo}" ></span></center></th>
+													<th width="5%" class="text-wrap"><a
+														th:href="@{|/departmentalEnquiry/casestransferred/${currentPage}?caseno=${caseno}&viewreport=${viewreport}&sort-field=caseNo&sort-dir=${reverseSortDir}|}">
+															<center> <span th:text="#{de.enquiry.caseno}"></span>
+															<img th:if="${sortDir == 'asc' and sortField =='caseNo'}" src="data:image/webp;base64,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">
+															<img th:if="${sortDir == 'desc' and sortField =='caseNo'}" src="data:image/png;base64,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">
+															</center>
+													</a></th>
+													<th th:if="${viewreport ne null && viewreport}"
+														class="text-wrap" >Names</th>
+
+
+													<th class="text-wrap"><a
+														th:href="@{|/departmentalEnquiry/casestransferred/${currentPage}?caseno=${caseno}&viewreport=${viewreport}&sort-field=ruleApplicable&sort-dir=${reverseSortDir}|}">
+															<center><span th:text="#{de.inbox.ruleApplicable}">
+															Rule Applicable</span></center>
+													</a></th>
+
+
+													<th class="text-wrap"><a
+														th:href="@{|/departmentalEnquiry/casestransferred/${currentPage}?caseno=${caseno}&viewreport=${viewreport}&sort-field=misConductType&sort-dir=${reverseSortDir}|}">
+															<center> <span th:text="#{Type of Misconduct}" >Type of Misconduct </span></center>
+													</a></th>
+
+													<th class="text-wrap" th:if="${viewreport == null}"><a
+														th:href="@{|/departmentalEnquiry/casestransferred/${currentPage}?caseno=${caseno}&viewreport=${viewreport}&sort-field=employeeType&sort-dir=${reverseSortDir}|}">
+															<center> <span th:text="#{de.inbox.employeeInvolved}">Employee Involved(No.) </span></center>
+													</a></th>
+													<th class="text-wrap"><a
+														th:href="@{|/departmentalEnquiry/casestransferred/${currentPage}?caseno=${caseno}&viewreport=${viewreport}&sort-field=chargeSheetList.chargesheetDate&sort-dir=${reverseSortDir}|}">
+														<span th:text="#{article.chargesheetDates}"> </span>	</a></th>
+													
+													<th class="text-wrap" sec:authorize="hasAnyRole('ROLE_DEPARTMENTADMIN','ROLE_SUPERADMIN')">
+														<span th:text="#{de.inbox.subdepartment}">Sub Department</span>
+													</th>
+													
+													
+													<th width="7%" th:if="${viewreport == null}"
+														class="text-wrap"><center></center></th>
+
+													<th th:if="${viewreport ne null && viewreport}"
+														class="text-wrap">Department Name</th>
+													
+
+												</tr>
+
+											</thead>
+											<tbody>
+												<tr th:each="article,iStat:${caseDetailsAllRecords}">
+													<td th:text="${pageIndex+iStat.index}" class="text-wrap"></td>
+													<!-- <td> <span th:text="${iStat.index}"></span></td> -->
+
+													<td class="text-wrap"><a
+													 th:attr="class=${article.activeForTransfer}?'disabled'"
+														href="javascript:void(0);"><span
+															th:text="${article.caseNo}"></span></a><br><br>
+															<span th:if="${article.activeForTransfer}">(Case Transferred to  <strong><span th:text="${article.caseTransferredTo.email}"></span></strong> <br><br>
+															Department <strong><span th:text="${article.caseTransferredTo.pimsEmployee.globalOrgId.globalOrgName}"></span></strong>)</span>
+															</td>
+													<td class="text-wrap"
+														th:if="${viewreport ne null && viewreport}"><span
+														th:if="${!article.employeeNames.isEmpty()}"
+														th:each="arti,istate:${article.employeeNames}"><span
+															th:text="${istate.index+1}"></span>.<span
+															th:text="${arti}"></span> <br> </span></td>
+
+
+													<td class="text-wrap"><span
+														th:if="${article.ruleApplicable}"
+														th:text="${article.ruleApplicable.ruleName}"></span></td>
+
+
+
+													<td class="text-wrap"><span
+														th:if="${article.misConductType ne null}"
+														th:text="${article.misConductType.misconductName}"></span>
+													</td>
+
+
+
+													<td class="text-wrap" th:if="${viewreport == null}"><span
+														th:if="${article.employeeType}"
+														th:text="${article.employeeType.employeeType}"></span><strong>
+															(<span th:text="${article.totalNoOfEmployee}"></span>)
+													</strong></td>
+													<td class="text-wrap"><span
+														th:if="${article.chargeSheetList ne null and !article.chargeSheetList.isEmpty()}"
+														><span
+															th:text="${#temporals.format(article.chargeSheetList[0].chargesheetDate, 'dd-MM-yyyy')}"></span><br>
+													</span> <span
+														th:unless="${article.chargeSheetList ne null and !article.chargeSheetList.isEmpty()}"></span>
+
+													</td>
+
+													<td sec:authorize="hasAnyRole('ROLE_DEPARTMENTADMIN','ROLE_SUPERADMIN')">
+														<span th:if="${article.subDepartment ne null}" th:text="${article.subDepartment.subdepartmentNameEn}"></span>
+													</td>
+													<td th:if="${viewreport == null}" class="text-wrap">
+
+														<!-- <button type="button" class="btn btn-primary btn-sm"
+															id="preview" data-toggle="modal"
+															th:attrappend="data-target='#myModal'+${article.id}">
+															Preview Detail</button>
+															<br><br> -->
+														<button type="button" class="btn btn-primary btn-sm"
+															id="preview" data-toggle="modal"
+															th:attrappend="data-target='#myModalCompact'+${article.id}">
+															<span th:text="#{inbox.Preview}">Preview  </span></button>	
+													</td>
+
+													<!-- <td th:if="${viewreport == null}" class="text-wrap"> <span><a  th:href="@{| /departmentalEnquiry/deleteDECasesBacklogRecords/${article.id} |}"><img th:src="@{/img/delete.png}" alt="logo"  /></a></span></td> -->
+													<td th:if="${viewreport ne null && viewreport}"
+														class="text-wrap"><span
+														th:text="${article.chargesheetDate}"
+														th:if="${article.chargesheetDate ne null}"></span> <span
+														th:unless="${article.chargesheetDate ne null}"></span></td>
+													
+													<td th:if="${viewreport ne null && viewreport}"
+														class="text-wrap"><span
+														th:if="${article.globalorg ne null}"> <span
+															th:text="${article.globalorg.globalOrgName}"></span>
+													</span></td>
+													
+													
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+
+						<br>
+						<div style="float: right;" id="gridview"><a href="#viewtop"  class="btn btn-info btn-sm"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+							
+									<div class="row" th:fragment="pagination">
+										<div class="col-md-2">
+											<b style="color: blue"><span th:text="#{de.inbox.totalNoOfCases}" >
+												Total No. of Cases</span> : <span
+												th:text="${totalItems}"></span></b>
+										</div>
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item" th:if="${currentPage > 1}"><a
+														class="page-link"
+														th:href="@{|/departmentalEnquiry/casestransferred/1?caseno=${caseno}&viewreport=${viewreport}&sort-field=${sortField}&sort-dir=${sortDir}|}"
+														th:text="#{pages.first}">First</a> <span
+														th:unless="${currentPage > 1}" th:text="#{pages.first}">First</span>
+													</li>
+
+													<li class="page-item"><a class="page-link"
+														th:if="${currentPage > 1}"
+														th:href="@{|/departmentalEnquiry/casestransferred/${currentPage - 1}?caseno=${caseno}&viewreport=${viewreport}&sort-field=${sortField}&sort-dir=${sortDir}|}"
+														th:text="#{pages.previous}">Previous</a> <span
+														th:unless="${currentPage > 1}" th:text="#{pages.previous}">Previous</span>
+													</li>
+
+													<li class="page-item"
+														th:each="i: ${#numbers.sequence(begin, end)}"
+														th:if="${begin<end}"><a
+														th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}"
+														th:href="@{|/departmentalEnquiry/casestransferred/${i}?caseno=${caseno}&viewreport=${viewreport}&sort-field=${sortField}&sort-dir=${sortDir}|}"
+														th:text="${i}"></a></li>
+
+													<li class="page-item"><a class="page-link"
+														th:if="${currentPage < totalPages}"
+														th:href="@{|/departmentalEnquiry/casestransferred/${currentPage + 1}?caseno=${caseno}&viewreport=${viewreport}&sort-field=${sortField}&sort-dir=${sortDir}|}"
+														th:text="#{pages.next}">Next</a> <span
+														th:unless="${currentPage < totalPages}"
+														th:text="#{pages.next}">Next</span></li>
+
+													<li class="page-item"><a class="page-link"
+														th:if="${currentPage < totalPages}"
+														th:href="@{|/departmentalEnquiry/casestransferred/${totalPages}?caseno=${caseno}&viewreport=${viewreport}&sort-field=${sortField}&sort-dir=${sortDir}|}"
+														th:text="#{pages.last}">Last</a> <span
+														th:unless="${currentPage < totalPages}"
+														th:text="#{pages.last}">Last</span></li>
+
+												</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+									<!-- ending pagination -->
+									<div></div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- this code for preview screen  added on     date :: 25/10/2022 -->
+	<th:block
+		th:include="DeptInquiryViews/Fragments/completecasedetailspreview.html:: completecasedetailspreview"
+		th:each="article,iStat:${caseDetailsAllRecords}">
+	</th:block>	
+	<th:block
+		th:include="DeptInquiryViews/Fragments/SinglePageCaseView.html:: singlepagecaseview"
+		th:each="article,iStat:${caseDetailsAllRecords}">
+		
+		</th:block>
+	<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal"    onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%"  height="500"
+								style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+
+	<script th:inline="javascript">
+	
+	// added on 19/01/2023 as per DE Requirements
+	
+	function closeModalForce(id){
+		   /* var vk12=$('#vkg123').val();
+		  var vkstr='myModal'+vk12; */
+		  /* 	$('#myModalprint').modal('hide'); */
+	   	/* 	$('#myModalprint').modal('hide'); */
+	   	var modalid = "#"+id;
+			$(modalid).hide();
+			$('.modal-backdrop').remove();
+		}
+	
+	function printDivforInsidePreview(downloadreportsforall) {
+		/* 	var name = $('#myModalCompact');
+			var modalName = myModalCompact+name;  */
+// 			$('#myModalCompact273').modal('hide');
+			
+			    var printContents = document.getElementById(downloadreportsforall).innerHTML;
+			       jQuery.noConflict();
+			    var originalContents = document.body.innerHTML;
+			    document.body.innerHTML = printContents;
+
+			    window.print(); 
+				    document.body.innerHTML = originalContents;
+				  	   	
+		
+		}
+	
+	
+	
+		var mess = [[${{message}}]];
+		if (mess != null) {
+			swal(mess);
+		}
+		var sortfield = [[${{sortField}}]];
+		var sortdire = 	[[${{sortDir}}]];
+		
+		$("#caseno").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getCaseListjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+				var filter = ui.item.label;
+             	
+				window.location.href = '/de/departmentalEnquiry/casestransferred/1?caseno='+filter+'&sort-field='+sortfield+'&sort-dir='+sortdire;
+		    
+		
+		    }
+        });
+		
+		$("#rule").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url : "/de/departmentalEnquiry/getRuleListjson",
+                    dataType : "json",
+                    data : {
+                        q : request.term
+                    },
+                    success : function(data) {
+                        //alert(data);
+                        response(data);
+                    }
+                });
+            },
+             select: function (event, ui) {   //must be cleared with function parameter
+				var filter = ui.item.label;
+             	
+				window.location.href = '/de/departmentalEnquiry/reports/1?rule='+filter+'&viewreport=true'+'&sort-field='+sortfield+'&sort-dir='+sortdire;
+		    
+		
+		    }
+        });
+		
+	</script>
+	
+	<script th:inline="javascript">
+	var modalid = null;
+	
+	
+	function downloadlist(id) {
+		modalid = '#myModal'+id;
+		var ff = new FormData();
+		var printdata = '#printdata'+id;
+		var mymodal = '#myModal'+id;
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	
+	/* function downloadlistCompact(id) {
+		modalid = '#myModalCompact'+id;
+		var ff = new FormData();
+		var printdata = '#printdataCompact'+id;
+		var mymodal = '#myModalCompact'+id;
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	} */
+	
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	
+	
+	
+	
+	</script>
+<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+
+</html>

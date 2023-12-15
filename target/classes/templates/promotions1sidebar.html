@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar"
+	th:fragment="promotions1sidebar">
+	<ul class="nav" sec:authorize="isAuthenticated()">
+		<li class="nav-item nav-profile border-bottom"><!-- <a href="#"
+			class="flex-column">
+				<div class="nav-profile-image">
+					          <img src="/image/india-emblem-f.png" alt="profile" />
+					<div class="ellipse">
+						<b><span th:text="#{Government Construction Department}">सरकारी
+								बांधकाम विभाग </span></b>
+					</div>
+					change to offline or busy as needed
+				</div>
+				<div class="nav-profile-text d-flex ml-0 mb-3 flex-column"
+					sec:authorize="isAuthenticated()">
+					<span class="font-weight-semibold mb-1 mt-2 text-center"
+						th:text="#{Welcome}"></span><br /> <span
+						class="text-secondary icon-sm text-center"
+						sec:authentication="principal.username">User</span><br /> <br />
+					<span> <a class="btn btn-danger" th:href="@{/logout}">Logout</a></span>
+				</div>
+		</a> --></li>
+		<li class="pt-2 pb-1"><span class="nav-item-head"><span
+				th:text="#{Recruitment}">Recruitment</span></span></li>
+
+
+		<li class="nav-item"><a class="nav-link" th:href="@{/}"> <i
+				class="mdi mdi-compass-outline menu-icon"></i> <span
+				class="menu-title"><a th:href="@{/}"><span th:text="#{Sidebar.home}"></span></a></span>
+		</a></li>
+<!-- 		<li class="nav-item"><a class="nav-link" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+			th:href="@{/promotions/generateOneTimeSeniorityList}"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"
+				th:text="#{Recruitment.Generate the provisional seniority list}">
+					Generate the provisional seniority list</span>
+		</a></li> -->
+		
+		<li class="nav-item"><a class="nav-link" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+			th:href="@{/promotions/generatePromotionsList}"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"
+				th:text="#{Recruitment.promotionsgroupA}">
+					View the seniority list for Promotions Group A</span>
+		</a></li>
+		
+		<li class="nav-item"><a class="nav-link" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+			th:href="@{/promotions/generatePromotionsList?type=all}"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"
+				th:text="#{Recruitment.promotionsallcadre}">
+					Create promotions file for all cadre </span>
+		</a></li>
+		
+		
+		<li class="nav-item"><a class="nav-link" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"
+			th:href="@{/promotions/getListOfDeemedDateEmployee/page/1}"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"
+				th:text="#{Recruitment.deemedpromotions}">
+					Deemed Date of promotions</span>
+		</a></li>
+		
+		
+		<li class="nav-item"><a class="nav-link"
+			th:href="@{/promotions/inboxpromotionsfile/page/1}"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" th:text="#{inbox.promotionsList}">Inbox
+					Promotions</span>
+		</a></li>
+		<li class="nav-item"><a class="nav-link"
+			th:href="@{/promotions/inboxpromotionsfile/page/1?status=APPROVED_16B}" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" th:text="#{inbox.processPromotion}">Process Promotions</span>
+		</a>
+			<ol class="nav-item" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/promotions/inboxpromotionsfile/page/1?auth=DPC}"><span class="menu-title" th:text="#{inbox.dpccommittee}">DPC Commitee</span></a></li>
+<!-- 				<li class="nav-item"><a class="nav-link"
+					th:href="@{/inboxpromotionsfile/page/1?auth=GAD}"><span class="menu-title" th:text="#{Form.gad}">GAD Commitee</span></a></li>
+ -->				<li class="nav-item"><a class="nav-link"
+					th:href="@{/promotions/inboxpromotionsfile/page/1?auth=CSB}"><span class="menu-title" th:text="#{inbox.csbcommittee}">CSB Commitee</span></a></li>				
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/promotions/inboxpromotionsfile/page/1?auth=CM}"><span class="menu-title" th:text="#{inbox.cmcommittee}">CM Commitee</span></a></li>
+			</ol>
+		</li>
+
+	</ul>
+</nav>
+
+</html>

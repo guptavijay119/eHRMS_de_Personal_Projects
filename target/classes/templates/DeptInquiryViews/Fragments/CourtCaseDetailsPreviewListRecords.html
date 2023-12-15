@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="CourtCaseDetailsPreviewListRecords">
+	<div class="modal fade" id="myModal2" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div class="container">
+						<button type="button" class="close" data-dismiss="modal"
+							th:id="myModal2">&times;</button>
+
+						<br>
+						<br>
+						<button type="button" class="btn btn-primary" id="myModal2"
+							onclick="downloadlistForCaseDetailsviewPdf()"
+							style="float: right;">
+							<span>View PDF</span>
+						</button>
+						<h3>
+							<strong><span>Court Case Preview</span></strong>
+						</h3>
+
+						<br>
+						<div class="table-responsive" id="printdata">
+							<table class="table table-bordered table-sm"
+								style="border: 1px solid black !important; border-collapse: collapse !important;">
+								<caption></caption>
+								<thead>
+									<tr>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row" width="20%"></th>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row"></th>
+									</tr>
+								</thead>
+								<tbody>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><span>Case No</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${CourtCaseObj.caseNo}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="prosecutionProposalReceived"><span>Does
+													any Related Court Case(s) Exists</span></label>
+										</td>
+
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:if="${CourtCaseObj.anyRelatedCourtCaseExist}"
+											th:text="#{de.boolean.yes}"></span> <span
+											th:unless="${CourtCaseObj.anyRelatedCourtCaseExist}"
+											th:text="#{de.boolean.no}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="sevarthId"><span>Sevarth Id.</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${CourtCaseObj.sevarthId}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><span>First Name</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${CourtCaseObj.firstName}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><span>Middle Name</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${CourtCaseObj.middleName}"></span>
+										</td>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><span>Last Name</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${CourtCaseObj.lastName}"></span>
+										</td>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="Designation"><span>Court Case
+													Number</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${CourtCaseObj.courtCaseNo}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="courtType"><span>Court Type</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<!-- <span  th:text="${CourtCaseObj.listOfInquiryOfficer.inquiryOfficerlist}"></span> -->
+											<span th:if="${CourtCaseObj.courtType ne null}"
+											th:text="${CourtCaseObj.courtType.courtName}"></span>
+										</td>
+									</tr>
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="courtName"><span>Court Name</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${CourtCaseObj.courtName}"></span>
+										</td>
+										</td>
+									</tr>
+									
+									
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="status"><span>Status</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span th:text="${CourtCaseObj.status}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<label for="dateOfFinalOrder"><span>Date of
+													Final Order</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;">
+											<span
+											th:text="${#temporals.format(CourtCaseObj.dateOfFinalOrder, 'dd-MM-yyyy')}"></span>
+										</td>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<br>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</html>

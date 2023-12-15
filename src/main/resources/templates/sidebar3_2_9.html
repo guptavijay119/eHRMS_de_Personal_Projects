@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	
+<nav class="sidebar sidebar-offcanvas" id="sidebar" th:fragment="ehrms_sidebar3_2_9">
+  <ul class="nav" sec:authorize="isAuthenticated()">
+
+    <li class="pt-2 pb-1"><span class="nav-item-head"><span
+				th:text="#{Recruitment}">Recruitment</span></span></li>
+		<li class="nav-item"><a class="nav-link" th:href="@{/}"> <i
+				class="mdi mdi-compass-outline menu-icon"></i> <span th:text="#{Sidebar.home}"
+				class="menu-title"><!-- <a href="javascript:void(0);" class="nav-link" th:href="@{/}">Home</a> --></span>
+		</a></li>
+  
+    <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link" th:href="@{/permanency/listNotPermanent}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" th:text="#{Sidebar3_2_9.List of employees who are not permanent}"></span>
+      </a>
+    </li>
+    
+    <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link"  th:href="@{/permanency/generatePermanencyList}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_9.Create a File for Permanency Certificate}">Create a File for Permanency Certificate</span>
+      </a>
+    </li>
+    
+    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_DEPARTMENT','ROLE_COMPETENTAUTHORITY')">
+      <a class="nav-link"  th:href="@{/permanency/inboxpermanencyfile/page/1}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_9.Permanency Inbox}">Permanency Inbox}</span>
+      </a>
+    </li>
+    
+    <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link"  th:href="@{/permanency/inboxgenerateorderperm/page/1?auth=DEP}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_9.Generate Orders}">Generate Orders</span>
+      </a>
+    </li>
+    
+    <li class="nav-item" sec:authorize="hasRole('ROLE_DEPARTMENT')">
+      <a class="nav-link"  th:href="@{/permanency/selectDesignationstausperm}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_9.Reports}">Reports</span>
+      </a>
+    </li>
+    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_EMPLOYEE')">
+      <a class="nav-link"  th:href="@{/permanency/viewOrderPermemp?auth=EMPLOYEE}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" 
+					th:text="#{Sidebar3_2_8.View Order}">View Order</span>
+      </a>
+    </li>
+    
+    	
+  </ul>
+</nav>
+
+</html>

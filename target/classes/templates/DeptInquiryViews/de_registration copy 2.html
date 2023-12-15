@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/form-validation.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css">
+	
+
+
+	<title>Departmental Enquiry Case Registration</title>
+	<style>
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		hr.solid {
+			border-top: 3px solid #bbb;
+		}
+
+		body {
+			margin: 0;
+			font-family: "Lato", sans-serif;
+		}
+
+		.sidebar {
+			margin: 0;
+			padding: 0;
+			width: 300px;
+			background-color: #f1f1f1;
+			position: fixed;
+			height: 100%;
+			overflow: auto;
+		}
+
+		.sidebar a {
+			display: block;
+			color: black;
+			padding: 16px;
+			text-decoration: none;
+		}
+
+		.sidebar a.active {
+			background-color: #04AA6D;
+			color: white;
+		}
+
+		.sidebar a:hover:not(.active) {
+			background-color: #555;
+			color: white;
+		}
+
+		div.content {
+			margin-left: 200px;
+			padding: 1px 16px;
+			height: 1000px;
+		}
+
+		@media screen and (max-width: 700px) {
+			.sidebar {
+				width: 100%;
+				height: auto;
+				position: relative;
+			}
+
+			.sidebar a {
+				float: left;
+			}
+
+			div.content {
+				margin-left: 0;
+			}
+		}
+
+		@media screen and (max-width: 400px) {
+			.sidebar a {
+				text-align: center;
+				float: none;
+			}
+		}
+
+		.list-group-item {
+			padding: 3px 10px
+		}
+	</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+
+	<div class="sidebar">
+		<a class="active" href="#home">Home</a>
+		<div class="card" style="width: 18rem;">
+			<div class="card-header" style="background-color: #ff8c66;">
+				<img src="image\DEBacklogEntry.png"> &nbsp; DE Backlog Entry
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item" style="background-color: #ffffcc;">Enter Case Details</li>
+				<li class="list-group-item" style="background-color: #ffffcc;">Employee Details</li>
+				<li class="list-group-item" style="background-color: #ffffcc;">Charge Sheet</li>
+				<li class="list-group-item" style="background-color: #ffffcc;">Suspension Cases</li>
+				<li class="list-group-item" style="background-color: #ffffcc;">Re-instated Cases</li>
+				<li class="list-group-item" style="background-color: #ffffcc;">Case Outcome</li>
+				<li class="list-group-item" style="background-color: #ffffcc;">Reports</li>
+			</ul>
+		</div>
+		<div class="card" style="width: 18rem;">
+			<div class="card-header" style="background-color: #99994d; color: white;">
+				<img src="image\Officer.png"> &nbsp;  Officers Deployed
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item" style="background-color: #c6d6eb;">Presenting Officer</li>
+				<li class="list-group-item" style="background-color: #c6d6eb;">Enquiry Officer</li>
+			</ul>
+		</div>
+		<div class="card" style="width: 18rem;">
+			<div class="card-header" style="background-color: #d98cb3; color: white;">
+				<img src="image\Correspondance.png"> &nbsp; Correspondance
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item" style="background-color: #666600; color: white;">Defense Statement
+				</li>
+				<li class="list-group-item" style="background-color: #666600; color: white;">Prosecution
+					Proposal</li>
+				<li class="list-group-item" style="background-color: #666600; color: white;">Court Case Linkage
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="container">
+		<!-- <div class="text-center row text-white bg-primary">
+			<h3 class="text-center" style="text-align: center;">Departmental Enquiry Case Registration</h3>
+		</div> -->
+
+		<!-- <div class="row">
+			<div class="col-lg-6 mb-4">
+				<div class="card-body">
+					<a href="#" class="btn btn-outline-primary btn-sm">
+						Departmental Enquiry Case Registration
+					</a>
+				</div>
+			</div>
+		</div> -->
+		<div class="row">
+			<div class="col-md-8">
+				<div class="card text-white" style="background-color: #ff9933;">
+					<div class="card-body text-center" style="height: 60px;"><a href="de_registration.html"
+							style="color: #000033;">Departmental Enquiry Case Registration</a></div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="card bg-info text-white">
+					<div class="card-body text-center" style="height: 60px;">Role : Department</div>
+				</div>
+			</div>
+		</div>
+
+		<br>
+		<br>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-header" style="background-color: #ff8c66;">
+						DE Backlog Entry
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item" style="background-color: #ffffcc;">Enter Case Details</li>
+						<li class="list-group-item" style="background-color: #ffffcc;">Employee Details</li>
+						<li class="list-group-item" style="background-color: #ffffcc;">Charge Sheet</li>
+						<li class="list-group-item" style="background-color: #ffffcc;">Suspension Cases</li>
+						<li class="list-group-item" style="background-color: #ffffcc;">Re-instated Cases</li>
+						<li class="list-group-item" style="background-color: #ffffcc;">Case Outcome</li>
+						<li class="list-group-item" style="background-color: #ffffcc;">Reports</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-header" style="background-color: #99994d; color: white;">
+						Officers Deployed
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item" style="background-color: #c6d6eb;">Presenting Officer</li>
+						<li class="list-group-item" style="background-color: #c6d6eb;">Enquiry Officer</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="card" style="width: 18rem;">
+					<div class="card-header" style="background-color: #d98cb3; color: white;">
+						Correspondance
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item" style="background-color: #666600; color: white;">Defense Statement
+						</li>
+						<li class="list-group-item" style="background-color: #666600; color: white;">Prosecution
+							Proposal</li>
+						<li class="list-group-item" style="background-color: #666600; color: white;">Court Case Linkage
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<br>
+
+		<ul class="nav nav-tabs">
+			<li><button style="width: 310px;"><a href="caseDetails.html">Case Details</a></button></li>
+			<li><button style="width: 310px;"><a href="delinquentEmployeesDetails.html">Employee(s) Details</a></button>
+			</li>
+			<li><button style="width: 310px;"><a href="chargeSheetDetails.html">Charge Sheet Details</a></button></li>
+			<li><button style="width: 310px;"><a href="presentingOfficerDetails.html">Presenting Officer
+						Details</a></button></li>
+			<li><button style="width: 310px;"><a href="enquiryOfficerDetails.html">Enquiry Officer Details</a></button>
+			</li>
+			<li><button style="width: 310px;"><a href="suspensionReinstatedDetails.html">Suspension / Re-instated
+						Details</a></button></li>
+			<li><button style="width: 310px;"><a href="prosecutionProposalDetails.html">Prosecution Proposal
+						Details</a></button></li>
+			<li><button style="width: 310px;"><a href="courtCaseDetails.html">Court Case Details</a></button></li>
+			<li><button style="width: 310px;"><a href="DECaseOutcomeStatus.html">DE Case Outcome / Status</a></button>
+			</li>
+			<li><button style="width: 310px;"><a href="statementOfDefense.html">Statement of Defense
+						Details</a></button></li>
+			<li><button style="width: 310px;"><a href="DEReport.html">Reports</a></button></li>
+
+		</ul>
+	</div>
+
+<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/fontawesome.min.js" integrity="sha512-5qbIAL4qJ/FSsWfIq5Pd0qbqoZpk5NcUVeAAREV2Li4EKzyJDEGlADHhHOSSCw0tHP7z3Q4hNHJXa81P92borQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="js/jquery-3.2.1.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+ -->	
+</body>
+
+</html>

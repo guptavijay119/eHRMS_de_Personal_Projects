@@ -1,0 +1,551 @@
+.navbar-customs {
+	background-color: #8080ff;
+	color: #ffffff;
+}
+
+.table th img, .table td img {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 100% !important;
+}
+
+.activex {
+	background-color: rgb(255, 255, 255) !important ;
+	color: #000000 !important;
+	font-weight: bold;
+
+}
+
+/* .activex2 { */
+/* 	background-color: #004080255255255 !important ; */
+/* 	color: #ffffff!important; */
+/* 	font-weight: bold; */
+
+/* } */
+
+
+.swal-title {
+	font-size: 20px !important;
+}
+
+.ui-menu-item-wrapper{
+			white-space: normal !important;
+		}
+		
+.ui-menu .ui-widget .ui-widget-content .ui-autocomplete .ui-front {
+	white-space: normal !important;
+}		
+
+
+@-webkit-keyframes blinktr {
+  from { background-color: tomato; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes blinktr {
+  from { background-color: tomato; }
+  to { background-color: inherit; }
+}
+@-o-keyframes blinktr {
+  from { background-color: tomato; }
+  to { background-color: inherit; }
+}
+@keyframes blinktr {
+  from { background-color: tomato; }
+  to { background-color: inherit; }
+}
+.blinktr {
+  -webkit-animation: blinktr 3s infinite !important; /* Safari 4+ */
+  -moz-animation:    blinktr 3s infinite !important; /* Fx 5+ */
+  -o-animation:      blinktr 3s infinite !important; /* Opera 12+ */
+  animation:         blinktr 3s infinite !important; /* IE 10+ */
+}
+
+.over90days {
+	background-color: orange;
+}
+
+.tooltip-inner {
+  background-color: #00acd6 !important;
+  /*!important is not necessary if you place custom.css at the end of your css calls. For the purpose of this demo, it seems to be required in SO snippet*/
+  color: #fff !important;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: #00acd6;
+}
+
+.tooltip.right .tooltip-arrow {
+  border-right-color: #00acd6;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #00acd6;
+}
+
+.tooltip.left .tooltip-arrow {
+  border-left-color: #00acd6;
+}
+
+.swal-button--confirm {
+	background-color: #00d284 !important;
+}
+
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: black;
+  background-color: #a7e4dd;
+}
+
+.table thead th {
+    vertical-align: top !important;
+}
+
+#downloadexcelsss{
+	color: white;border: 1px solid black;
+	
+}
+
+#downloadpdfbtn{
+	color: white;border: 1px solid black;
+	
+}
+
+
+
+
+
+
+
+/* input[type="date"]:before {
+    position: absolute;
+    top: 15px; left: 15px;
+    content: attr(data-date);
+      align-items: center;
+    display: inline-block;
+    color: black;
+}
+
+input[type="date"]::-webkit-datetime-edit, input::-webkit-inner-spin-button, input::-webkit-clear-button {
+    display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: black;
+    opacity: 1;
+}
+
+
+input[type="date"] {
+    position: relative;
+    align-items: center;
+    color: white;
+} */
+
+/* input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {
+
+  position: relative;
+}
+
+
+
+input[type="date"]::-webkit-datetime-edit-year-field::before{
+	position: absolute !important;
+    
+  padding: 2px;
+  color:#000;
+  left: 500px;
+	  content:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIEAAACBCAMAAADQfiliAAAAMFBMVEX///8AAACSkpL39/fx8fF8fHyXl5eIiIhbW1tnZ2dqamrNzc0vLy+zs7O2trb7+/urkYDiAAAAgklEQVR4nO3Wyw3CMBREUb/8IQnpv1sQiiiARQahcxrwlRf2tAYAAAAAAAB8bdin7nrToz/P7+dK6Y73BSyxgKpleBXcggFV99bWaEDV2sZwwdi2cMHWwgFVChQoOAvy70H+Tcz/C/m/8Qf2QXIjzZ+dltmJ+3D9JAYAAAAAAID/8QTH2gyAQ5bB7gAAAABJRU5ErkJggg==');
+}
+
+input[type="date"]::-webkit-datetime-edit-year-field{
+  position: absolute !important;
+    
+  padding: 2px;
+  color:#000;
+  left: 56px;
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field::before{
+  content:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIEAAACBCAMAAADQfiliAAAAMFBMVEX///8AAACSkpL39/fx8fF8fHyXl5eIiIhbW1tnZ2dqamrNzc0vLy+zs7O2trb7+/urkYDiAAAAgklEQVR4nO3Wyw3CMBREUb/8IQnpv1sQiiiARQahcxrwlRf2tAYAAAAAAAB8bdin7nrToz/P7+dK6Y73BSyxgKpleBXcggFV99bWaEDV2sZwwdi2cMHWwgFVChQoOAvy70H+Tcz/C/m/8Qf2QXIjzZ+dltmJ+3D9JAYAAAAAAID/8QTH2gyAQ5bB7gAAAABJRU5ErkJggg==');
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field{
+  position: absolute !important;
+
+  padding: 2px;
+  color:#000;
+  left: 26px;
+}
+
+
+input[type="date"]::-webkit-datetime-edit-day-field{
+  position: absolute !important;
+  color:#000;
+  padding: 2px;
+  left: 4px;
+  
+} */
+
+ #downloadexcel {
+	background-color : cyan  !important;
+	color:black !important;
+	
+	/* border-color: #ff5730 !important; */
+}
+
+#downloadpdf  {
+	background-color : cyan !important;
+	color: black !important;
+ 
+}
+ 
+#counters_1, #counters_2, #counters_3 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: contents;
+  margin-top:10px;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  padding: 33px;
+}
+
+.counter {
+  font-size: initial;
+  font-weight: 600;
+  color: #0056b3;
+  width: 152px;
+}
+/*# sourceMappingURL=style.css.map */
+
+/* footer {
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+} */
+
+html{
+	scroll-behavior:smooth;
+}
+.select2-selection {
+    height: 2.875rem !important;
+}
+
+.select2-results__option {
+    background-color: white;
+    color: black;
+}
+
+.field_set{
+  border-color: aqua !important;
+  border-style: solid;
+}
+
+.mt-alerts {
+    z-index: 9999 !important;
+    background-color: white;
+    position: relative;
+}
+
+.field_sets{
+  border-color: green !important;
+  border-style: solid;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.disabledli{
+    pointer-events:none;
+    opacity:0.7;
+}
+
+.frame {
+  width: 50px;
+  height: 150px;
+  border: 3px solid #ccc;
+  background: #eee;
+  margin: auto;
+  padding: 15px 10px;
+}
+img {
+  width: 100%;
+  height: 100%;
+}
+
+label{
+
+   font-weight: bold !important;
+   font-size: smaller !important;
+} 
+
+label.error {
+    color: red;
+    font-size: 1rem;
+    display: block;
+    margin-top: 5px;
+}
+
+input.error {
+    border: 1px dashed red;
+    font-weight: 300;
+    color: red;
+}
+
+.listtext {
+	background-color: white;
+	color: black;
+}
+
+.page-linkhighlight {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: aliceblue;
+    background-color: blue;
+    border: 1px solid #dee2e6;
+ }
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* .card {
+  background-color: lightgrey !important;
+
+}
+ */
+ 
+ /* .form-control {
+	border-color: black !important;
+} */
+
+
+/* .control-label:after{
+   color: red;
+   content: "*";
+   position: absolute;
+} */
+
+
+
+input[required],select[required]{
+    background-image: radial-gradient(#F00 15%, transparent 16%), radial-gradient(#F00 15%, transparent 16%);
+    background-size: 1em 1em;
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+
+/* .dropdown:hover>.dropdown-menu {
+  display: contents;
+} */
+/* .sidebar .nav .nav-item:not(:nth-child(2)).active {
+    background-color: #ffd1a4;
+} */
+
+
+
+/* .dropdown>.dropdown-toggle:active {
+	display: contents;
+} */
+
+.note-editable {
+	background-color: white;
+}
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+ul.nav a, ul.nav a:link {
+    color: #ffffff;/**#000;**/
+    display: block;
+    padding: 3% 3% 3% 8%;
+    text-decoration: none;
+}
+
+ul.nav a, ul.nav a:visited {
+    color: #ffffff;/**#000;**/
+    display: block;
+    padding: 3% 3% 3% 8%;
+    text-decoration: none;
+}
+
+ul.nav a, ul.nav a:hover {
+    color: #000;/**#000;**/
+    display: block;
+    padding: 3% 3% 3% 8%;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #202124;
+    background: transparent;
+    text-decoration: underline;
+}
+
+.navanchor {
+	color: #ffffff;
+}
+
+td {  
+	height: 10px;
+     overflow:hidden;
+     width:100px;
+/*      vertical-align: top !important; */
+}
+
+/* li:hover {
+	background-color: #b7ffb7;
+	color: #000000;
+} */
+
+.inactive {
+	background-color: #ff9980;
+	color: #000000;
+}
+
+
+
+th {
+	background-color:#9FE2BF;  /* #804000 */
+	color:maroon;   /*  #ffffff */
+	font-weight: bold !important;
+}
+
+tr:hover {
+	background-color: #bfffbf;
+	color:#000000;
+}
+
+
+.table-bordered {
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+}
+
+.unread {
+	background-color:  #ff9595;
+	color:#804040;
+	font-weight: bold;
+}
+
+.custom-anchor {
+	color: white;
+}
+
+.side {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	padding: 0;
+}
+
+.scroll-area {
+	width: 30%;
+	height: calc(100% - 200px);
+	margin-top: 20px;
+	margin-right: 20px;
+	float: left;
+	overflow-y: scroll;
+}
+
+.btn-toolbar .btn {
+	margin-right: 5px;
+}
+
+.btn-toolbar .btn:last-child {
+	margin-right: 0;
+}
+
+.ellipse {
+  width: 145px;
+  height: 75px;
+  line-height: 80px;
+  border-radius: 100%;
+  font-size: 10px;
+  color: black;
+  text-align: center;
+  background: #e4e9f0;
+}
+
+.disabledfinalgad {
+    border: 1px solid #999;
+    background-color: #ddd;
+}
+
+.tp_rows > th {
+  white-space: pre-wrap !important;
+}
+
+.custom-td {
+	background-color: #804000 !important;
+	color: #ffffff !important;
+}
+
+.btn-danger{
+	background-color: #e60000 !important;
+}
+
+
+

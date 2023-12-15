@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>Reinstatement Details</title>
+	<style>
+		.ui-menu .ui-menu-item-wrapper {
+			color: #303030 !important;
+			background-color: #fff !important;
+		}
+
+		.ui-menu .ui-menu-item-wrapper:hover {
+			color: #303030 !important;
+			background-color: rgb(192, 192, 192) !important;
+			border: #fff 1px solid !important;
+		}
+
+		.ui-widget-content {
+			border: 1px solid #ddd;
+			background: rgb(192, 192, 192) !important;
+			color: #333 !important;
+		}
+	</style>
+
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()" id="caseentry">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar" aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar" aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<div th:replace="DeptInquiryViews/Fragments/processfrag.html :: processfrag">
+
+						</div>
+
+						<!-- <nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{|/|}"><span
+											>Case Details Entry</span></a></li>
+								<li class="breadcrumb-item"></li>
+							</ol>
+						</nav> -->
+
+
+					</div>
+					<div>
+						<h3>
+							<strong><span th:text="#{reinstatement.details.label.name}">Reinstatement Details</span>
+                                               <div align="right"><a href="#gridviewReinstatedId" class="btn btn-info btn-sm"><span th:text="#{de.scroll.down.AllBtn}"></span></a> </div>
+
+							</strong>
+						</h3>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+
+									<form th:action="@{/departmentalEnquiry/addreinstatedDetails}" id="noticeregisteridmpsc"
+										th:object="${reinstatedObjDetails}" method="post" enctype="multipart/form-data">
+
+										<p style="color: red;"><span th:text="#{casedetails.mandatory.text.de}"></span></p>
+
+										<div class="row">
+											<input type="hidden" class="form-control" th:field="*{id}">
+											
+											
+											
+
+											<div class="col-md-3 mb-3">
+												<label for="systemGenCaseNo"><span th:text="#{de.filenumber.or.case.no}"></span></label> <input
+													type="text" class="form-control" id="casedetails"
+													th:placeholder="#{case.casedetails.placeholder}"   th:field="${reinstatedObjDetails.caseNo}"
+													required="required">
+											</div>
+											
+											
+											
+									
+
+										<div class=" col-sm-3">
+												<label for="employeeReInstated" style="margin: 10px">
+												<span th:text="#{de.reinstatedDetails.employeeReInstated}"></span></label> &nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline" id="employeeReInstatedYes"
+														name="employeeReInstated"  th:field="${reinstatedObjDetails.employeeReInstated}" type="radio"
+														 value="true"
+														checked> <span th:text="#{de.chargesheetissued.yes}"></span>
+														<input class="radio-inline" id="employeeReInstatedNo"  name="employeeReInstated" th:field="${reinstatedObjDetails.employeeReInstated}"
+														type="radio" 
+														value="false">  <span th:text="#{de.chargesheetissued.no}"></span>
+												</div>
+											</div>
+											
+											<div class="col-md-3 mb-3" id="employeedatadiv">
+												<label for="FirstName"><span th:text="#{de.employee.list}"></span></label>
+												
+											<select th:if="${employeeList ne null and !employeeList.isEmpty()}"
+											th:field="${reinstatedObjDetails.employeeDataId}"
+													class="form-control" id="employeedata"
+													 required="required">
+                                                 <option value=""  th:text="#{dropdown.select}">Select</option>
+													<option th:each="employee:${employeeList}" 
+														th:value="${employee.id}"
+														th:text="${employee.firstName+' '+employee.middleName+' '+employee.lastName}"></option>
+												</select>
+											</div>
+											
+											</div>
+											<div class="row form-group" id="reinstateddata">
+											
+											
+											
+											
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="systemGenCaseNo"><span th:text="#{de.sevarth.id}"></span>  </label> <input type="hidden"
+													class="form-control" id="sevarthId" th:placeholder="#{case.casedetails.placeholder.sevarthid}"        
+													th:field="*{sevarthId}">
+											</div>
+
+									
+											
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="FirstName"><span th:text="#{de.firstName.label}"></span></label>
+												<input type="hidden"
+													class="form-control" id="firstname" th:placeholder="#{fname.placeholder}"
+													th:field="${reinstatedObjDetails.firstName}" required="required">
+											</div>
+
+											
+
+
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="systemGenCaseNo"><span th:text="#{de.middleName.label}"></span> </label> <input type="hidden"
+													class="form-control" id="middleName" th:placeholder="#{mname.placeholder}"
+													th:field="*{middleName}">
+											</div>
+
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="systemGenCaseNo"><span th:text="#{de.lastName.label}"></span></label> <input type="hidden"
+													class="form-control" id="lastName"   th:placeholder="#{de.lastName.placeholder}"
+													th:field="*{lastName}" required="required">
+											</div>
+
+
+
+
+											
+
+
+											<div class="form-group col-sm-3">
+												<label for="date"><span th:text="#{de.reinstated.order.date}"></span></label> <input
+													id="reInstatedOrderDate" class="form-control" min="1900-01-01"
+													th:attrappend="max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd',#locale.forLanguageTag('en'))}"  type="date" required="required"
+													th:field="${reinstatedObjDetails.reInstatedOrderDate}" />
+											</div>
+
+
+
+											<div class="col-sm-3" id="fileid">
+												<label for="fileName"><span th:text="#{de.reinstated.order.UploadOrderReInstatment}"></span>
+												</label> <input type="file" name="UploadOrderReInstatment"   th:field="*{UploadOrderReInstatment}" accept=".pdf"
+													class="form-control" id="uploadOrderOfReinstatment">
+											</div>
+
+										</div>
+
+										<br>
+										<div class="btn-toolbar mr-1" role="toolbar" aria-label="Basic example" id="buttonid">
+											<button type="submit" th:value="save" class="btn btn-primary"><span th:text="#{de.casedetails.saveformbtn}"></span></button>
+											
+											&nbsp;
+											<button type="button"  th:value="addmore" th:name="action" onclick="myFunction()"
+													id="addmore" class="btn btn-primary"> <span th:text="#{de.addmore.btn.reinstated}"></span></button>
+													
+													&nbsp;
+													<button th:if="${reinstatedObjDetails.caseNo ne null}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2" >
+                        								             
+									       <span th:text="#{casedetails.preview.button}"></span>
+						                           	</button>
+										</div>
+
+
+									</form>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+					<!-- 	adding grid start -->
+					<div class="row">
+
+						<div class="col-lg-12 grid-margin stretch-card">
+
+							<div class="card">
+								<div class="card-body">
+
+
+									<div class="table-responsive" id="gridviewReinstatedId">
+
+                        <!--  <div class="row">  <label>List of ReInstated Cases:</label>
+                         <span align="right">
+                         <b style="color: blue">
+                         <span >Total Reinstatement</span> : <span th:text="${totalItems}"></span></b>
+								</span>		
+								                </div> -->
+										<!-- <label>
+											<label></label>
+										</label> -->
+
+										<!-- <label>
+											<h3>List of ReInstated</h3>
+										</label> -->
+										<div>
+											<b ><span style="margin-top: 3px;"   th:text="#{de.list.reinstatemetRecords}"></span> </b>
+										<br>
+										</div>
+											<br>
+										<table class="table table-bordered dark table-sm"  >
+											<thead>
+												<tr>
+													<th class="text-wrap" width="4%"><center><span th:text="#{de.enquiry.srno}"></span></center></th>
+													<th class="text-wrap" width="7%"><center><span th:text="#{de.enquiry.caseno}"></span></center>  </th>
+													<!-- <th class="text-wrap" width="7%">File No. </th> -->
+													<th width="7%"><center><span th:text="#{de.sevarth.id}"></span> </center></th>
+													<!-- <th width="7%">Employee Id.</th> -->
+													<th width="7%" class="text-wrap"><center><span th:text="#{de.firstName.labels}"></span></center></th>
+													<th width="7%" class="text-wrap"><center><span th:text="#{de.middleName.label}"></span></center></th>
+													<th width="7%" class="text-wrap"><center><span th:text="#{de.lastName.labels}"></span></center></th>
+													<!-- <th width="7%" class="text-wrap"> Is Employee Re-Instated </th> -->
+													<th width="7%" class="text-wrap"><span th:text="#{de.reinstated.order.date}"></span></th>
+													<th width="7%" class="text-wrap"><span th:text="#{de.periodofsuspension}"></span></th>
+													<th width="7%" class="text-wrap"><span th:text="#{de.reinstated.order.date.order.upload}"></span></th>
+													<th width="4%">
+														<center><span th:text="#{de.empdetails.action}"></span></center>
+													</th>
+
+
+
+												</tr>
+
+											</thead>
+											<tbody>
+												<tr th:each="article,iState:${reinstatedGridList}">
+
+													<td th:text="${pageIndex+iState.index}"></td>
+
+
+													<td>
+														<span 
+														th:if="${article.casedetails ne null}"
+														th:text="${article.casedetails.caseNo}"></span>
+													</td>
+													<!-- <td>
+														<span 
+														th:if="${article.fileNo ne null}"
+														th:text="${article.fileNo}"></span>
+													</td> -->
+
+													<td>
+														<span th:text="${article.sevarthId}"></span>
+													</td>
+
+													<!-- <td>
+														<span th:text="${article.employeeId}"></span>
+													</td> -->
+													
+													
+													<td class="text-wrap">
+														<span th:text="${article.firstName}"></span>
+													</td>
+
+													<td class="text-wrap">
+														<span th:text="${article.middleName}"></span>
+													</td>
+													<td class="text-wrap">
+														<span th:text="${article.lastName}"></span>
+													</td>
+
+													<!-- <td class="text-wrap">
+														<span th:if="${article.employeeReInstated}" th:text="#{de.boolean.yes}"></span>
+														<span th:unless="${article.employeeReInstated}" th:text="#{de.boolean.no}"></span>
+													</td> -->
+
+
+													<td class="text-wrap">
+														<span th:if="${article.reInstatedOrderDate ne null}" 
+															th:text="${#temporals.format(article.reInstatedOrderDate, 'dd-MM-yyyy')}"></span>
+													</td>
+													
+													<td class="text-wrap">
+														<span th:if="${article.year ne null}">
+														 <strong>Years :</strong> <span 
+															th:text="${article.year}"></span></span><br><br>
+														<span th:if="${article.month ne null}">	
+															<strong> Month :</strong> <span 
+															th:text="${article.month}"></span></span><br><br>
+														<span th:if="${article.day ne null}">	
+															<strong> Days :</strong> <span 
+															th:text="${article.day}"></span></span>
+															
+													</td>
+
+													<td>
+														<!-- <span th:text="${article.UploadOrderReInstatment}"></span> -->
+														<strong><a th:if="${article.UploadOrderReInstatment ne null}" th:href="@{|/departmentalEnquiry/DocUploadOrderReinstatedNamefile1/${article.id}|}" target="_blank">
+														<span th:text="${article.UploadOrderReInstatment}"></span>
+														<!-- View Order -->
+													</a></strong>
+													</td>
+
+
+
+													<td>
+														<span><a
+																th:href="@{| /departmentalEnquiry/editReinstateddtlsRecords/${article.id} /${currentPage}|}">
+																<button class="btn btn-primary" ><span sec:authorize="!hasAnyRole('SUPERADMIN','SECRETARY')" th:text="#{de.edit.button.all}"></span>
+                                                     <span sec:authorize="hasAnyRole('SUPERADMIN','SECRETARY')">View</span></button></a>
+													</td>
+													<!-- <td><span><a
+																th:href="@{| /departmentalEnquiry/deleteReinstatedDetailsRecords/${article.id} |}"><img
+																	th:src="@{/img/delete.png}" alt="logo" /></a></span>
+													</td> -->
+
+
+
+												</tr>
+
+											</tbody>
+
+
+										</table>
+									</div>
+
+									<br>
+
+									<!-- // adding pagination -->
+									
+										<div><a href="#caseentry"  class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+
+									<div class="row" th:fragment="pagination">
+										<div>
+											<b style="color: blue"><span th:text="#{de.total.reinstatement}">Total Reinstatement</span> : <span th:text="${totalItems}"></span></b>
+										</div>
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item" th:if="${currentPage > 1}">
+														<a class="page-link"
+															th:href="@{|/departmentalEnquiry/reinstaledDetails/1|}"
+															th:text="#{pages.first}">First</a>
+														<span th:unless="${currentPage > 1}"
+															th:text="#{pages.first}">First</span>
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage > 1}"
+															th:href="@{|/departmentalEnquiry/reinstaledDetails/${currentPage - 1}|}"
+															th:text="#{pages.previous}">Previous</a>
+														<span th:unless="${currentPage > 1}"
+															th:text="#{pages.previous}">Previous</span>
+													</li>
+
+													<li class="page-item" th:each="i: ${#numbers.sequence(begin, end)}"
+														th:if="${begin<end}">
+														<a th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}"
+															th:href="@{|/departmentalEnquiry/reinstaledDetails/${i}|}"
+															th:text="${i}"></a>
+
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}"
+															th:href="@{|/departmentalEnquiry/reinstaledDetails/${currentPage + 1}|}"
+															th:text="#{pages.next}">Next</a>
+														<span th:unless="${currentPage < totalPages}"
+															th:text="#{pages.next}">Next</span>
+													</li>
+
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}"
+															th:href="@{|/departmentalEnquiry/reinstaledDetails/${totalPages}|}"
+															th:text="#{pages.last}">Last</a>
+														<span th:unless="${currentPage < totalPages}"
+															th:text="#{pages.last}">Last</span>
+													</li>
+
+												</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+									<!-- ending pagination -->
+
+
+
+
+
+
+
+
+
+
+
+								</div>
+							</div>
+						</div>
+
+
+
+					</div>
+
+
+
+					<!-- 	adding grid end -->
+
+
+
+
+
+
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+	
+	
+	
+	<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+					</h4>
+					<button type="button" class="close" data-dismiss="modal"  onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%" height="500"
+								style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+		<!-- this code for view pdf  -->
+	
+	<script th:inline="javascript">
+	
+	var disableprosection =  [[${{disableprosecution}}]];
+	var disablepresenting =  [[${{disablepresentingofficer}}]];	
+	if(disablepresenting != null && JSON.parse(disablepresenting)) {
+		$('#presentingofficer').addClass('disabled');
+	}
+	if(disableprosection != null && JSON.parse(disableprosection)) {
+		$('#prosecution').addClass('disabled');
+	}
+	
+	/* added on 13/01/2023 as per DE Requirements */
+	function printDivforInsidePreview(printdata) {	
+	    var printContents = document.getElementById(printdata).innerHTML;
+	     jQuery.noConflict();
+	    var originalContents = document.body.innerHTML;
+	   document.body.innerHTML = printContents;
+	  var modalid='#myModal2';
+    	$(modalid).modal('hide');	
+      window.print();		
+       $(modalid).modal('hide');	
+	 document.body.innerHTML = originalContents; 	  		 			   
+	} 
+	
+	function closeModalForce(){
+		location.reload();
+	    var l=new Loading()
+		$('#myModalprint').modal('hide');
+		$('#myModal2').hide();
+		$('.modal-backdrop').remove();
+	}
+		
+	
+	
+	var modalid = null;
+	
+	var rule = /*[[${{ruleid}}]]*/;
+	if(rule != null && rule == '3') {
+		var chargesheetIssued = /*[[${{chargesheetissued}}]]*/;
+		if(chargesheetIssued != null) {
+			var charge = JSON.parse(chargesheetIssued);
+			if(!charge) {
+				$('#chargesheet').addClass('disabled');
+				$('#inquiryofficer').addClass('disabled');
+//				$('#final').addClass('disabled');
+				$('#presentingofficer').addClass('disabled');
+				$('#prosecution').addClass('disabled');
+				$('#courtcase').addClass('disabled');
+				$('#abeyance').addClass('disabled');
+			}
+		}		
+	} 
+	if(rule != null && (rule == '2')) {
+		
+		var subRule = /*[[${{subruleid}}]]*/;
+		if(subRule != null && subRule == '1') {
+			$('#inquiryofficer').addClass('disabled');
+			$('#presentingofficer').addClass('disabled');
+			$('#prosecution').addClass('disabled');
+			$('#courtcase').addClass('disabled');			
+		}		
+	}
+	
+	
+	
+	var misconduct = /*[[${{miscodunctid}}]]*/;
+	if(misconduct != null && misconduct == '1') {
+		$('#prosecution').addClass('disabled');
+	}
+	
+	var single = /*[[${{single}}]]*/;
+	if(single != null) {
+		$('#addmore').hide();
+	}
+	
+	function downloadlistForCaseDetailsviewPdf(){
+		modalid = '#myModal2';
+		var ff = new FormData();
+		var printdata = '#printdata';
+		var mymodal2 = '#myModal2';
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal2).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	</script>
+					
+		
+	
+	
+	
+		<script th:inline="javascript">
+		var chargesheetIssued = JSON.parse($('input[name="employeeReInstated"]:checked').val());
+		if(chargesheetIssued) {
+			$('#reinstateddata').show();
+	//		$('#addmore').show();
+			$('#employeedata').removeAttr('disabled');
+			$('#buttonid').show();
+			$('#employeedatadiv').show();
+		} else {
+			$('#reinstateddata').hide();
+//			$('#addmore').hide();
+			$('#employeedata').prop('disabled', 'disabled');
+			$('#employeedata').val('');
+			$('#buttonid').hide();
+			$('#employeedatadiv').hide();
+		}		
+		
+		$('input[name="employeeReInstated"]').click(function(){
+			var chargesheetIssued = JSON.parse($('input[name="employeeReInstated"]:checked').val());
+			if(chargesheetIssued) {
+				$('#reinstateddata').show();
+		//		$('#addmore').show();
+				$('#employeedata').removeAttr('disabled');
+				$('#buttonid').show();
+				$('#employeedatadiv').show();
+			} else {
+				$('#reinstateddata').hide();
+	//			$('#addmore').hide();
+				$('#employeedata').prop('disabled', 'disabled');
+				$('#employeedata').val('');
+				$('#buttonid').hide();
+				$('#employeedatadiv').hide();
+			}	
+		});
+		
+		
+	try{  
+		var ss = /*[[${{session.caseid}}]]*/;
+		if(ss != null) {
+			$('#casedetails').attr('readonly',true);
+			/* $("#casedetails").attr('disabled', true);  */
+		}
+	} catch(error){  
+		 
+	}
+	
+	</script>
+	
+	
+	<script th:inline="javascript">
+	
+	
+	
+	/* this   function  for add more employee and reset button */
+	function myFunction() {
+	           	var caseno = $('#casedetails').val();
+	           	console.log('Hi this is calling for my function.... ');
+	           	$('#withdeyes').val('');
+	         	$('#fileno').val('');
+	           	$('#sevarthId').val('');
+	        	$('#empid').val('');
+				$('#firstname').val('');
+				$('#middleName').val('');
+				$('#lastName').val('');
+//				$('#employeeReInstatedNo').prop("checked",true);
+				$('#reInstatedOrderDate').val(null);
+				$('#uploadOrderOfReinstatment').val(null);
+				$('#employeedata').val('');
+//				$('#reinstateddata').hide();
+			
+				$('#id').val(null);
+		$('#casedetails').val(caseno);
+		
+	}
+	
+	
+	
+	
+	var employeeData = $('#employeedata').val();
+	if(employeeData != null&& employeeData != '') {
+		getdata('/de/departmentalEnquiry/getEmployeeDetailsJson?caseid='+encodeURIComponent(employeeData), function(data) {
+			$('#sevarthId').val(data.sevarthId);
+			$('#firstname').val(data.firstName);
+			$('#middleName').val(data.middleName);
+			$('#lastName').val(data.lastName);
+		});
+	} 
+	
+	
+ 	$('#employeedata').change(function(){
+		var employeeData = $('#employeedata').val();
+		if(employeeData != null&& employeeData != '') {
+			getdata('/de/departmentalEnquiry/getEmployeeDetailsJson?caseid='+encodeURIComponent(employeeData), function(data) {
+				$('#sevarthId').val(data.sevarthId);
+				$('#firstname').val(data.firstName);
+				$('#middleName').val(data.middleName);
+				$('#lastName').val(data.lastName);
+			});
+		}
+	});
+	
+		$("#reinstated").attr("class", "btn btn-info");
+		var mess = [[${{message}}]];
+		if (mess != null) {
+			swal(mess);
+		}
+		
+/* 		var value = JSON.parse($("input[type=radio][name=withde]:checked").val());
+		
+//		var withdeno =  $('#withdeno').val();
+		if(value) {
+			$('#fileno').removeAttr('required');
+			$('#casedetails').attr('required','required');
+		}
+		else {
+			$('#casedetails').removeAttr('required');
+			$('#fileno').attr('required','required');
+		}
+ */		
+		$('input[type=radio][name=withde]').change(function(){
+			var value = JSON.parse($("input[type=radio][name=withde]:checked").val());
+			if(value != undefined && value) {
+				$('#fileno').removeAttr('required');
+				$('#casedetails').attr('required','required');
+			}else if(value != undefined && !value){
+				$('#casedetails').removeAttr('required');
+				$('#fileno').attr('required','required');
+			}
+		});
+
+		$("#casedetails").autocomplete({
+			source: function (request, response) {
+				$.ajax({
+					url: "/de/departmentalEnquiry/getCaseListjson",
+					dataType: "json",
+					data: {
+						q: request.term
+					},
+					success: function (data) {
+						//alert(data);
+						response(data);
+					}
+				});
+			},
+			select: function (event, ui) {   //must be cleared with function parameter
+				getdata('/de/departmentalEnquiry/getreinstatedJsons?caseid=' + ui.item.label, function (data) {
+					if (data.error != null) {
+						swal(data.error);
+
+					} else {
+						var id = JSON.parse($('#id').val());
+						if(id != null && id != undefined && id>0) {
+							
+						} else {
+							$('#id').val(data.id);
+						}
+						$('#casedetails').val(data.casedetails);
+						$('#sevarthId').val(data.sevarthId);
+						$('#empid').val(data.empid);
+						$('#firstname').val(data.firstname);
+						$('#middleName').val(data.middleName);
+						$('#lastName').val(data.lastName);
+						$('#employeeReInstated').val(data.employeeReInstated);
+						$('#reInstatedOrderDate').val(data.reInstatedOrderDate);
+
+					}
+				});
+
+
+			}
+		});
+
+		$("#sevarthId").autocomplete({
+			source: function (request, response) {
+				$.ajax({
+					url: "/de/departmentalEnquiry/getEmployeeList",
+					dataType: "json",
+					data: {
+						q: request.term
+					},
+					success: function (data) {
+						//alert(data);
+						response(data);
+					}
+				});
+			},
+			select: function (event, ui) {   //must be cleared with function parameter
+				getdata('/de/departmentalEnquiry/getEmpDetail?sevarthid=' + ui.item.label, function (data) {
+					if (data != undefined) {
+						$('#sevarthId').val(data.sevarthId);
+						$('#firstname').val(data.firstName);
+						$('#middleName').val(data.middleName);
+						$('#lastName').val(data.lastName);
+						$('#empid').val(data.employeeId);
+					}
+				});
+
+
+			}
+		});
+
+	</script>
+		<script sec:authorize="hasAnyRole('SUPERADMIN','SECRETARY')">
+	$("#noticeregisteridmpsc :button").prop("disabled", true);
+	$("#noticeregisteridmpsc :input").prop("disabled", true);
+	$("#noticeregisteridmpsc :select").prop("disabled", true);
+	</script>
+	
+	<script th:if="${cases ne null && cases.currentUser ne null && cases.currentUser.email ne currentUser}" th:inline="javascript">
+	$("#noticeregisteridmpsc :button").prop("disabled", true);
+    $("#noticeregisteridmpsc :input").prop("disabled", true);
+	$("#noticeregisteridmpsc :select").prop("disabled", true); 
+	</script>
+	
+	
+	<!-- this code for preview screen  added on     date :: 25/10/2022 -->
+<th:block th:include="DeptInquiryViews/Fragments/ReinstatedListPreviewRecords.html :: ReinstatedListPreviewRecords"></th:block>
+<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+
+</html>

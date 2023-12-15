@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="header::header">
+</head>
+<title>Recruitment Proposal</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div th:insert="Navbar::Navbar"></div>
+	<div class="container">
+		<div class="row text-center d-flex">
+			<h2>Recruitment Module</h2>
+			<!-- 		<p>
+			Welcome <span sec:authentication="principal.username">User</span>
+		</p> -->
+		</div>
+		<div class="row d-flex">
+			<div class="col-sm-3 border-right scroll-area"
+				th:insert="Sidebar::Sidebar"></div>
+			<div
+				class="col-sm-8 mt-15 border border-dark d-flex justify-content-center align-items-center">
+				<div class="d-flex">
+					<h2>
+						<b>Send successfully to <span th:text="${message}"></span></b>
+					</h2>
+
+					<a th:href="@{/}"><b>Go back</b></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>departmental enquiry</title>
+</head>
+	<div  th:fragment="EmployeeSubDepartmentFrag" >
+		<div>
+			<div style="margin-top: 1%;margin-left: -14px;">
+				<div>
+					<div class="row">
+						<div class="col-lg grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body" style="width: 103%;">
+									
+									<div class="row table-responsive  from-group"  id="SubDepartmentData" >
+										<h4><span th:text="#{de.subdeptwise.label}"></span></h4>
+										
+										<table class="table table-bordered table-sm">
+											<caption></caption>
+											<thead>
+												<tr align="center">
+													<th scope="row" width="5%" class="text-wrap"><center><span th:text="#{de.enquiry.srno}"></span></center></th>
+													<th scope="row" class="text-wrap">	<center><span th:text="#{de.subdeptwise.label2}"></span></center></th>
+													<th scope="row" class="text-wrap"><span th:text="#{de.total.cases.labels}"></span></th>
+													<th scope="row" class="text-wrap"><span th:text="#{majorPenalty}">Major Penalty </span></th>
+													<th scope="row" class="text-wrap"><span  th:text="#{minorPenalty}">Minor Penalty</span></th>
+													<!-- <th scope="row" class="text-wrap">Total Employees
+														Involved</th> -->
+													<th scope="row" class="text-wrap"><span th:text="#{de.noofemployee.undersuspension.labels}"></span></th>
+													<th><span  th:text="#{de.prosecution.cases.label}"></span></th>
+													<th scope="row" class="text-wrap"><span  th:text="#{retired}">Retired</span></th>
+													<!--<th scope="row" class="text-wrap">No. Of Employees
+														Reinstated</th>-->
+													<th scope="row" class="text-wrap"><span th:text="#{de.decaseslessthan5years}"></span>
+														</th>
+													<th scope="row" class="text-wrap"><span th:text="#{de.decasesolderthan5years}"></span></th>
+													<!--<th scope="row" class="text-wrap">No. Of
+														FinalOutcome Decided</th>-->
+												</tr>
+											</thead>
+											<tbody>
+												<tr  align="center">
+													<td>
+														1
+													</td>
+													<td>
+													<a class="btn btn-outline-primary" target="_blank" th:href="@{|/departmentalEnquiry/getsubdepartmentdata/1?search=departmentadmin|}" >
+														<strong><span>Department Admin</span></strong>
+													</a>
+													</td>
+													<td th:text="${masterData.totalCasesad}"></td>
+													<td th:text="${masterData.totalMajorad}"></td>
+													<td th:text="${masterData.totalMinorad}"></td>
+													<td th:text="${masterData.totalSuspensionad}"></td>
+													<td th:text="${masterData.totalProsecutionad}"></td>
+													<td th:text="${masterData.totalRetiredad}"></td>
+													<td th:text="${masterData.totalLessThan5ad}"></td>
+													<td th:text="${masterData.totalMoreThan5ad}"></td>
+												
+												</tr>
+											
+												<tr th:each="subdata,iState:${dataList[0].subDepartmentList}" align="center">
+												<td th:text="${iState.index+2}" class="text-wrap"></td>
+												<td  class="text-wrap">
+													
+													<a class="btn btn-outline-primary" target="_blank" th:href="@{|/departmentalEnquiry/getsubdepartmentdata/1?search=${subdata.subdepartmentid}|}" >
+														<strong><span th:text="${subdata.departmentName}"></span></strong>
+													</a>
+													
+												</td>
+												<td th:text="${subdata.countCaseNo}"></td>
+												<td th:text="${subdata.major}"></td>
+												<td th:text="${subdata.minor}"></td>
+												<td th:text="${subdata.numberSuspended}"></td>
+												<td th:text="${subdata.numberOfCasesWithProsecution}"></td>
+												<td th:text="${subdata.numberOfCasesWithRetiredEmp}"></td>
+												<td th:text="${subdata.lessThan5years}"></td>
+												<td th:text="${subdata.greaterThan5years}"></td>
+												<!--<td>5</td>-->
+												
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+			</div>
+
+		</div>
+
+	
+
+</html>

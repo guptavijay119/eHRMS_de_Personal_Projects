@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	lang="en">
+<head>
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+</head>
+<title>User List</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar"
+			aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title">
+							<b><span>Inquiry Officer List</span></b>
+						</h3>
+
+
+						<!-- <div class="row">
+							<p th:text="${message}" id="testingxyz"
+								th:if="${message ne null}" class="alert alert-danger"></p>
+						</div> -->
+					</div>
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div class="form-group col-sm">
+										<div class="row">
+
+											<button type="button" class="btn btn-primary btn-sm"
+												onclick="insertData()"> <span>Add New Inquiry Officer</span></button>
+
+
+
+										</div>
+									</div>
+
+
+									<div class="table-responsive">
+										<table id="link-list" class="table table-bordered "  data-ordering="false">
+											<caption></caption>
+											<thead>
+												<tr>
+													<th width="5%"><span>Sr. No.</span></th>
+													<th class="text-wrap"><span>Inquiry Officer Type</span></th>
+													<th class="text-wrap"><span>Officer Name</span></th>
+													<th class="text-wrap"><span>Designation</span></th>
+													
+													<th class="text-wrap"><span>Email / Mobile No.</span></th>
+													
+													<th class="text-wrap"><span>Last Office</span></th>
+													<th class="text-wrap"><span>Date of Birth / Date of Retirement</span></th>
+													<th class="text-wrap"><span>Division / District</span></th>
+													<th class="text-wrap"><span>Order No.</span></th>
+													<th class="text-wrap"><span>Active/ Inactive</span></th>
+
+
+
+													<th class="text-wrap"><span ></span></th>
+
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="desig,iState : ${inqList}">
+													
+													<td class=" text-center" th:text="${{pageIndex + iState.index}}"></td>
+													
+													<td class="text-wrap" th:text="${{desig.inquiryOfficerlist}}"></td>
+													<td class="text-wrap" >
+														<span th:if="${desig.appellation ne null}"th:text="${desig.appellation}"></span>&nbsp;
+														<span th:if="${desig.firstName ne null}"th:text="${desig.firstName}"></span>&nbsp;
+														<span th:if="${desig.middelName ne null}"th:text="${desig.middelName}"></span>&nbsp;
+														<span th:if="${desig.lastName ne null}"th:text="${desig.lastName}"></span>
+													</td>
+													<td class="text-wrap" th:text="${{desig.designation}}"></td>
+													<td class="text-wrap">
+													<input type="hidden" th:value="${desig.id}" th:id="id__${iState.index}__">
+													<input type="hidden" th:value="${desig.inquiryOfficerlist}" th:id="inqtype__${iState.index}__">
+													<input type="hidden" th:value="${desig.designation}" th:id="desig__${iState.index}__">
+													<input type="hidden" th:value="${desig.firstName}" th:id="fname__${iState.index}__">
+													<input type="hidden" th:value="${desig.middelName}" th:id="mname__${iState.index}__">
+													<input type="hidden" th:value="${desig.lastName}" th:id="lname__${iState.index}__">
+													<input type="hidden" th:value="${desig.lastOfficeName}" th:id="lastoff__${iState.index}__">
+													<input type="hidden" th:value="${desig.dateofBirth}" th:id="dob__${iState.index}__">
+													<input type="hidden" th:value="${desig.dateofretirement}" th:id="dos__${iState.index}__">
+													<input type="hidden" th:if="${desig.division ne null}" th:value="${desig.division.id}" th:id="div__${iState.index}__">
+													<input type="hidden" th:if="${desig.district ne null}" th:value="${desig.district.id}" th:id="dist__${iState.index}__">
+													<input type="hidden" th:value="${desig.mobileNumber}" th:id="mob__${iState.index}__">
+													<input type="hidden" th:value="${desig.email}" th:id="email__${iState.index}__">
+													<input type="hidden" th:value="${desig.email}" th:id="dateofappointment__${iState.index}__">
+													<input type="hidden" th:value="${desig.email}" th:id="appointmentupto__${iState.index}__">
+													
+														<input type="hidden" th:value="${desig.order}" th:id="order__${iState.index}__">
+														<input type="hidden" th:value="${desig.active}" th:id="active__${iState.index}__">
+													<strong>Email : </strong><span 
+													th:if="${desig.email ne null}"
+														th:text="${desig.email}"></span><br><br>
+														<strong>Mob No : </strong><span th:if="${desig.mobileNumber ne null}" th:text="${desig.mobileNumber}"></span>
+														</td>
+													
+													<td ><span th:if="${desig.lastOfficeName ne null}" th:text="${desig.lastOfficeName}">
+														
+													</span></td>
+													<td class="text-wrap"><strong>DOB :</strong> <span 
+													th:if="${desig.dateofBirth ne null}"
+														th:text="${#temporals.format(desig.dateofBirth, 'dd-MM-yyyy')}"></span><br><br>
+														<strong>DOR :</strong> <span th:if="${desig.dateofretirement ne null}" th:text="${#temporals.format(desig.dateofretirement, 'dd-MM-yyyy')}"></span>
+														</td>
+													<td class="text-wrap"><strong>Division :</strong> <span 
+													th:if="${desig.division ne null}"
+														th:text="${desig.division.divisionName}"></span><br><br>
+														<strong>District :</strong> <span th:if="${desig.district ne null}" th:text="${desig.district.districtName}"></span>
+														</td>	
+														
+													<td ><span th:if="${desig.order ne null}" th:text="${desig.order}">	
+															</span>
+													<td >
+														<span th:if="${desig.active}">Active</span>
+														<span th:unless="${desig.active}">Inactive</span>
+													</td>
+
+													<td>
+														<button type="button" th:data-id="${iState.index}" 
+															
+															class="btn btn-primary btn-sm" 
+															onclick="updateData(this.getAttribute('data-id'))" 
+															id="preview">
+															<span>Update </span>
+														</button>																										
+													</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+<div>
+			<div class="modal fade" th:id="myModalCompact"
+				role="dialog" >
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+
+						<div class="modal-body">
+							<div class="container">
+<div class="text-center"><strong>Inquiry Officer Entry/ Update</strong><button type="button" class="close" data-dismiss="modal"
+							th:id="myModal2">&times;</button></div>
+
+							
+						
+						
+							<br><br>
+						
+
+								<div th:id="printdataCompact">
+
+									<form id="noticeregisteridmpsc" class="form">
+										
+										<div class="row"><br></div>
+									
+										<div class="row">
+											<div class="col-md-3 mb-3" style="display: none;">
+												<label for="deFileNo"><span>Id : </span></label> <input
+													type="hidden" class="form-control" 
+													id="subId" >
+											</div>
+											
+											
+											<div class="col-md-3 mb-3">
+												<label for="typeOfMisconduct">Inquiry Officer Type * </label> <select
+													class="form-control" id="inqtypeid" required="required"
+													style="width: 240px !important"
+													>
+													<option value="Disciplinary Authority">Disciplinary Authority</option>
+													<option value="Secretary & Special inquiry Officer 2 - GAD">Secretary & Special inquiry Officer 2 - GAD</option>
+													<option value="IO - Konkan Division">IO - Konkan Division</option>
+													<option value="IO - Pune Division">IO - Pune Division</option>
+													<option value="IO - Nashik Division">IO - Nashik Division</option>
+													<option value="IO - Aurangabad Division">IO - Aurangabad Division</option>
+													<option value="IO - Nagpur Division">IO - Nagpur Division</option>
+													<option value="IO - Amravati Division">IO - Amravati Division</option>
+													<option value="Contractual IO">Contractual IO</option>
+													<option value="Other">Other</option>
+													
+												</select>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>First Name* </span></label> <input type="text" class="form-control"
+													id="firstNameid" required="required"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Middle Name* </span></label> <input type="text" class="form-control"
+													id="middleNameid" required="required"
+													>
+											</div>
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Last Name* </span></label> <input type="text" class="form-control"
+													id="lastNameid" required="required"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Mobile No.* </span></label> <input type="number" class="form-control" pattern="[789][0-9]{9}"
+												maxlength="10"
+													id="mobid" required="required"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Email* </span></label> <input type="email" class="form-control"
+													id="emailid" required="required"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Last Office </span></label> <input type="text" class="form-control"
+													id="lastofficeid" 
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Date of Birth* </span></label> <input type="date" class="form-control"
+													id="dobid" required="required"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Date of Retirement* </span></label> <input type="date" class="form-control"
+													id="retireid" required="required"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Order No* </span></label> <input type="text" class="form-control"
+													id="orderid" required="required"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Designation </span></label> <input type="text" class="form-control"
+													id="desigid"
+													>
+											</div>
+											
+											
+											
+											<div class="col-md-3 mb-3">
+												<label for="division"><span th:text="#{de.casedetails.division}" data-toggle="tooltip"
+														></span> *</label> <select
+													class="form-control" 
+													id="division" required="required">
+													<option value="">Select</option>
+													<option th:each="division:${divList}" 
+													        th:value="${division.id}"
+														th:text="${division.divisionName}"></option>
+												</select>
+											</div>
+											
+											
+											<div class="col-md-3 mb-3">
+												<label for="district"><span th:text="#{de.casedetails.district}"></span></label> <select
+													class="form-control" 
+													id="district" required="required">
+													<option value="">Select</option>
+													
+												</select>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Date of Appointment </span></label> <input type="date" class="form-control"
+													id="appointmentid"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Appointment Upto (Date)</span></label> <input type="date" class="form-control"
+													id="appointmentuptoid"
+													>
+											</div>
+											
+											<div class="col-md-3 mb-3">
+												<label for="deFileNo"><span>Appointment Order </span></label> <input type="file" class="form-control"
+													id="appointmentoderid"
+													>
+											</div>
+
+											<div class=" col-sm-3">
+
+												<label for="chargesheet" style="margin: 10px"><span>Active
+														* </span></label> &nbsp;
+												<div>
+													&nbsp; &nbsp; <input class="radio-inline"
+														 type="radio"
+														name="chargesheetIssued2" id="chargesheetYes" value="true"
+														checked> Yes <input 
+														type="radio" name="chargesheetIssued2" id="chargesheetNo"
+														value="false"> No
+												</div>
+											</div>
+											
+											
+											
+
+										</div>
+										<br><br>
+										<div class="btn-toolbar mr-1" role="toolbar"
+												aria-label="Basic example">
+												<button type="button" th:value="save" id="saveupdate"
+													class="btn btn-primary ">
+													Save / Update
+												</button>
+
+
+											</div>
+									</form>
+
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		</div>
+		<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+		<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+		
+		<script th:inline="javascript">
+		
+		$('#link-list').dataTable({
+			"lengthChange": false
+			
+		});
+		
+		var selections = $("#division :selected").val();
+		$('#district').empty();
+		$('#district').append('<option value="">Select</option>');
+		if(selections != null && selections != '') {
+			
+			getdata('/de/departmentalEnquiry/getDistrictjson/'+selections, function(data) {
+				
+				$.each(data, function (i, d) {
+					// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+					
+						$('#district').append('<option value="' + d.id + '">' + d.name + '</option>');
+					
+				});
+			});
+		}
+		$('#division').change(function () {
+			var selections = $("#division :selected").val();
+			$('#district').empty();
+			$('#district').append('<option value="">Select</option>');
+			getdata('/de/departmentalEnquiry/getDistrictjson/'+selections, function(data) {
+				
+				$.each(data, function (i, d) {
+					// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+					
+						$('#district').append('<option value="' + d.id + '">' + d.name + '</option>');
+					
+				});
+			});
+
+
+		});
+		
+		
+		jQuery.noConflict();
+			function insertData() {
+				$('#subId').val('');
+				$('#firstNameid').val('');
+				$('#middleNameid').val('');
+				$('#lastNameid').val('');
+				$('#modid').val('');
+				$('#emailid').val('');
+				$('#lastofficeid').val('');
+				$('#dobid').val('');
+				$('#retireid').val('');
+				$('#orderid').val('');
+				$('#desigid').val('');
+				$('#division').val('');
+				$('#district').val('');
+				$('#district').empty();
+				$('#inqtypeid').val('');
+				$('#chargesheetYes').prop('checked',true);
+				$('#noticeregisteridmpsc')[0].reset();
+				$('#myModalCompact').modal();
+			}	
+			
+			function updateData(index) {
+				$('#subId').val($('#id'+index).val());
+				$('#firstNameid').val($('#fname'+index).val());
+				$('#middleNameid').val($('#mname'+index).val());
+				$('#lastNameid').val($('#lname'+index).val());
+				$('#mobid').val($('#mob'+index).val());
+				$('#emailid').val($('#email'+index).val());
+				$('#lastofficeid').val($('#lastoff'+index).val());
+				$('#dobid').val($('#dob'+index).val());
+				$('#retireid').val($('#dos'+index).val());
+				$('#orderid').val($('#order'+index).val());
+				$('#desigid').val($('#desig'+index).val());
+				$('#division').val($('#div'+index).val());
+				var selections = $("#division :selected").val();
+				$('#district').empty();
+				$('#district').append('<option value="">Select</option>');
+				var districtId = $('#dist'+index).val();
+				if(districtId != null && districtId != '') {
+					getdata('/de/departmentalEnquiry/getDistrictjson/'+selections, function(data) {
+						
+						$.each(data, function (i, d) {
+							// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+							if(districtId != null && districtId == d.id) {
+								$('#district').append('<option value="' + d.id + '" selected>' + d.name + '</option>');
+							} else {
+								$('#district').append('<option value="' + d.id + '">' + d.name + '</option>');
+							}
+							
+						});
+					});
+				}
+				$('#inqtypeid').val($('#inqtype'+index).val());
+				
+				var active = $('#active'+index).val();
+				
+
+				active = JSON.parse(active);
+				if(active) {
+					$('#chargesheetYes').prop('checked',true);
+				} else {
+					$('#chargesheetNo').prop('checked',true);
+				}
+				$('#myModalCompact').modal();
+			}
+			
+			
+			
+			$('#saveupdate').click(function(){
+				var obb = new FormData();
+				
+				obb.append('id', $('#subId').val());
+				obb.append('firstName',$('#firstNameid').val());
+				obb.append('middleName',$('#middleNameid').val());
+				obb.append('lastName',$('#lastNameid').val());
+				obb.append('inquiryOfficerlist',$('#inqtypeid').val());
+				obb.append('email',$('#emailid').val());
+				obb.append('mobileNumber',$('#mobid').val());
+				obb.append('designation',$('#desigid').val());
+				obb.append('lastOfficeName',$('#lastofficeid').val());
+				obb.append('dateofBirth',$('#dobid').val());
+				obb.append('dateofretirement',$('#retireid').val());
+				obb.append('order',$('#orderid').val());
+				obb.append('division',$('#division').val());
+				obb.append('district',$('#district').val());
+				
+				obb.append('active',JSON.parse($('input[name="chargesheetIssued2"]:checked').val()));
+				
+				swal({
+					title: "Do you want to proceed?",
+					text: "",
+					
+					buttons: true,
+					dangerMode: true,
+					buttons: ["No", "Yes"]
+				}).then(function(isConfirm) {
+					if (isConfirm) {
+						postdata('/de/departmentalEnquiry/updateInqList', obb, function (data) {
+							jQuery.noConflict();
+							swal(data).then(function(){
+							    location.reload();
+							});
+						});
+//						var loading = new Loading();
+					}
+				});
+				
+				
+			});
+			
+			
+		
+		</script>
+</body>
+</html>

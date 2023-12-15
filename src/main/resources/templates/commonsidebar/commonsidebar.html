@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+<!--	<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>-->
+<head>
+<title>eHRMS (Government of Maharashtra)</title>
+
+</head>
+<nav class="sidebar sidebar-offcanvas" id="sidebar"  
+	th:fragment="commonsidebar">
+	
+	<ul class="nav" sec:authorize="isAuthenticated()" >
+		<li class="nav-item nav-profile border-bottom"><a 
+		 style="pointer-events:none;"
+			href="javascript:void(0);" class="flex-column">
+				<div class="nav-profile-image">
+					<strong><span 
+						th:if="${session.departobb ne null and session.subdepartment == null}"
+						th:text="${session.departobb.globalOrgName}"></span> <span
+						th:if="${session.departobb ne null and session.subdepartment ne null}"
+						th:text="${session.subdepartment.subdepartmentNameEn}"></span></strong>
+						<input type="hidden" id="tenantid" th:value="${session.tenantid}">
+				</div>
+		</a></li>
+		<!-- <li class="pt-2 pb-1"><span class="nav-item-head"><span
+				th:text="#{Recruitment}">Recruitment</span></span></li> -->
+		<li class="nav-item"><a class="nav-link" id="homepage" th:href="@{/}"> <i
+				class="mdi mdi-compass-outline menu-icon"></i> <span
+				th:text="#{Sidebar.home}" class="menu-title"></span>
+		</a></li>
+		<!-- <li class="nav-item" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')"><a class="nav-link" 
+												th:href="@{|/departmentalEnquiry/caseDetails?session=true|}"> <i
+					class="mdi mdi-format-list-bulleted menu-icon"></i> <span class="menu-title"
+					>New Case Entry</span>
+			</a></li> -->
+		<li class="nav-item" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')">
+			<a class="nav-link" data-toggle="collapse" href="#ui-basic2" 
+			aria-expanded="false" aria-controls="ui-basic2"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"><span th:text="#{de.commonSidebar.new.casentry}"></span></span> <i class="menu-arrow"></i>
+		</a>
+			<div class="collapse" id="ui-basic2">
+				<ul class="nav flex-column sub-menu">
+					<li class="nav-item"><a class="nav-link" id="deinitiated"
+						th:href="@{|/departmentalEnquiry/caseDetails?session=true|}"><span
+							class="menu-title"> <i
+								class="mdi mdi-format-list-bulleted menu-icon"></i>
+							<span th:text="#{de.commonsidebar.enter.case.de.has.beeninitiated}"></span>	
+						</span></a></li>
+					<!-- <li class="nav-item"><a class="nav-link"
+						th:href="@{|/departmentalEnquiry/caseDetails?session=true|}"><span class="menu-title"
+							>Enter a Case Where DE has not been Inititated</span></a></li> -->
+					<li class="nav-item" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')">
+						<a class="nav-link" data-toggle="collapse" href="#ui-basic3"
+										
+						aria-expanded="false" aria-controls="ui-basic3"> <i
+							class="mdi mdi-format-list-bulleted menu-icon"></i> <span data-toggle="tooltip"
+						
+						th:title="#{datatogglewheredenotfinl}"		
+							
+							class="menu-title"><span th:text="#{de.commonsidebar.enter.case.de.has.not.bee.ninitiated}"></span>	</span>
+							 <i class="menu-arrow"></i>
+					</a>
+						<div class="collapse" id="ui-basic3" style="background: gray;">
+							<ul class="nav flex-column sub-menu">
+							
+								<li class="nav-item"><a class="nav-link" id="suswithoutde"
+									data-toggle="tooltip"
+									th:title="#{Enter a Case of Suspension Where DE has not been Initiated}"
+									th:href="@{/departmentalEnquiry/suspensionDetailsWithoutDE/1}">
+									<span
+										class="menu-title"  th:text="#{de.commonsidebar.suspension.label}"></span></a></li>
+								
+								<li class="nav-item"><a class="nav-link" id="reinstwithoutde"
+									data-toggle="tooltip"
+									th:title="#{Enter a Case of Reinstatement Where DE has not been Initiated}"
+									th:href="@{/departmentalEnquiry/reinstatedDetailsWithoutDE/1}"><span
+										class="menu-title" th:text="#{de.commonsidebar.reinstatement.label}"></span></a></li>
+							
+								<li class="nav-item"><a class="nav-link" id="prosecwithoutde"
+									data-toggle="tooltip"
+									th:title="#{Enter a Case of Prosecution Where DE has not been Initiated}"
+									th:href="@{/departmentalEnquiry/prosecutionProposaldetailsWithoutDE/1}"><span
+										class="menu-title" th:text="#{de.commonsidebar.3. Prosecution.label}" ></span></a></li>
+							</ul>
+						</div>
+					</li>
+
+				</ul>
+			</div>
+		</li>
+
+		<li class="nav-item"
+			sec:authorize="hasAnyRole('ROLE_DEPARTMENT','ROLE_VERIFICATION')"><a
+			class="nav-link" id="editcases"
+			th:href="@{/departmentalEnquiry/caseDtlsRcdsInboxlst/1?sort-field=caseNo&sort-dir=asc}">
+				<i class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"><span th:text="#{de.edit.update.de.cases.entered}"></span></span>
+		</a></li>
+		
+		<li class="nav-item"
+			sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"><a
+			class="nav-link" id="assigniocases"
+			th:href="@{/departmentalEnquiry/assigninqofficer/1?sort-field=caseNo&sort-dir=asc}">
+				<i class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"><span th:text="#{de.sidebar.commonsidebar.assigninquiryoff}"></span></span>
+		</a></li>
+		
+		<li class="nav-item" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')">
+						<a class="nav-link" data-toggle="collapse" href="#ui-basic10"
+										
+						aria-expanded="false" aria-controls="ui-basic10"> <i
+							class="mdi mdi-format-list-bulleted menu-icon"></i> <span 
+						
+							
+							
+							class="menu-title"><span th:text="#{de.edit.update.de.cases.withoutDE}"></span>	</span>
+							 <i class="menu-arrow"></i>
+					</a>
+						<div class="collapse" id="ui-basic10" style="background: gray;">
+							<ul class="nav flex-column sub-menu">
+							
+								<li class="nav-item"><a class="nav-link" id="suswithoutde10"
+									
+									th:href="@{/departmentalEnquiry/suspensionDetailsWithoutDE/1}">
+									<span
+										class="menu-title"  th:text="#{de.commonsidebar.suspension.label}"></span></a></li>
+								
+								<li class="nav-item"><a class="nav-link" id="reinstwithoutde10"
+									
+									th:href="@{/departmentalEnquiry/reinstatedDetailsWithoutDE/1}"><span
+										class="menu-title" th:text="#{de.commonsidebar.reinstatement.label}"></span></a></li>
+							
+								<li class="nav-item"><a class="nav-link" id="prosecwithoutde10"
+									
+									th:href="@{/departmentalEnquiry/prosecutionProposaldetailsWithoutDE/1}"><span
+										class="menu-title" th:text="#{de.commonsidebar.3. Prosecution.label}" ></span></a></li>
+							</ul>
+						</div>
+					</li>
+		
+
+		<!-- 	<li class="nav-item" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')">
+			<a class="nav-link" data-toggle="collapse" href="#ui-basic1" aria-expanded="false" aria-controls="ui-basic">
+				<i class="mdi mdi-format-list-bulleted menu-icon"></i>
+				<span class="menu-title">Without DE Cases</span>
+				<i class="menu-arrow"></i>
+			</a>
+			<div class="collapse" id="ui-basic1">
+				<ul class="nav flex-column sub-menu">
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/departmentalEnquiry/suspensionDetailsWithoutDE/1}"><span class="menu-title"
+							>Suspended Details Without DE</span></a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/departmentalEnquiry/reinstatedDetailsWithoutDE/1}"><span class="menu-title"
+							>Re-instatement Details Without DE</span></a></li>
+					<li class="nav-item"><a class="nav-link"
+							th:href="@{/departmentalEnquiry/prosecutionProposaldetailsWithoutDE/1}"><span class="menu-title"
+								>Prosecution Case Details Without DE</span></a></li>								
+				</ul>
+			</div>
+		</li>		
+			 -->
+
+		<li class="nav-item"><a class="nav-link" data-toggle="collapse" sec:authorize="!hasAnyRole('ROLE_USERMANAGEMENT','ROLE_IO')"
+			href="#ui-basicreports" aria-expanded="false" aria-controls="ui-basicreports">
+				<i class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"><span th:text="#{de.reports.of.pending}"></span></span> <i
+				class="menu-arrow"></i>
+		</a>
+			<div class="collapse" id="ui-basicreports">
+				<ol type="1"  class="nav flex-column sub-menu" style="background: gray;">
+
+					<li class="nav-item" ><a class="nav-link" id="totalPendingCase"
+						th:href="@{/departmentalEnquiry/reportsforAllFields/1?viewreport=true&sort-field=caseNo&sort-dir=asc}"><span
+							class="menu-title"><span th:text="#{de.commonsidebar.totalpendingcases}"></span></span></a></li>
+					
+				
+					<!-- <li class="nav-item" ><a class="nav-link" id="casestransferred"
+						th:href="@{/departmentalEnquiry/casestransferred/1?sort-field=caseNo&sort-dir=asc}"><span
+							class="menu-title"><span th:text="#{de.casestransferred}"></span></span></a></li> -->
+				
+				
+				
+					<li class="nav-item" th:if="${session.subdepartment == null}">
+					
+					<a class="nav-link" id="departmentwisePendingCase"  sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+						th:href="@{/departmentalEnquiry/departmentWiseReportsController/1?globalorgdid=&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title"><span th:text="#{de.commonsidebar.departmentwisependingcases}"></span></span>
+					</a>
+					
+					
+						<!-- <a class="nav-link" id="departmentwisePendingCase"  sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')"
+						th:href="@{/departmentalEnquiry/departmentWiseReportsController/1?globalorgdid=&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title"><span th:text="#{subdepartmentsub.sectionwisepending.cases.label}"></span></span>
+					</a> -->
+					</li>		
+					
+					<li class="nav-item"><a class="nav-link" id="divisionPendingCase"
+						th:href="@{/departmentalEnquiry/reportCaseDtlsDivisionWisePending/1?viewreport=true&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title"><span th:text="#{de.commonsidebar.divisionwise}"></span></span>
+					</a></li>
+
+
+					<li class="nav-item"><a class="nav-link" id="districtPendingCase"
+						th:href="@{/departmentalEnquiry/districtWiseReportsController/1?districtid=&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title"><span th:text="#{de.commonsidebar.district}"></span></span>
+					</a></li>
+					
+					<li class="nav-item" sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')"><a class="nav-link" id="alldepartgroup"
+						th:href="@{/departmentalEnquiry/groupWiseReportAllController/1?group=&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title"><span th:text="#{de.commonsidebar.groupwisependingcases}"></span></span>
+					</a></li>
+					
+					<li class="nav-item" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"><a class="nav-link" 
+						data-toggle="collapse" href="#ui-basicgroup" aria-expanded="false"
+						aria-controls="ui-basicgroup"> <span
+							class="menu-title"><span th:text="#{de.commonsidebar.groupwisependingcases}"></span></span> <i
+							class="menu-arrow"></i>
+					</a>
+						<div class="collapse" id="ui-basicgroup" style="background: gray;">
+							<ul class="nav flex-column sub-menu">
+								<li class="nav-item"><a class="nav-link" id="alldepartgroup"
+									th:href="@{/departmentalEnquiry/groupWiseReportAllController/1?group=&sort-field=caseNo&sort-dir=asc}"><span
+										class="menu-title"><span sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" th:text="#{de.commonsidebar.alldeptwisependingcases}"></span></span></a></li>
+								
+								<li class="nav-item"><a class="nav-link" id="departwisegroup" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+									th:href="@{/departmentalEnquiry/groupWiseReportDepartmentController/1?group=&sort-field=caseNo&sort-dir=asc}"><span
+										class="menu-title"><span th:text="#{de.commonsidebar.groupwisependingcase.label}"></span></span></a></li>
+							</ul>
+						</div>
+					</li>
+					
+					<li class="nav-item"><a class="nav-link" id="iopendingcases"
+						th:href="@{/departmentalEnquiry/ioReportsController/1?viewreport=true&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title" ><span th:text="#{de.commonsidebar.inquiryOfficerWisePendingCases}"></span></span>
+					</a></li>
+					
+					<li class="nav-item"><a class="nav-link"  id="retiredpendingcases"
+						th:href="@{/departmentalEnquiry/retiredEmployeesReportsController/1?sort-field=id&sort-dir=asc}">
+							<span
+							class="menu-title" th:text="#{de.commonsidebar.retiredEmployeewisePendingCases}"></span>
+					</a></li>
+					
+					
+					<li class="nav-item"><a class="nav-link" id="misconductpendingcases"
+						th:href="@{/departmentalEnquiry/misconductReportsController/1?viewreport=true&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title"  th:text="#{de.commonsidebar.misconductWisePendingCases}"></span>
+					</a></li>
+					
+					
+					<li class="nav-item"><a class="nav-link" id="rulependingcases"
+						th:href="@{/departmentalEnquiry/ruleApplicableReportsController/1?viewreport=true&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title"><span th:text="#{de.commonsidebar.de.commonsidebar.ruleWisePendingCases}"></span></span>
+					</a></li>
+					
+					
+					<li class="nav-item"><a class="nav-link" id="genderpendingcases"
+						th:href="@{/departmentalEnquiry/genderWiseReportsController/1?viewreport=true&sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title" th:text="#{de.commonsidebar.de.commonsidebar.genderWisePendingCases}"></span>
+					</a></li>
+					
+					
+					<li class="nav-item"><a class="nav-link" id="majorpenpendingcases"
+						th:href="@{/departmentalEnquiry/majorminorReportsController/1?sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title" th:text="#{de.commonsidebar.de.commonsidebar.MajorPenaltyProceedingsWhichHaveResultedInMinorPenalties}"> </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						data-toggle="collapse" href="#ui-basicsus" aria-expanded="false"
+						aria-controls="ui-basicsus"> <span
+							class="menu-title" th:text="#{de.commonsidebar.de.reportOfSuspension}"></span> <i
+							class="menu-arrow"></i>
+					</a>
+						<div class="collapse" id="ui-basicsus" style="background: gray;">
+							<ul class="nav flex-column sub-menu">
+							<li class="nav-item"><a class="nav-link"  id="departmentsuspensionpendingcases"  sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+									th:href="@{/departmentalEnquiry/suspendedEmployeesDeptReportsController/1?group=&sort-field=caseNo&sort-dir=asc}"><span
+										class="menu-title" th:text="#{de.commonsidebar.alldeptwisependingcases}">Department Wise Pending Cases</span></a></li>
+							
+								<li class="nav-item"><a class="nav-link"  id="suspensionpendingcases"
+									th:href="@{/departmentalEnquiry/suspendedEmployeesReportsController/1?group=&sort-field=caseNo&sort-dir=asc}"><span
+										class="menu-title" th:text="#{de.commonsidebar.de.allPendingCases}"></span></a></li>
+										
+								
+										
+								<li class="nav-item"><a class="nav-link"  id="withoutdesuspensionpendingcases" 
+									th:href="@{/departmentalEnquiry/suspendedEmployeesWithoutDEReportsController/1?group=&sort-field=fileNo&sort-dir=asc}"><span
+										class="menu-title" th:text="#{de.commonsidebar.withoutDE}" >Without DE</span></a></li>		
+							</ul>
+						</div>
+					</li>
+					
+					<li class="nav-item"><a class="nav-link"   id="reinstatementwithoutdependingcases"
+						th:href="@{/departmentalEnquiry/reInstatedEmployeesWithoutDEReportsController/1?sort-field=fileNo&sort-dir=asc}">
+							<span
+							class="menu-title" th:text="#{de.commonsidebar.reportsOfReinstatementWithoutDE}">13. Reports of Reinstatement Without DE</span>
+					</a></li>
+					
+					<li class="nav-item"><a class="nav-link"  id="prosecutionwithoutdependingcases"
+						th:href="@{/departmentalEnquiry/prosecutionEmployeesWithoutDEReportsController/1?sort-field=fileNo&sort-dir=asc}">
+							<span
+							class="menu-title" th:text="#{de.commonsidebar.reportsOfProsecutionWithoutDE}">14. Reports of Prosecution Without DE</span>
+					</a></li>
+					
+					<li class="nav-item"><a class="nav-link"  id="finallycases"
+						th:href="@{/departmentalEnquiry/finaloutcomeReportsController/1?sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title" th:text="#{de.commonsidebar.reportsOfFinallyDecidedCases}">15. Reports of Finally Decided Cases</span>
+					</a></li>
+					
+					<li class="nav-item"><a class="nav-link"  id="abeyancependingcases"
+						th:href="@{/departmentalEnquiry/abeyannceReportsController/1?sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title" ><span th:text="#{de.reportsforkept.label}"></span></span>
+					</a></li>
+					
+					<li sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"   class="nav-item"><a class="nav-link"  id="nodeCertificate"
+						th:href="@{/departmentalEnquiry/nodeCertificate/1?sort-field=caseNo&sort-dir=asc}">
+							<span
+							class="menu-title" ><span th:text="#{de.nodeCertificate.label}"></span></span>
+					</a></li>
+					
+					
+					
+							
+					<!-- <li class="nav-item"><a class="nav-link"
+						th:href="@{/departmentalEnquiry/reportsforAllFieldsIOPO/1?viewreport=true&sort-field=caseNo&sort-dir=asc}"><span
+							class="menu-title">Reports Based on Inquiry Officer</span></a></li> -->
+					<!-- <li class="nav-item"><a class="nav-link"
+						th:href="@{/departmentalEnquiry/reportsforSuspended/1?sort-field=casedetails.caseNo&sort-dir=asc}"><span
+							class="menu-title">Reports for Suspended Employees</span></a></li> -->
+					<!-- <li class="nav-item"><a class="nav-link"
+						th:href="@{/departmentalEnquiry/reportsforReinstated/1?sort-field=casedetails.caseNo&sort-dir=asc}"><span
+							class="menu-title">Reports for Reinstated Employees</span></a></li>
+
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/departmentalEnquiry/reportsforProsecutionProposal/1?sort-field=casedetails.caseNo&sort-dir=asc}"><span
+							class="menu-title">Reports Based on Prosecution Cases</span></a></li> -->
+					<li class="nav-item"><a class="nav-link" id="composite"
+						sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+						data-toggle="tooltip"
+						th:title="#{de.compositereporttooltip}"
+						th:href="@{/departmentalEnquiry/commonReportsforAllFields/1?viewreport=true&sort-field=caseNo&sort-dir=asc}">
+							<span class="menu-title" th:text="#{de.commonsidebar.compositeReports}">Composite Reports</span>
+					</a></li>
+
+					
+
+
+
+					
+
+
+
+					
+
+					
+
+
+					
+
+					
+
+					
+
+					
+
+
+					
+
+				</ol>
+			</div></li>
+
+		<li class="nav-item"><a class="nav-link" id="rulesorders" sec:authorize="!hasAnyRole('ROLE_IO')"
+			th:href="@{/departmentalEnquiry/getOrders}"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"><span th:text="#{de.commonsidebar.rulesandordes}"></span></span>
+		</a></li>
+
+		<li class="nav-item"><a class="nav-link" id="uploadorders"
+			th:href="@{/departmentalEnquiry/getUploadOrder}"
+			sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" th:text="#{de.commonsidebar.uploadOrders}"> Upload Orders</span>
+		</a></li>
+		
+		<li class="nav-item"><a class="nav-link" id="processdecerticate"
+			th:href="@{/departmentalEnquiry/verifynode}"
+			sec:authorize="hasAnyRole('ROLE_SUPERADMIN','ROLE_DEPARTMENT')"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" th:text="#{de.commonsidebar.checknodecertificate}"> Vigilance Certificate</span>
+		</a></li>
+		
+		
+		<li class="nav-item"><a class="nav-link" id="gettemplates" sec:authorize="!hasAnyRole('ROLE_IO')"
+			th:href="@{/departmentalEnquiry/getTemplates}"
+			> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" th:text="#{de.sidebar.commonsidebar.templates}"> Templates</span>
+		</a></li>
+		
+		<li class="nav-item"><a class="nav-link" id="getioreq" sec:authorize="hasAnyRole('ROLE_IO')"
+			th:href="@{/departmentalEnquiry/iorequestlist}"
+			> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" th:text="#{de.sidebar.commonsidebar.getiorequest}"> List of Request From Department</span>
+		</a></li>
+		
+		<li class="nav-item"><a class="nav-link" id="getiocases" sec:authorize="hasAnyRole('ROLE_IO')"
+			th:href="@{/departmentalEnquiry/getiocases}"
+			> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" th:text="#{de.sidebar.commonsidebar.getiocases}"> List of Accepted Cases Pending By IO</span>
+		</a></li>
+		
+		<li class="nav-item"><a class="nav-link" id="getiocasespendingreport" sec:authorize="hasAnyRole('ROLE_IO')"
+			th:href="@{/departmentalEnquiry/getiocasespendingreport}"
+			> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" > Cases Pending for IO Report</span>
+		</a></li>
+		
+		<li class="nav-item"><a class="nav-link" id="getiocasesreportsub" sec:authorize="hasAnyRole('ROLE_IO')"
+			th:href="@{/departmentalEnquiry/getiocasesreportsubmitted}"
+			> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title" > Report Submitted Cases</span>
+		</a></li>
+		
+		
+		<li class="nav-item"><a class="nav-link" id="getioupcominghearing" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+			th:href="@{/departmentalEnquiry/getioupcominghearing}"
+			> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span class="menu-title" ><span th:text="#{Hearing Board}"></span></span>
+
+		</a></li>
+		
+		<li class="nav-item"><a class="nav-link" data-toggle="collapse" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+			href="#ui-basiconlineio" aria-expanded="false" aria-controls="ui-basiconlineio">
+				<i class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"><span ><span th:text="#{io.noticed.dashboard.label}"></span></span></span> <i
+				class="menu-arrow"></i>
+		</a>
+			<div class="collapse" id="ui-basiconlineio">
+				<ul class="nav flex-column sub-menu" style="background: gray;">
+				
+					<li class="nav-item"><a class="nav-link" id="getdivinqlist"
+						th:href="@{/departmentalEnquiry/iolistdivisionaldetails}" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+						> <i
+							class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+							class="menu-title" ><span th:text="#{io.noticed.Divisional.label}"></span></span>
+					</a></li>
+
+					<li class="nav-item"><a class="nav-link" id="getcontractinqlist"
+						th:href="@{/departmentalEnquiry/iolistdetails}" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+						> <i
+							class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+							class="menu-title"><span th:text="#{io.noticed.Contractual.label}"></span></span>
+					</a></li>
+					
+					
+					
+				</ul>
+			</div>
+		</li>							
+		
+		
+		
+		
+		<li class="nav-item"><a class="nav-link" data-toggle="collapse" sec:authorize="hasAnyRole('ROLE_USERMANAGEMENT')"
+			href="#ui-basicmanagement" aria-expanded="false" aria-controls="ui-basicreports">
+				<i class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title"><span th:text="#{de.sidebar.commonsidebar.masterdatamgmt}"></span></span> <i
+				class="menu-arrow"></i>
+		</a>
+			<div class="collapse" id="ui-basicmanagement">
+				<ul class="nav flex-column sub-menu" style="background: gray;">
+
+					<li class="nav-item"><a class="nav-link" id="subdepartmentmanageid"
+										th:href="@{/departmentalEnquiry/getSubDepartmentList/1}"
+										sec:authorize="hasAnyRole('ROLE_USERMANAGEMENT')"> <span
+											class="menu-title"><span th:text="#{de.sidebar.commonsidebar.subdatamgmt}"></span></span>
+									</a></li>
+									
+					<li class="nav-item"><a class="nav-link" id="usermanagementid"
+										th:href="@{/departmentalEnquiry/getUserList/1}"
+										sec:authorize="hasAnyRole('ROLE_USERMANAGEMENT')"> <span
+											class="menu-title"><span th:text="#{de.sidebar.commonsidebar.usermgmt}"></span></span>
+									</a></li>
+									
+						<li class="nav-item"><a class="nav-link" id="desigmanagementid"
+										th:href="@{/departmentalEnquiry/getDesigList/1}"
+										sec:authorize="hasAnyRole('ROLE_USERMANAGEMENT')"> <span
+											class="menu-title"><span th:text="#{de.sidebar.commonsidebar.designationManage}"></span></span>
+									</a></li>
+									
+						<li class="nav-item"><a class="nav-link" id="inqmanagementid"
+										th:href="@{/departmentalEnquiry/getInqList/1}"
+										sec:authorize="hasAnyRole('ROLE_USERMANAGEMENT')"> <span
+											class="menu-title"><span th:text="#{de.sidebar.commonsidebar.inqmanage}"></span></span>
+									</a></li>	
+									
+					<li class="nav-item"><a class="nav-link" id="witmanagementid"
+										th:href="@{/departmentalEnquiry/getWitList/1}"
+										sec:authorize="hasAnyRole('ROLE_USERMANAGEMENT')"> <span
+											class="menu-title"><span th:text="#{de.sidebar.commonsidebar.vitnessmanage}"></span></span>
+									</a></li>																
+					</ul>
+			</div>
+		</li>			
+		
+<!-- 		<li class="nav-item"><a class="nav-link"
+			th:href="@{/departmentalEnquiry/getSubDepartmentList/1}"
+			sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title">Master Date Management</span>
+		</a></li>
+		
+		
+		<li class="nav-item"><a class="nav-link"
+			th:href="@{/departmentalEnquiry/getUserList/1}"
+			sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <i
+				class="mdi mdi-format-list-bulleted menu-icon"></i> <span
+				class="menu-title">User Management</span>
+		</a></li> -->
+
+
+
+
+
+
+
+		<!-- 	<li class="nav-item"><a class="nav-link" th:href="@{/departmentalEnquiry/getOrders}"> 
+			<i
+					class="mdi mdi-format-list-bulleted menu-icon"></i> <span class="menu-title"
+					></span>
+			</a></li>	
+		 -->
+
+
+
+
+
+
+
+
+
+		<!-- <li class="nav-item" th:fragment="processList" id="processList">
+
+		</li> -->
+
+
+		<!-- 		<script type="text/javascript" th:inline="javascript">
+	console.log("call")
+	function load(){
+		
+		getdatafragments("/de/getprocessList",function(data){
+			$('#processList').replaceWith(data);	
+		});
+	}
+	load();
+</script> -->
+
+
+	</ul>
+	<div class="modal fade" th:id="myModalPassword" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"><span th:text="#{de.changepassword.label}"></span></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						<!-- <button type="button" class="close" data-dismiss="modal"
+							th:id="myModal2">&times;</button> -->
+						<br>
+						<br>
+						<div th:id="printdataCompact">
+							<form id="changepassword" class="form">
+								<div class="row">
+									<div class="col-md-3 mb-3">
+										<label for="deFileNo"><span th:text="#{de.oldpassword.label}"></span></label> <input
+											type="password" class="form-control" id="oldpassword" required="required">
+									</div>
+									
+									<div class="col-md-3 mb-3">
+										<label for="deFileNo"><span th:text="#{de.newpassword.label}"></span></label> <input
+											type="password" class="form-control" id="newpassword" required="required">
+									</div>
+									
+									<div class="col-md-3 mb-3">
+										<label for="deFileNo"><span th:text="#{de.cnfpassword.label}"></span></label> <input
+											type="text" class="form-control" id="confirmnewpassword" required="required">
+									</div>
+
+
+
+								</div>
+								<div class="btn-toolbar mr-1" role="toolbar"
+									aria-label="Basic example">
+									<button type="button" th:value="save" id="saveupdatepassword"
+										class="btn btn-primary "><span th:text="#{de.updatepwdassword.label}"></span></button>
+
+
+								</div>
+							</form>
+
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<script>
+
+	function showchangepassword(){
+		jQuery.noConflict();
+		var tenantid = $('#tenantid').val();
+		if(tenantid != null && tenantid == 'tenant_1') {
+			$('#myModalPassword').modal();
+		}
+	}
+	
+ 	$('#saveupdatepassword').click(function(){
+ 		jQuery.noConflict();
+ 			swal({
+ 				title: "Do you want to save?",
+ 				text: "",
+ 				icon: "warning",
+ 				buttons: true,
+ 				dangerMode: true,
+ 				buttons: ["No", "Yes"]
+ 			}).then(function(isConfirm) {
+ 				if (isConfirm) {
+ 						var obb = new FormData();
+ 						
+ 						obb.append('oldpassword',$('#oldpassword').val());
+ 						obb.append('newpassword',$('#newpassword').val());
+ 						obb.append('confirmnewpassword',$('#confirmnewpassword').val());
+ 						postdata('/de/departmentalEnquiry/changepassword', obb, function (data) {
+ 							jQuery.noConflict();
+ 							swal(data).then(function(){
+ 								if(data == 'Updated Successfully') {
+ 									window.location.href = "/de/logout";
+ 								}
+ 							});
+ 						});
+ 				}
+ 			});
+ 		});
+
+	
+	</script>
+	
+</nav>
+
+</html>

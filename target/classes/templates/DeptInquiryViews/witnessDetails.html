@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div id="headerid"></div>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+    <div id="sidebarid"></div>
+
+    <div class="container">
+        <div id="toperid"></div>
+        <br>
+        <div class="card-header col-sm-12">
+            <h5>Witnesses Details</h5>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="sevarthID">Sevarth ID</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="employeeID">Employee ID</label>
+                <input type="text" class="form-control" id="employeeID" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="middleName">Middle Name</label>
+                <input type="text" class="form-control" id="middleName" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                &nbsp;
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for=" departmentName">Department Name</label>
+                <select class="form-control" id="departmentName">
+                    <option>Select</option>
+                    <option>General Administration Department</option>
+                    <option>Home Department</option>
+                    <option>Food, Civil Supply and Consumer Protection Department</option>
+                    <option>Medical Education and Drug Department</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="subDepartmentName">Sub-Department Name</label>
+                <select class="form-control" id="subDepartmentName">
+                    <option>Select</option>
+                    <option>Forest</option>
+                    <option>Revenue</option>
+                    <option>Energy</option>
+                    <option>Industry</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="designation">Designation</label>
+                <select class="form-control" id="designation">
+                    <option>Select</option>
+                    <option>Clerk-cum-Typist</option>
+                    <option>Assistant Section Officer</option>
+                    <option>Section Officer</option>
+                    <option>Under Secretary</option>
+                    <option>Deputy Secretary</option>
+                    <option>Joint Secretary</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="mobileNumber">Mobile Number</label>
+                <input type="text" class="form-control" id="mobileNumber" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" placeholder="" value="" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="revenueDivision">Revenue Division</label>
+                <select class="form-control" id="revenueDivision">
+                    <option>Select</option>
+                    <option>Konkan</option>
+                    <option>Pune</option>
+                    <option>Nashik</option>
+                    <option>Aurangabad</option>
+                    <option>Arnravati </option>
+                    <option>Nagpur </option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="district">District</label>
+                <select class="form-control" id="district">
+                    <option>Select</option>
+                    <option>Mumbai City</option>
+                    <option>Mumbai Suburban</option>
+                    <option>Thane</option>
+                    <option>Palghar</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="email">Office Name</label>
+                <input type="text" class="form-control" id="email" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="email">Office / Residential Address</label>
+                <input type="text" class="form-control" id="email" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="email">Contact No.</label>
+                <input type="text" class="form-control" id="email" placeholder="" value="" required>
+            </div>
+
+            <!-- <div class="col-md-4 mb-3">
+                <label for="appointmentDate">Appointment Date</label>
+                <input type="date" class="form-control" id="appointmentDate" placeholder="" value="" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                &nbsp;
+                <label for="uploadAppointmentOrderCopy">Upload Appointment Order Copy</label>
+                <input type="file">
+            </div> -->
+        </div>
+
+        <br>
+        <div class="text-center">
+            <button type="button" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/fontawesome.min.js"
+        integrity="sha512-5qbIAL4qJ/FSsWfIq5Pd0qbqoZpk5NcUVeAAREV2Li4EKzyJDEGlADHhHOSSCw0tHP7z3Q4hNHJXa81P92borQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/jquery-3.2.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarid').load('sidebar.html');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#headerid').load('headers.html');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#toperid').load('topers.html');
+        });
+    </script>
+</body>
+
+</html>

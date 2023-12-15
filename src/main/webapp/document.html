@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!-- <head th:replace="header::header">
+ -->
+ <th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+</head>
+<title>Inbox Proposal</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()">
+	 <nav th:insert="Sidebar1_1.html :: Sidebar1_1"> </nav> 
+		<div class="container-fluid page-body-wrapper">
+		<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+		 <nav th:insert="fragments/ehrms_navbar.html :: navbar"> </nav> 
+		  <div class="main-panel"> <div class="content-wrapper">
+		  	<div class="page-header">
+		  		<h3 class="page-title"><b><span th:text="#{masterData.Table Details}">Proposal Inbox</span></b></h3>
+		  		<!-- <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#"><span th:text="#{inbox.Recruitment Module}"></span></a></li>
+					  <li class="breadcrumb-item"><a href="#"><span th:text="#{inbox.Recruitment by Individual Departments through MPSC}">
+					  
+					  <span sec:authorize="hasRole('ROLE_DEPARTMENT','ROLE_ADMIN')">
+						<span th:text="#{inbox.Department}"></span> <span th:text="#{inbox.Inbox}"></span></span> 
+						<span
+						sec:authorize="hasRole('ROLE_16B','ROLE_ADMIN')">16B <span th:text="#{inbox.Inbox}"></span></span>
+						<span sec:authorize="hasRole('ROLE_BCCELL')" th:text="#{Form.BC}"><span th:text="#{inbox.Inbox}"></span></span> 
+						 <span
+						sec:authorize="hasRole('ROLE_AA','ROLE_ADMIN')">Auditing Authority <span th:text="#{inbox.Inbox}"></span>
+						</span>
+						<span sec:authorize="hasRole('ROLE_VAC','ROLE_ADMIN')">VAC <span th:text="#{inbox.Inbox}"></span></span>
+					  
+					  </span></a></li>
+                </ol>
+              </nav> -->
+		  		
+		  		<div class="row">
+					<p th:text="${message}" id="testingxyz" th:if="${message ne null}"
+						class="alert alert-danger"></p>							
+				</div>
+		  	</div>
+		  	<div class="row">
+			  	<div class="col-lg-12 grid-margin stretch-card">
+			  		<div class="card">
+			  			<div class="card-body">
+			  			<div class="form-group col-sm">
+			  				<div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
+								            
+								   <a class="btn btn-primary btn-sm" th:href="@{|/Admin/insert/Data|}">
+                        <span th:text="#{masterData.Insert data}">Insert Data </span></a>
+                        
+								    <!-- <span th:text="#{Insert Data}"></span>
+								    <span class="caret"></span>
+								    <a class="btn btn-primary btn-sm" th:href="@{|/insert/Data|}"></a> -->
+								   
+								    
+								    
+								    
+								
+						    </div>
+						    </div>
+						    
+						   
+						    <div class="table-responsive">
+					<table id="link-list" class="table table-bordered table-sm">
+							<!-- <thead>
+								<tr>
+									<th><span th:text=#{inbox.Noticeid}></span></th>
+									<th><span th:text=#{inbox.Subject}></span></th>
+									<th><span th:text="#{inbox.From}"></span></th>
+									<th><span th:text="#{inbox.Current Authority}">Current
+											Authority</span>
+									<th><span th:text=#{inbox.Date}></span></th>
+									<th><span th:text=#{inbox.moddate}></span></th>
+									<th><span th:text="#{inbox.status}"></span></th>
+									<th><span th:text=#{inbox.Department}></span></th>
+									<th><span th:text=#{inbox.Apply}></span></th>
+									<th><span th:text="#{inbox.Import Selection list}">Import
+											Mpsc File</span>
+								</tr>
+							</thead> -->
+							<thead>
+								<tr>
+									<th><span th:text=#{id}></span></th>
+									<th><span th:text=#{officeTypeName}></span></th>
+									<th><span th:text=#{parentofficeTypeMaster}></span></th>
+									
+									 <th><span th:text=#{Action}></span></th>
+									<!-- <th><span th:text="#{inbox.Current Authority}">Current
+											Authority</span> -->
+									
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="officetypemaster : ${officetype}" >
+									<td th:text="${{officetypemaster.id}}"></td>
+									<td th:utext="${{officetypemaster.officeTypeName}}"></td>
+									<td th:utext="${{officetypemaster.parentofficeTypeMaster}}"></td>
+					
+									 <td>
+									 
+                                    <a  th:text="#{masterData.Update}" th:href="@{/Admin/gettabledetails/edit/{id}(id=${officetypemaster.id})}"
+                                             class="btn btn-primary">
+                                        <i class="fas fa-user-edit ml-2"></i>
+                                    </a>
+                                </td>									
+								</tr>
+							</tbody>
+							
+						</table>						
+				</div>				
+				<div class="row" th:fragment="pagination">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
+						<nav aria-label="Pagination">
+							<ul class="pagination justify-content-center">
+								<li class="page-item" th:each="pageNumber : ${pageNumbers}">
+									<a class="page-link" th:href="@{|/inboxgad/ptype/CPTP/page/${pageNumber}|}"
+									th:text=${pageNumber}>1</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+				<div class="row" th:if="${!noticelist.isEmpty()}" sec:authorize="hasRole('ROLE_GAD')">
+                    <a class="btn btn-primary btn-sm" th:href="@{|/sendtompsc|}">
+                        <span th:text="#{inboxgad.sendmpsc}">Send to MPSC</span></a>
+                </div>
+			  			</div>
+		  			</div>
+			  	</div>
+		  	</div>
+		  
+		  </div>
+
+		<div class="container-fluid page-body-wrapper">
+		<div class="row" th:each="notice:${noticelist}">
+		<!-- Modal -->
+			<div class="modal fade" th:id="myModal__${notice.id}__" role="dialog">
+				<div class="modal-dialog modal-xl">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body container">
+							<form th:object="${notice}" th:id="noticeregisterid__${notice.id}__"
+								class="needs-validation" novalidate>
+								<div class="row">
+									<div class="form-group col-sm" id="hidden_div"
+										th:if="${notice.id>0}" style="color: red">
+										<label for="exampleFormControlInput1"><span
+											th:text=#{inbox.Noticeid}></span>:</label> <b><span
+											th:text="${{notice.id}}"></span></b>
+									</div>
+	
+									<div class="form-group col-sm">
+										<label for="designations"><span th:text=#{inbox.Designation}></span>:</label>
+										<b><span th:text="${{notice.designation}}"></span></b>
+									</div>
+									<div class="form-group col-sm">
+										<label for="expectedvacancy"><span
+											th:text=#{inbox.expectedvacancy}></span>:</label><b><span
+											th:text="${{notice.expectedvacancy}}"></span></b>
+	
+									</div>
+									<div class="form-group col-sm">
+										<label for="reservedvacancy"><span
+											th:text=#{inbox.reservedvacancy}></span>:</label><b><span
+											th:text="${{notice.reservedvacancy}}"></span></b>
+									</div>
+	
+	
+								</div>
+								<div class="row">
+									<div class="form-group col-sm">
+										<label for="vacancy"><span th:text=#{inbox.vacancy}></span>:</label><b><span
+											th:text="${{notice.totalvacancy}}"></span></b>
+									</div>
+	
+									<div class="form-group col-sm">
+										<label for="extravacancy"><span th:text=#{inbox.extravacancy}></span>:</label>
+										<b><span th:text="${{notice.extravacancy}}"></span></b>
+									</div>
+								</div>
+	
+								<div class="row">
+									<div class="form-group col-sm">
+										<span th:text="#{inbox.Vertical vacancy}">Vertical Vacancy:</span>
+										<table class="table">
+											<th:block>
+												<tr>
+													<td th:each="cates,iStat : ${reservedcate}"
+														th:if="${cates.type=='V'}"><span
+														th:text="${cates.CasteCode}"></span>:<b><span
+															th:text="${{notice.category[__${iStat.index}__].Vacancy}}"></span></b>
+												</tr>
+											</th:block>
+										</table>
+									</div>
+									<div class="form-group col-sm"
+										th:style="${notice.approved ? 'display:block' : 'display:none'}">
+										<span th:text="#{inbox.Horizontal Vacancy}">Horizontal Vacancy:</span>
+										<table class="table">
+											<th:block>
+												<tr>
+													<td th:each="cates,iStat : ${reservedcate}"
+														th:if="${cates.type=='H'}"><span
+														th:text="${cates.CasteCode}"></span>:<b><span
+															th:text="${{notice.category[__${iStat.index}__].Vacancy}}"></span></b>
+												</tr>
+											</th:block>
+										</table>
+									</div>
+									<object id="embedPDF"  th:attr="data=${{notice.dataurl}}"
+										width="100%" height="500" style="height: 85vh;">
+										Support</object>
+	
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		</div>
+
+	</div>	
+	
+	</div>
+	 <div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+	<script>
+		function previewModalInbox(id) {
+			var myModal = '#myModal'+id;
+			$(myModal).modal();
+		}
+	
+	</script>
+</body>
+</html>

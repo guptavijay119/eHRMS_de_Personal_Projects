@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head><title></title></head>
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">	
+    <li class="nav-item" th:each="process:${processList}" th:fragment="processlist1">
+      <a class="nav-link" th:href="@{|__${process.hreflink}__|}">
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+        <span class="menu-title" th:text="${process.regionalLinkName}"></span>
+      </a>
+    </li>
+</body>
+</html>

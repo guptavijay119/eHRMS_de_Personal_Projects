@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+
+<div th:fragment="singlepagecaseview">
+	<div class="modal fade" th:id="myModalCompact__${article.id}__"   th:value="${article.id}"   id="123vk1" name="previewmodel123"   role="dialog">
+	<input type="hidden"   th:value="${article.id}"   id="vkg123">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div class="container">
+					
+					<div id="closeidbtn"   >
+					<button type="button" class="close" data-dismiss="modal"   th:data-idmodal="myModalCompact__${article.id}__"
+							th:id="myModalCompact__${article.id}__"       onclick="closeModalForce(this.getAttribute('data-idmodal'))">&times;</button>
+							</div>
+					
+						<h3>
+							<strong><span th:text="#{de.preview.data.label}"></span></strong>
+						</h3>
+						
+						
+					<br>
+						 <button type="button" class="btn btn-primary btn-sm"
+															id="preview" data-toggle="modal"
+															th:attrappend="data-target='#myModal'+${article.id}">
+														<span th:text="#{de.view.details.label}"></span></button>
+						                    
+						                      <button type=" button" class="btn btn-primary"  th:data-idprint="printdataCompact__${article.id}__" 
+						                      onclick="printDivforInsidePreview(this.getAttribute('data-idprint'))" 
+											style="float:right;">	<span th:text="#{view.pdf.label}"></span></button>
+					              
+							
+						
+						
+						<br>
+						
+						<div  id="downloadreportsforall">
+						
+						<div th:id="printdataCompact__${article.id}__">
+							<div class="table-responsive" >
+								<label><h4 style="margin-top: 4px;"><span th:text="#{deptenq.casedetailsentry}"> </span></h4></label>
+								<table class="table table-bordered table-sm"
+								style="border: 1px solid black !important; border-collapse: collapse !important;">
+								<caption></caption>
+								<thead>
+									<tr>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row" width="20%"></th>
+										<th
+											style="border: 1px solid black !important; border-collapse: collapse !important;"
+											scope="row"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<label for="cases"><center><span th:text="#{masterData.SystemGeneratedCaseId}"></span></center></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span>DEM/</span><span th:text="${article.id}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<label for="cases"><center><span th:text="#{de.enquiry.caseno}"></span></center></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:text="${article.caseNo}"></span>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<label for=fileSubject><span th:text="#{de.casesdetails.fileSubject}">File Subject</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:text="${article.fileSubject}"></span>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="misconductName"><span th:text="#{de.casesdetails.misconduct}">Type of Misconduct</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;" class="text-wrap">
+											<span th:if="${article.misConductType ne null}"
+											th:text="${article.misConductType.misconductName}"></span>
+										</td>
+										</td>
+									</tr>
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="ruleApplicable">
+										<span th:text="#{de.casedetails.ruleapplicables}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:if="${article.ruleApplicable ne null}"
+											th:text="${article.ruleApplicable.ruleName}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="ruleApplicable">
+										<span th:text="#{de.cases.details.subrule}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:if="${article.subRule ne null}"
+											th:text="${article.subRule.ruleName}"></span>
+										</td>
+									</tr>
+									
+									
+									
+									
+								
+								
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><label for="chargesheetIssued"><span>
+														<span th:text="#{de.cases.whether.chargesheetissued}"></span> </span></label></td>
+
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"
+											class="text-wrap"><span
+											th:if="${article.whetherChargesheetIssued}"
+											th:text="#{de.boolean.yes}"></span> <span
+											th:unless="${article.whetherChargesheetIssued}"
+											th:text="#{de.boolean.no}"></span></td>
+									</tr>
+									
+									
+									
+									
+									
+										
+									
+									
+									
+									
+									
+									
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"class="text-wrap">
+											<label for="misconductName">
+										<span th:text="#{de.casedetails.noofemployee}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;" class="text-wrap">
+											<span th:if="${article.employeeType ne null}"
+											th:text="${article.employeeType.employeeType}"></span>
+										</td>
+										</td>
+									</tr>
+
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="totalNoOfEmployee">
+											<span th:text="#{de.totalemployee.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:text="${article.totalNoOfEmployee}"></span>
+										</td>
+										</td>
+									</tr>
+									
+									<!-- added on as per DE changes -->
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="totalNoOfEmployee">
+									<span th:text="#{de.casedetails.division.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${article.division ne null}"
+											th:text="${article.division.divisionName}"></span>
+										</td>
+										</td>
+									</tr>
+									
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<label for="totalNoOfEmployee">
+											<span th:text="#{de.district.label}">District</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;"  class="text-wrap">
+											<span th:if="${article.district ne null}"
+											th:text="${article.district.districtName}"></span>
+										</td>
+									</tr>
+									
+									
+									
+									
+									
+
+
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="caseSummary"><span th:text="#{de.caseCasesummary.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:text="${article.caseSummary}"></span>
+										</td>
+										
+									</tr>
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="caseSummary"><span th:text="#{de.otherthangovserv}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<span th:text="${article.otherThanGovServ}"></span>
+										</td>
+										
+									</tr>
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="pendingwith"><span th:text="#{de.casependingwith.label}"></span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<strong><span th:if="${article.pendingWith ne null}" th:text="${article.pendingWith}"></span>
+											<span th:unless="${article.pendingWith ne null}">Pending With Department</span></strong>
+										</td>
+										
+									</tr>
+									
+									<tr>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important;  overflow-wrap: anywhere !important;" class="text-wrap">
+											<label for="pendingwith"><span >Duration of Case</span></label>
+										</td>
+										<td
+											style="border: 1px solid black !important; border-collapse: collapse !important; overflow-wrap: anywhere !important;"class="text-wrap">
+											<strong><span th:if="${article.durationOfCase ne null}" th:text="${article.durationOfCase}"></span>
+											</strong>
+										</td>
+										
+									</tr>
+									
+									</tbody>
+									</table>
+								<br>
+							</div>
+
+
+							
+
+							<div class="table-responsive"
+								th:if="${article.chargeSheetList ne null and !article.chargeSheetList.isEmpty()}">
+								<label><h4 style="margin-top: 4px" th:text="#{de.chargesheet.dates}"></h4></label>
+								
+								
+									<span th:each="arti,iStat:${article.chargeSheetList}"
+											th:if="${article.chargeSheetList ne null and arti.chargesheetIssued and iStat.index == 0}">
+
+											
+
+
+											<span class="text-wrap"
+												><span
+												th:text="${#temporals.format(arti.chargesheetDate, 'dd-MM-yyyy')}"></span>
+											</span>
+											</span>		
+											
+										<span th:each="arti,iStat:${article.chargeSheetList}" th:data-index="${iStat.index-1}"
+											th:if="${article.chargeSheetList ne null and arti.chargesheetIssued and iStat.index !=0
+											and article.chargeSheetList[__iStat.index__-1].chargesheetDate!=arti.chargesheetDate}">
+											
+											<span class="text-wrap"
+												><span
+												th:text="${#temporals.format(arti.chargesheetDate, 'dd-MM-yyyy')}"></span>
+											</span>
+										</span>
+
+									
+								
+								<br>
+							</div>
+							
+							<div class="table-responsive"
+								th:if="${article.employeeList ne null and !article.employeeList.isEmpty()}">
+								<label><h4 th:text="#{de.listofemployee.involved}" style="margin-top: 4px"></h4></label>
+								<table class="table table-bordered dark table-sm"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+											<!-- <th width="5%"
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap">Sr No.</th> -->
+
+											<th width="7%"
+												style="border: 1px solid black !important;  border-collapse: collapse !important;"
+												class="text-wrap"><center style="color: black;"><span th:text="#{de.sevarth.id}"></span> </center></th>
+										
+										
+											<th width="7%"
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><center style="color: black;"><span th:text="#{de.firstName.labels}"></span></center></th>
+											<th width="7%"
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><center style="color: black;"><span th:text="#{de.middleName.label}"></span></center></th>
+											<th width="7%"
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><center style="color: black;"><span th:text="#{de.lastName.labels}"></span></center></th>
+
+											<th width="7%"
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><center style="color: black;"><span th:text="#{de.empdetails.genders}"></span></center></th>
+											<!-- <th width="7%">Date of Birth</th>	 -->
+											
+											<th width="7%"
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><center style="color: black;"><span th:text="#{de.empdetails.servicegroup}"></span></center></th>
+											
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="arti,iState:${article.employeeList}">
+
+											<!-- <td class="text-wrap"
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												th:text="${iState.index+1}"></td> -->
+
+
+											
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.sevarthId}"></span></td>
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.firstName}"></span></td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.middleName}"></span></td>
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.lastName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:text="${arti.gender.genderName}"></span></td>
+
+											
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.servicegroup ne null}"
+												th:text="${arti.servicegroup.service_group_name}"></span></td>
+
+											
+										</tr>
+									</tbody>
+								</table>
+								<br><br>
+							</div>
+
+							
+							<div class="table-responsive"
+								th:if="${article.suspensionList ne null and !article.suspensionList.isEmpty()}">
+								<label><h4 style="margin-top: 4px;"><span th:text="#{de.listofemployee.suspended}"></span></h4></label>
+								<table class="table table-bordered dark table-sm"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+										
+											<!-- <th class="text-wrap" width="3%" 
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;">
+													<span th:text="#{de.fileno.preview.label}"></span></th> -->
+													
+													
+											<th class="text-wrap" width="7%"
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<center style="color: black;" ><span th:text="#{de.firstName.labels}"></span></center></th>
+											
+											<th class="text-wrap" width="7%"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<center><span th:text="#{de.middleName.label}"></span></center></th>
+										
+										
+											<th class="text-wrap" width="7%"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<center><span th:text="#{de.lastName.labels}"></span></center></th>
+											
+											
+											<th class="text-wrap" width="7%" 
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+											<span th:text="#{de.deemed.date.ofsuspension}"></span>	</th>
+											
+											<th class="text-wrap" width="7%"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<span th:text="#{de.actual.dateofsuspension}" ></span></th>
+											
+											<!-- <th class="text-wrap" width="7%" 
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<span th:text="#{de.actual.periadofextension}" ></span></th>
+ -->
+
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="arti,iStat:${article.suspensionList}" th:if="${arti.employeeSuspended}">
+											
+											<!-- <td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"><span
+												th:if="${arti.fileNo ne null}" th:text="${arti.fileNo}"></span></td> -->
+
+
+
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.firstName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.middleName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.lastName}"></span>
+											</td>
+										<!-- 	<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.employeeSuspended}"
+												th:text="#{de.boolean.yes}"></span> <span
+												th:unless="${arti.employeeSuspended}"
+												th:text="#{de.boolean.no}"></span></td> -->
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.dateofDeemedSuspension ne null}"
+												th:text="${#temporals.format(arti.dateofDeemedSuspension, 'dd-MM-yyyy')}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.dateofActualSuspension ne null}"
+												th:text="${#temporals.format(arti.dateofActualSuspension, 'dd-MM-yyyy')}"></span>
+											</td>
+
+
+
+											<!-- <td
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"
+												class="text-wrap"><span th:if="${arti.periodofExtension ne null}"
+												><span th:text="${arti.periodofExtension}"></span> Month(s) </span>
+												<span th:if="${arti.periodofExtensionInDays ne null}"
+												><span th:text="${arti.periodofExtensionInDays}"></span> Day(s) </span></td> -->
+
+
+
+										</tr>
+
+									</tbody>
+								</table>
+								<br>
+							</div>
+
+							
+
+							<div class="table-responsive"
+								th:if="${article.reinstatedList ne null and !article.reinstatedList.isEmpty()}">
+								<label><h4  style="margin-top: 5px;"><span th:text="#{reinstatement.details.label.name}">Reinstatement Details</span> </h4></label>
+								<table class="table table-bordered dark table-sm"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+											
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap" width="7%"><span th:text="#{de.file.no.labels}"></span></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												width="7%"><center><span th:text="#{de.sevarth.id}"></span> </center></th>
+											
+											
+											<!-- <th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%">Employee Id.</th>
+												 -->
+												
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												width="7%" class="text-wrap"><center><span th:text="#{de.firstName.labels}"></span></center></th>
+										
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												width="7%" class="text-wrap"><center><span th:text="#{de.middleName.label}"></span></center></th>
+											
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												width="7%" class="text-wrap"><center><span th:text="#{de.lastName.labels}"></span></center></th>
+										
+											<th
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"
+												width="7%" class="text-wrap"><span th:text="#{de.reinstated.order.date}"></span></th>
+
+
+
+
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="arti,iState:${article.reinstatedList}" th:if="${arti.employeeReInstated}">
+
+
+											
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:if="${arti.fileNo ne null}"
+												th:text="${arti.fileNo}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.sevarthId}"></span>
+											</td>
+
+										<!-- 	<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.employeeId}"></span>
+											</td> -->
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.firstName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.middleName}"></span>
+											</td>
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.lastName}"></span>
+											</td>
+
+											<!-- <td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.employeeReInstated}"
+												th:text="#{de.boolean.yes}"></span> <span
+												th:unless="${arti.employeeReInstated}"
+												th:text="#{de.boolean.no}"></span></td> -->
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.reInstatedOrderDate ne null}"
+												th:text="${#temporals.format(arti.reInstatedOrderDate, 'dd-MM-yyyy')}"></span>
+											</td>
+										</tr>
+
+									</tbody>
+
+
+								</table>
+								<br>
+							</div>
+
+							
+
+
+							<div class="table-responsive"
+								th:if="${article.ioList ne null and !article.ioList.isEmpty()}">
+								<label><h4 style="margin-top: 4px;"><span th:text="#{inquiry.officer.details.label.name}"></span></h4></label>
+								<table class="table table-bordered dark table-sm"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+											
+											
+											
+											
+											<th width="9%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<span th:text="#{de.inquiryofficer.inquiryofficer}"></span>
+												</th>
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<center><span th:text="#{de.firstName.labels}"></span></center></th>
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<center><span th:text="#{de.middleName.label}"></span></center></th>
+										
+										
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<center><span th:text="#{de.lastName.labels}"></span></center></th>
+												
+											<th width="4%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<span th:text="#{de.inquiryofficer.appointmentdate}">Appointment Date</span>
+												</th>	
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<center><span th:text="#{de.mobileno.label}"></span></center></th>
+										
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+											<center><span th:text="#{de.email.label}"></span></center></th>
+
+
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="arti,iState:${article.ioList}" th:if="${arti.inquiryOfficerAppointed}">
+
+											
+
+											
+											
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.listOfInquiryOfficer ne null}"
+												th:text="${arti.listOfInquiryOfficer.InquiryOfficerlist}"></span>
+												<span th:unless="${arti.listOfInquiryOfficer ne null}"
+															th:text="${arti.otherinquiryOfficer}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.firstName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.middleName}"></span>
+											</td>
+											
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.lastName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.appointmentDate ne null}"
+												th:text="${#temporals.format(arti.appointmentDate, 'dd-MM-yyyy')}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.mobileNumber}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.email}"></span>
+											</td>
+
+
+										</tr>
+
+									</tbody>
+
+
+								</table>
+								<br>
+							</div>
+							
+
+							<div class="table-responsive"
+								th:if="${article.poList ne null and !article.poList.isEmpty()}">
+								<label><h4 style="margin-top: 4px;"><span th:text="#{de.presentingOfficer.label}"></span> </h4></label>
+								<table class="table table-bordered dark table-sm" border="5"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+											
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"><span th:text="#{de.presentingOfficer.Details.label}"></span></th>
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<span th:text="#{de.presentingOfficer.appointmentdate}"></span>
+												</th>
+									
+										<!-- 	<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important; border-collapse: collapse !important;">Sub-department
+												</th> -->
+												
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"><center><span th:text="#{de.empdetails.designations}"></span></center></th>
+										
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+											<center><span th:text="#{de.mobileno.label}"></span></center>
+												</th>
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"><center><span th:text="#{de.email.label}"></span></center></th>
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+											<center><span th:text="#{de.revenue.division.po}"></span></center>
+												</th>
+
+
+
+
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="arti,iState:${article.poList}" th:if="${arti.presentingOfficerAppointed}">
+
+
+
+											<td class="text-wrap" style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+														<span th:text="${arti.presentingOfficerDetail}"></span>
+													</td>
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:text="${#temporals.format(arti.appointmentDate, 'dd-MM-yyyy')}"></span>
+											</td>
+
+
+											<!-- <td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.firstName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.middleName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.lastName}"></span>
+											</td> -->
+
+											
+
+											<!-- <td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.subDepartment ne null}"
+												th:text="${arti.subDepartment.subdepartmentNameEn}"></span>
+											</td> -->
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.designation ne null}"
+												th:text="${arti.designation.designation_name_en}"></span></td>
+
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.mobileNumber}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.email}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.revenueDivision ne null}"
+												th:text="${arti.revenueDivision.divisionName}"></span></td>
+
+										</tr>
+
+									</tbody>
+
+
+								</table>
+								<br>
+							</div>
+							
+
+							<div class="table-responsive"
+								th:if="${article.prosecutionProposal ne null and !article.prosecutionProposal.isEmpty()}">
+								<label><h4 style="margin-top: 4px;"><span th:text="#{de.prosecution.details.label}"></span> </h4></label>
+								<table class="table table-bordered dark table-sm"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+											
+										
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap">	<span th:text="#{de.prosecutionProposalDetails.ProsecutionisReceived}"></span></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text=" #{de.prosecutionProposal.dateofreceipt}"></span></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text=" #{de.prosecutionProposal.dateofOrderofSanction}"></span></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text=" #{de.prosecutionProposal.dateofcommunication}"></span></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap">	<span th:text=" #{de.prosecutionProposal.casefiledincourt}"></span></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text=" #{de.prosecutionProposal.courtcasestatus}"></span></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="#{de.prosecutionProposal.dateoforderofthecourt}"></th>
+
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="arti,iState:${article.prosecutionProposal}" th:if="${arti.prosecutionProposalReceived}">
+
+											
+
+
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.prosecutionProposalReceived}"
+												th:text="#{de.boolean.yes}"></span> <span
+												th:unless="${arti.prosecutionProposalReceived}"
+												th:text="#{de.boolean.no}"></span></td>
+
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.dateOfReceipt ne null}"
+												th:text="${#temporals.format(arti.dateOfReceipt, 'dd-MM-yyyy')}"></span>
+											</td>
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.dateOfOrderReceipt ne null}"
+												th:text="${#temporals.format(arti.dateOfOrderReceipt, 'dd-MM-yyyy')}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.dateOfCommunication ne null}"
+												th:text="${#temporals.format(arti.dateOfCommunication, 'dd-MM-yyyy')}"></span>
+											</td>
+
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.whetherCaseFiledIntheCourt}"
+												th:text=#{de.boolean.yes}></span> <span
+												th:unless="${arti.whetherCaseFiledIntheCourt}"
+												th:text=#{de.boolean.no}></span></td>
+
+
+											<td
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.status}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.dateOfOrderoftheCourt ne null}"
+												th:text="${#temporals.format(arti.dateOfOrderoftheCourt, 'dd-MM-yyyy')}"></span>
+											</td>
+										</tr>
+
+									</tbody>
+
+
+								</table>
+								<br>
+							</div>
+							
+
+							<!-- <div class="table-responsive"
+								th:if="${article.courtCaseList ne null and !article.courtCaseList.isEmpty()}">
+								<label><h4>Employee-wise Court case Details</h4></label>
+								<table class="table table-bordered dark table-sm"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+										
+										
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Related Court case ?</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="5%" class="text-wrap">Sevarth Id.</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">First Name</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Last Name</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Court Case No.</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Court Name</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Status</th>
+
+
+
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="arti,iState:${article.courtCaseList}" th:if="${arti.anyRelatedCourtCaseExist}">
+
+											
+
+
+											
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:if="${arti.anyRelatedCourtCaseExist}"
+												th:text="#{de.boolean.yes}"></span> <span
+												th:unless="${arti.anyRelatedCourtCaseExist}"
+												th:text="#{de.boolean.no}"></span>
+											</td>
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.sevarthId}"></span>
+											</td>
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.firstName}"></span>
+											</td>
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.lastName}"></span>
+											</td>
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.courtCaseNo}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:if="${arti.courtName ne null}"
+												th:text="${arti.courtName.courtName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.status}"></span>
+											</td>
+
+										</tr>
+
+									</tbody>
+
+
+								</table>
+								<br>
+							</div> -->
+							
+
+							<!-- <div class="table-responsive"
+								th:if="${article.abeyanceList ne null and !article.abeyanceList.isEmpty()}">
+								<label><h4>List of Employees with Abeyance Cases</h4></label>
+								<table class="table table-bordered dark table-sm"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+											
+										
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7" class="text-wrap">Sevarth Id.</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7" class="text-wrap">Employee Id.</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">First Name</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Middle Name</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Last Name</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Case Kept in Abeyance?</th>
+											<th
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												width="7%" class="text-wrap">Reason For Keeping Case
+												Abeyance</th>
+
+
+
+
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="arti,iState:${article.abeyanceList}" th:if="${arti.casesKeptinAbeyance}">
+
+											
+
+
+										
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.sevarthId}"></span>
+											</td>
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.employeeId}"></span>
+											</td>
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.firstName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.middleName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:text="${arti.lastName}"></span>
+											</td>
+
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:if="${arti.casesKeptinAbeyance}"
+												th:text="#{de.boolean.yes}"></span> <span
+												th:unless="${arti.casesKeptinAbeyance}"
+												th:text="#{de.boolean.no}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;">
+												<span th:if="${arti.reasonreasonKeepingInAbeyance ne null}"
+												th:text="${arti.reasonreasonKeepingInAbeyance.reasonKeepingCaseAbeyanceCodeName}"></span>
+											</td>
+
+										</tr>
+
+									</tbody>
+
+
+								</table>
+								<br>
+							</div> -->
+							
+							<div class="table-responsive"
+								th:if="${article.finaloutList ne null and !article.finaloutList.isEmpty()}">
+								<label><h4 style="margin-top: 4px;"><span th:text="#{de.final.outcome.abeyanceCases.label}"></span></h4></label>
+								<table class="table table-bordered dark table-sm"
+									style="border: 1px solid black !important; border-collapse: collapse !important;">
+									<thead>
+										<tr>
+											
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												width="6%" class="text-wrap"><span th:text="#{de.finaloutcome.whetherthecasefinallydecided}"></span></th>
+												
+												
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<center><span th:text="#{de.firstName.labels}"></span></center></th>
+											
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+											<center><span th:text="#{de.middleName.label}"></span></center></th>
+											<th width="7%" class="text-wrap"
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;">
+												<center><span th:text="#{de.lastName.labels}"></span></center></th>	
+												
+											<th
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="#{de.finaloutcome.casependingwiths}"></span></th>	
+											<th
+												style="border: 1px solid black !important;color:black;  border-collapse: collapse !important;"
+												width="6%" class="text-wrap"><span th:text="#{de.finaloutcome.whethercasekeptinabeyance}"></span></th>	
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="#{de.finaloutcome.reasonreasonKeepingInAbeyances}"></span></th>			
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												width="6%" class="text-wrap"><span th:text="#{de.inqreportreceived}"></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="#{de.finaloutcome.dateOfreceiptofinquiryreport}"></span></th>
+											
+											
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="#{de.finalOutcome.decisiontakens}"></span></th>
+											<th
+												style="border: 1px solid black !important;color:black; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="#{de.finalOutcome.typeOfPenaltyInflicteddata}"></span></th>
+
+
+
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="arti,iState:${article.finaloutList}">
+
+
+
+											
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.whetherCaseFinallyDecided}"
+												th:text=#{de.boolean.yes}></span> <span
+												th:unless="${arti.whetherCaseFinallyDecided}"
+												th:text=#{de.boolean.no}></span></td>
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.firstName}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.middleName}"></span>
+											</td>
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span th:text="${arti.lastName}"></span>
+											</td>	
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.casePendingWith ne null}"
+												th:text="${arti.casePendingWith.casePendingNameEn}"></span>
+											</td>	
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.whethercasekeptinabeyance}"
+												th:text=#{de.boolean.yes}></span> <span
+												th:unless="${arti.whethercasekeptinabeyance}"
+												th:text=#{de.boolean.no}></span></td>	
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.reasonreasonKeepingInAbeyance ne null}"
+												th:text="${arti.reasonreasonKeepingInAbeyance.reasonKeepingCaseAbeyanceCodeName}"></span>
+											</td>	
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.inquiryReportReceived}"
+												th:text="#{de.boolean.yes}"></span> <span
+												th:unless="${arti.inquiryReportReceived}"
+												th:text="#{de.boolean.no}"></span></td>
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.dateofReceipt ne null}"
+												th:text="${#temporals.format(arti.dateofReceipt, 'dd-MM-yyyy')}"></span>
+											</td>
+											
+											
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.decisionTaken ne null}"
+												th:text="${arti.decisionTaken.decisionNameHindiEn}"></span>
+											</td>
+
+											<td
+												style="border: 1px solid black !important; border-collapse: collapse !important;"
+												class="text-wrap"><span
+												th:if="${arti.typeOfPenaltyInflicted ne null}"
+												th:text="${arti.typeOfPenaltyInflicted.typeOfPenaltyNameEn}"></span>
+											</td>
+
+
+
+
+
+
+										</tr>
+
+									</tbody>
+
+
+								</table>
+									<br> <br />
+							</div>
+							
+						
+
+						</div>
+              </div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+<div>
+<script th:inline="javascript"  type="text/javascript">
+/* 
+function printDivforInsidePreview(downloadreportsforall) {
+    var printContents = document.getElementById(downloadreportsforall).innerHTML;
+       jQuery.noConflict();
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+
+    window.print(); 
+	    document.body.innerHTML = originalContents;
+	  	   
+} */
+
+</script>
+
+</div>
+
+</html>

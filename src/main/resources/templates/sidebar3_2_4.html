@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="header::header">
+<title>Sidebar</title>
+</head>
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div th:fragment="sidebar3_2_4" class="container-fluid">
+		<h3><span th:text="#{Recruitment}">Recruitment</span></h3><br>
+		<ul class="list-group" sec:authorize="isAuthenticated()">
+			<li class="list-group-item"><a th:href="@{/inboxgroupbc/ptype/GROUPBC/page/1}"><span
+					th:text="#{Sidebar3_2_4.Inbox}">Inbox</span></a></li>
+
+			<li class="list-group-item"
+				sec:authorize="hasAnyRole('ROLE_DEPARTMENT','ROLE_AA','ROLE_VAC','ROLE_16B')"><a
+				th:href="@{/selectbcDesignation}"> <span
+					th:text="#{Sidebar3_2_4.Prepare Recruitment Proposal}">Prepare
+						Recruitment Proposal</span></a></li>
+			         <!--  <li class="list-group-item"
+				   sec:authorize="hasAnyRole('ROLE_DEPARTMENT','ROLE_AA')"><a
+				  th:href="@{/inboxgroupbc/ptype/GROUPBC/page/1}"> <span
+					th:text="#{Scrutinize the Recruitment Proposal by Appointing Authority}">Scrutinize the Recruitment Proposal by Appointing Authority</span></a>
+					</li> -->
+					
+			
+			<li class="list-group-item"
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a
+				th:href="@{/candidatelistgroupbc/ptype/GROUPBC/page/1}"> <span
+					th:text="#{Sidebar3_2_4.Group B and C Candidates List}">Group B and C Candidates List</span></a></li>
+			<li class="list-group-item"
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a th:href="@{/groupbccandidateallocation}">
+					<span th:text="#{Sidebar.Revenue Division Allotment}">Revenue
+						Division Allotment</span>
+			</a></li>
+			<li class="list-group-item"
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a
+				th:href="@{/generateAppointmentgroupbc}"> <span
+					th:text="#{Sidebar.Generate Appointment Letters}">Generate
+						Appointment Letters</span></a></li>
+		
+			<!-- <li class="list-group-item"
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a th:href="@{/}">
+					<span th:text="#{Sidebar3_2_4.Scrutinize the Recruitment Proposal by VAC}">Scrutinize the Recruitment Proposal by VAC</span>
+			</a></li>
+			<li class="list-group-item" 
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a th:href="@{/}">
+					<span th:text="#{Sidebar3_2_4.Submit Recruitment Proposal to BC Cell}">Submit Recruitment Proposal to BC Cell</span>
+			</a></li>
+			<li class="list-group-item"
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a
+				th:href="@{/generateAppointment}"> <span
+					th:text="#{Sidebar3_2_4.Scrutinize the Proposal by BC Cell}">Scrutinize the Proposal by BC Cell</span></a></li>
+			<li class="list-group-item" 
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a th:href="@{/}">
+					<span th:text="#{(Sidebar3_2_4.Finalize the Proposal), Create Requisition and submit to District/Regional/State Level Selection Committee}">(Finalize the Proposal), Create Requisition and submit to 
+					District/Regional/State Level Selection Committee</span>
+			</a></li>
+			<li class="list-group-item" 
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a th:href="@{/}">
+					<span th:text="#{Sidebar3_2_4.Import data received from District/Regional/State Level Selection Committee}">Import data received from District/Regional/State Level Selection Committee</span>
+			</a></li>
+			<li class="list-group-item" 
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a th:href="@{/}">
+					<span th:text="#{Sidebar3_2_4.Recruitment Process}">Recruitment Process</span>
+			</a></li>
+			<li class="list-group-item" 
+				sec:authorize="hasRole('ROLE_DEPARTMENT')"><a th:href="@{/}">
+					<span th:text="#{Sidebar3_2_4.Reply to the Queries}">Reply to the Queries</span>
+			</a></li> -->
+
+		</ul>
+	</div>
+
+</body>
+</html>

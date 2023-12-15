@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>Common Reports page </title>
+	<style>
+.ui-menu .ui-menu-item-wrapper {
+        color: #303030 !important;
+        background-color: #fff !important;
+    }        
+
+    .ui-menu .ui-menu-item-wrapper:hover {
+        color: #303030 !important;
+        background-color: rgb(192, 192, 192) !important;
+        border: #fff 1px solid !important;
+    } 
+
+.ui-widget-content {
+    border: 1px solid #ddd;
+    background: rgb(192, 192, 192) !important;
+    color: #333 !important;
+}
+
+
+@media print {
+  body {
+ zoom: 80% !important;
+  }	
+  
+</style>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<div class="container-scroller" sec:authorize="isAuthenticated()"   id="viewtop">
+		<!--		<nav th:insert="Probation/sidebar3_2_8.html :: ehrms_sidebar3_2_8"  aria-label="sidebar fragment"></nav>-->
+		<nav th:insert="commonsidebar/commonsidebar.html :: commonsidebar" aria-label="sidebar fragment"></nav>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="fragments/ehrms_settingspanel.html :: setting_panel"></div>
+			<nav th:insert="fragments/ehrms_navbar.html :: navbar" aria-label="navbar fragment"></nav>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3>
+							<strong>
+									<span data-toggle="tooltip" 
+					title="Here you can view reports based on multiple criteria.(e.g. Report of pending cases of group A employees in pune division involved in bribery)">
+					<span th:text="#{de.composite.reports.lbl}"></span></span>
+									
+									
+								
+
+							</strong>
+						</h3>
+						 <a href="#gridview" class="btn btn-info btn-sm" style="float: right;"><span th:text="#{de.scroll.down.AllBtn}"></span>
+						 </a>
+					</div>
+
+					<div class="row" >
+						<div class="col-lg-12 grid-margin stretch-card">
+							
+							<div class="card">
+								<div class="card-body">
+								<div class="row">
+								<div class="col-md-3 mb-3">
+											 <label><span th:text="#{de.department.name.labels}"></span></label><br><select id="globalOrg" class="form-control">
+													 <option value="">Select</option>
+													<option th:each="globorg:${globalOrgList}" th:value=${globorg.id}
+														th:text="${globorg.globalOrgName}"></option>
+												    </select>
+												    </div>	
+								
+							
+								<div class="col-md-3 mb-3">
+												<label for="typeOfMisconduct"><span th:text="#{de.casesdetails.misconduct}">Type of Misconduct</span></label>
+												 <select
+													class="form-control"
+													id="misConductType">
+                                                 <option value="">Select</option>
+													<option th:each="misconduct:${misConductTypeList}"
+														th:value="${misconduct.id}"
+														th:text="${misconduct.misconductName}"></option>
+												</select>
+											</div>
+											
+											
+											
+											<div class="col-md-3 mb-3">
+												<label for="ruleApplicable"><span th:text="#{de.casedetails.ruleapplicables}"></span></label> 
+												<select
+													class="form-control"
+													id="ruleApplicable">
+                                                         <option value="">Select</option>
+													<option th:each="rules:${rulesapplicableList}"
+														th:value="${rules.id}" th:text="${rules.ruleName}"></option>
+												</select>
+											</div>
+											<div class="col-md-3 mb-3">
+											 <label><span th:text="#{de.casedetails.division.label}"></span></label><br><select id="division" class="form-control">
+													 <option value="">Select</option>
+													<option th:each="divs:${divisionList}" th:value="${divs.id}"
+														th:text="${divs.divisionName}"></option>
+												    </select>
+												    </div>
+											<div class="col-md-3 mb-3">
+											 <label><span th:text="#{de.district.label}">District</span></label><br><select id="district" class="form-control">
+													 <option value="">Select</option>
+													<option th:each="dis:${districtList}" th:value="${dis.id}"
+														th:text="${dis.districtName}"></option>
+												    </select>
+												    </div>	
+											
+											
+											
+											<div class="col-md-3 mb-3">
+											 <label><center><span th:text="#{de.empdetails.genders}"></span></center></label><br><select id="gender" class="form-control">
+													 <option value="">Select</option>
+													<option th:each="gender:${genderList}" th:value="${gender.id}"
+														th:text="${gender.genderName}"></option>
+												    </select>
+												    </div>
+												    
+											
+											
+											
+											<div class="col-md-3 mb-3">
+											 <label><span th:text="#{de.empdetails.servicegroup}"></span></label><br><select id="servicegroup" class="form-control">
+													 <option value="">Select</option>
+													<option th:each="serv:${serviceGroupList}" th:value="${serv.id}"
+														th:text="${serv.service_group_name}"></option>
+												    </select>
+												    </div>	       
+												     	    
+
+									</div>
+									
+									
+									
+								
+									
+									<br>
+									<div>
+									<button class="btn btn-primary" id="filterbutton"><b style="color: light;text-align: center;"><span th:text="#{de.decasesinitiated.search}"></span></b></button>	&nbsp;
+										
+							
+										
+										<a th:href="@{|/departmentalEnquiry/commonReportsforAllFields/1?viewreport=true&sort-field=caseNo&sort-dir=asc|}" class="btn btn-primary"><span th:text="#{de.decasesinitiated.clear.label}"></span></a>	
+									
+									</div>
+									<hr>
+								<button class="btn btn-info"onclick="printDiv('downloadreport')"  id="downloadpdfbtn"
+											style="margin-left: 4px;"><span th:text="#{de.decasesinitiated.pdf.download}"></span></button>
+							
+											
+											<span>&nbsp;</span>
+											<button class="btn btn-info" id="downloadexcelsss"  onclick="downloadexcelfucn()"
+											style="margin-left: 4px;"><span th:text="#{de.decasesinitiated.excel.download}"></span>
+											</button>
+											
+											 <div class="col-md-2" style="float: right;">
+											<b style="color: blue;"><span th:text="#{pages.totalitems}"></span> : <span th:text="${totalItems}"></span></b>
+										</div>		
+									
+									<div>
+                                    															
+									<br><br>
+									
+									<div class="table-responsive">
+										<table class="table table-bordered dark table-sm">
+											<thead>
+												<tr>
+													<th width="5%" ><center><span th:text="#{de.enquiry.srno}"></span></center></th>
+									               
+									               
+									                 <th width="10%">
+													<!-- <a th:href="@{|/departmentalEnquiry/reportsforAllFields/${currentPage}?search=${search}&viewreport=${viewreport}&sort-field=caseNo&sort-dir=${reverseSortDir}|}"></a> -->
+									               <center><span th:text="#{de.enquiry.caseno}"></span></center>
+													</th>
+													
+													  <th>
+												<center><span th:text="#{de.casesdetails.misconduct}">Type of Misconduct</span></center>	 
+													 </th>
+													
+													
+									                 
+									                 	
+									                  <th>
+												<center>	<span th:text="#{de.casedetails.ruleapplicables}"></span></center>
+													 </th>
+													 
+													 
+													 
+													 
+													 
+													 
+													 
+													  <th>
+													<center><span th:text="#{deptenq.employeedetails}"></span></center> 
+													 </th>
+													 
+													 
+													  <th>
+													<center><span th:text="#{de.division.dist.dept.label}"></span></center>
+													 </th>
+													 
+													 
+													  
+													 
+													<th></th>
+													
+												</tr>
+												
+											</thead>
+											<tbody>
+												<tr th:each="article,iStat:${caseDetailsAllRecords}">
+												 <td th:text="${pageIndex+iStat.index}" class="text-wrap"></td>
+													
+													<td class="text-wrap" th:text="${article.caseNo}">
+														
+													</td>
+														
+														
+															
+													
+														
+													
+													<td class="text-wrap"><span
+														th:if="${article.misConductType ne null}"
+														th:text="${article.misConductType.misconductName}"></span>
+													</td>
+													
+													
+													
+													   <td class="text-wrap"><span
+														   th:if="${article.ruleApplicable}"
+													    	th:text="${article.ruleApplicable.ruleName}"></span>
+														</td>
+													
+												
+													
+													
+													
+													
+													
+													<td class="text-wrap" style="vertical-align: top;">
+														<table class="table table-sm table-reponsive">
+															<caption></caption>
+															<thead>
+																<tr>
+																	<th width="5%"><center><span th:text="#{de.enquiry.srno}"></span></center></th>
+																	<th class="text-wrap"><center><span th:text="#{de.enquiry.name}"></span></center></th>
+																	<th class="text-wrap"><center><span th:text="#{de.empdetails.genders}"></span></center></th>
+																	<th class="text-wrap"><center><span th:text="#{de.empdetails.servicegroup}"></span></center></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr th:each="emp,iStatein:${article.employeeList}">
+																	<td th:text="${iStatein.index+1}"></td>
+																	<td class="text-wrap" th:text="${emp.firstName+' '+emp.middleName+' '+emp.lastName}"></td>
+																	<td class="text-wrap" >
+																		<span th:if="${emp.gender ne null}"th:text="${emp.gender.genderName}"></span>
+																	</td> 
+																	<td class="text-wrap">
+																		<span th:if="${emp.servicegroup ne null}" th:text="${emp.servicegroup.service_group_name}"></span>
+																	</td>
+																	
+																</tr>
+															</tbody>
+														</table>
+														
+														<!-- <span th:each="emp,iState:${article.employeeList}">															
+															<div><span th:text="${iState.index+1}"></span>:
+															<span th:if="${emp.firstName ne null}" th:text="${emp.firstName}">&nsbp;</span>
+															<span th:if="${emp.middleName ne null}" th:text="${emp.middleName}">&nsbp;</span>
+															<span th:if="${emp.lastName ne null}" th:text="${emp.lastName}">&nsbp;</span>
+															</div>
+															<div>
+															Gender:<span th:if="${emp.gender ne null}" th:text="${emp.gender.genderName}">&nsbp;</span>
+															<br>
+															Group:<span th:if="${emp.servicegroup ne null}" th:text="${emp.servicegroup.service_group_name}">&nsbp;</span>
+															</div>		
+															
+														</span> -->
+													</td>
+													
+													
+													
+													<td class="text-wrap">
+														<div th:if="${article.division ne null}"
+															><span style="color: blue;font-weight: bold;">Division</span>: <span  th:text="${article.division.divisionName}"></span>
+															<span th:unless="${article.division ne null}">Missing Data</span><div><br></div>
+															</div>
+															
+														<div th:if="${article.district ne null}"
+															><span style="color: blue;font-weight: bold;">District</span>: <span  th:text="${article.district.districtName}"></span>
+															<span th:unless="${article.district ne null}">Missing Data</span><div><br></div>
+															</div>
+															
+														<div sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+															<span style="color: blue;font-weight: bold;">Department</span>: <span th:if="${article.globalorg ne null}" 
+														th:text="${article.globalorg.globalOrgName}"></span><div><br></div>
+														</div>	
+														
+														<div th:if="${article.subDepartment ne null}"  sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+															<span style="color: blue;font-weight: bold;">Sub Department</span>: <span th:if="${article.subDepartment ne null}" 
+														th:text="${article.subDepartment.subdepartmentNameEn}"></span><div><br></div>
+														</div>	
+													</td>
+													
+													
+													
+													
+
+													
+													<td>
+													<button type="button" class="btn btn-primary btn-sm"
+															id="preview" data-toggle="modal"
+															th:attrappend="data-target='#myModalCompact'+${article.id}">
+															<span th:text="#{casedetails.preview.button}"> Preview</span></button>	
+													</td>
+													
+												</tr>
+												
+											</tbody>
+										</table>
+									</div>
+												<br>
+									  <div style="float: right;" id="gridview"><a href="#viewtop"  class="btn btn-info btn-sm"><span th:text="#{de.employeedetails.scrollup}"></span></a>
+								</div>
+						
+									<div class="row" th:fragment="pagination">
+										<div class="col-md-2">
+											<b style="color: blue"><span th:text="#{pages.totalitems}"></span> : <span th:text="${totalItems}"></span></b>
+										</div>
+										<div class="col-md-8">
+											<nav aria-label="Pagination">
+												<ul class="pagination justify-content-center">
+													<li class="page-item" th:if="${currentPage > 1}">
+														<a  class="page-link" th:href="@{|/departmentalEnquiry/commonReportsforAllFields/1?ruleApplicable=${rulesapplicable}&misConductType=${misConductType}&gender=${gender}&division=${division}&district=${district}&servicegroup=${serviceGroup}&globalOrg=${globalOrg}&sort-field=${sortField}&sort-dir=${sortDir}|}" th:text="#{pages.first}">First</a>
+														<span th:unless="${currentPage > 1}" th:text="#{pages.first}">First</span>
+													</li>
+													
+													<li class="page-item">															
+														<a class="page-link" th:if="${currentPage > 1}" th:href="@{|/departmentalEnquiry/commonReportsforAllFields/${currentPage - 1}?ruleApplicable=${rulesapplicable}&misConductType=${misConductType}&gender=${gender}&division=${division}&district=${district}&servicegroup=${serviceGroup}&globalOrg=${globalOrg}&sort-field=${sortField}&sort-dir=${sortDir}|}" 
+															th:text="#{pages.previous}">Previous</a>
+														<span th:unless="${currentPage > 1}" th:text="#{pages.previous}">Previous</span>
+													</li>	
+														
+														<li class="page-item" th:each="i: ${#numbers.sequence(begin, end)}" th:if="${begin<end}">
+														    <a th:class="${currentPage != i ? 'page-link': 'page-linkhighlight'}" th:href="@{|/departmentalEnquiry/commonReportsforAllFields/${i}?ruleApplicable=${rulesapplicable}&misConductType=${misConductType}&gender=${gender}&division=${division}&district=${district}&servicegroup=${serviceGroup}&globalOrg=${globalOrg}&sort-field=${sortField}&sort-dir=${sortDir}|}" th:text="${i}"></a>
+
+														</li>
+													
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}" 
+															th:href="@{|/departmentalEnquiry/commonReportsforAllFields/${currentPage + 1}?ruleApplicable=${rulesapplicable}&misConductType=${misConductType}&gender=${gender}&division=${division}&district=${district}&servicegroup=${serviceGroup}&globalOrg=${globalOrg}&sort-field=${sortField}&sort-dir=${sortDir}|}" 
+															th:text="#{pages.next}">Next</a>
+															<span th:unless="${currentPage < totalPages}" th:text="#{pages.next}">Next</span>
+													</li>	
+													
+													<li class="page-item">
+														<a class="page-link" th:if="${currentPage < totalPages}" th:href="@{|/departmentalEnquiry/commonReportsforAllFields/${totalPages}?ruleApplicable=${rulesapplicable}&misConductType=${misConductType}&gender=${gender}&division=${division}&district=${district}&servicegroup=${serviceGroup}&globalOrg=${globalOrg}&sort-field=${sortField}&sort-dir=${sortDir}|}" 
+															th:text="#{pages.last}">Last</a>
+															<span th:unless="${currentPage < totalPages}" th:text="#{pages.last}">Last</span>
+													</li>
+													
+												</ul>
+											</nav>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+									<!-- ending pagination -->
+									<div>
+										
+									</div>
+									
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<th:block
+		th:include="DeptInquiryViews/Fragments/completecasedetailspreview.html:: completecasedetailspreview"
+		th:each="article,iStat:${caseDetailsAllRecords}">
+	</th:block>	
+	<th:block
+		th:include="DeptInquiryViews/Fragments/SinglePageCaseView.html:: singlepagecaseview"
+		th:each="article,iStat:${caseDetailsAllRecords}">
+		
+		</th:block>
+	<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal"  onclick="closeModalForce()">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%" height="500"
+								style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div th:replace="fragments/ehrms_footerlib.html :: footerlib"></div>
+		<!-- Modal print modal -->
+	<div class="modal fade" id="myModalprint" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">
+
+					</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="card">
+						<div class="card-body">
+							<div id="embeds"></div>
+							<object id="embedPDF" accept="application/pdf" width="100%" height="500"
+								style="height: 85vh;">
+								<span th:text="#{Form.error.nodocumentfound}"></span>
+							</object>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+		<div class="table-responsive" style="display: none;" id="downloadreport">
+		<center><h3 style="margin-top: 4px;"><span th:text="#{de.composite.reports.lbl}"></span></h3></center>
+		<br>
+		<table class="table table-bordered dark table  table2excel" id="tableexcel">
+			<thead>
+				<tr>
+					<th width="5%" class="text-wrap" style="color: black;"><center><span th:text="#{de.enquiry.srno}"></span></center></th>
+					<th width="5%" class="text-wrap" style="color: black;">
+						<center><span th:text="#{de.enquiry.caseno}"></span></center> 
+					</th>
+					
+
+                 	<th class="text-wrap" style="color: black;">
+							<span th:text="#{de.casesdetails.misconduct}">Type of Misconduct</span>
+					</th>
+
+					<th class="text-wrap" style="color: black;">
+						<center><span th:text="#{de.casedetails.ruleapplicables}"></span></center>	
+					</th>
+					
+					
+					
+
+					<th class="text-wrap"style="color: black;">
+							<center><span th:text="#{de.employeedetails.label}"></span></center> 
+					
+					</th>
+				
+			                            	 <th style="color: black;">
+													<center><span th:text="#{de.division.dist.dept.label}"></span></center>
+													 </th>
+													 
+
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr th:each="article,iStat:${caseDetailsAllRecordsreport}">
+					<td th:text="${iStat.index+1}" class="text-wrap"></td>
+
+					<td class="text-wrap"><span th:text="${article.caseNo}"></span>
+					</td>
+					
+					<td class="text-wrap"><span
+						th:if="${article.misConductType ne null}"
+						th:text="${article.misConductType.misconductName}"></span></td>
+						
+							<td class="text-wrap"><span th:if="${article.ruleApplicable}"
+						th:text="${article.ruleApplicable.ruleName}"></span></td>
+
+				<td class="text-wrap" style="vertical-align: top;">
+						<div th:each="emp,iStatein:${article.employeeList}">
+							<span th:text="${iStatein.index+1}"></span> <span
+								class="text-wrap"
+								th:text="${emp.firstName+' '+emp.middleName+' '+emp.lastName}"></span>
+						</div>
+					</td>
+					
+					
+					
+
+						<td class="text-wrap">
+														<div th:if="${article.division ne null}"
+															>Division:<span  th:text="${article.division.divisionName}"></span>
+															<span th:unless="${article.division ne null}">Missing Data</span>
+															</div>
+														<div th:if="${article.district ne null}"
+															>District:<span  th:text="${article.district.districtName}"></span>
+															<span th:unless="${article.district ne null}">Missing Data</span>
+															</div>
+														<div sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+															Department: <span th:if="${article.globalorg ne null}" 
+														th:text="${article.globalorg.globalOrgName}"></span>
+														</div>	
+														
+														<div sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+															Sub Department: <span th:if="${article.subDepartment ne null}" 
+														th:text="${article.subDepartment.subdepartmentNameEn}"></span>
+														</div>	
+													</td>
+													
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+	
+	
+
+<script th:inline="javascript">
+
+//added on 16/01/2023 as per DE Requirements
+function closeModalForce(id){
+   	var modalid = "#"+id;
+		$(modalid).hide();
+		$('.modal-backdrop').remove();
+	}
+
+function printDivforInsidePreview(downloadreportsforall) {
+		    var printContents = document.getElementById(downloadreportsforall).innerHTML;
+		       jQuery.noConflict();
+		    var originalContents = document.body.innerHTML;
+		    document.body.innerHTML = printContents;
+		    window.print(); 
+			    document.body.innerHTML = originalContents;
+			    location.reload();
+			    var l=new Loading();
+			  	   	
+	
+	}
+		var mess = [[${{message}}]];
+		if (mess != null) {
+			swal(mess);
+		}
+		
+		
+		var sortfield = [[${{sortField}}]];
+		var sortdire = 	[[${{sortDir}}]];
+		
+		var casenolabel = '';
+		var rulelabel = '';
+		var misconductlabel='';
+		
+
+		
+		
+		$('#filterbutton').click(function(){
+         	console.log("this is for testing fn..");
+         	casenolabel=$('#searchbtn').val();
+         	
+			window.location.href = '/de/departmentalEnquiry/commonReportsforAllFields/1?ruleApplicable='+$('#ruleApplicable').val()+'&misConductType='+$('#misConductType').val()+'&gender='+$('#gender').val()+'&division='+$('#division').val()+'&district='+$('#district').val()+'&servicegroup='+$('#servicegroup').val()+'&globalOrg='+$('#globalOrg').val()+'&sort-field='+sortfield+'&sort-dir='+sortdire;
+			
+
+					
+					
+		});
+		
+	/* 	$('#downloadpdf').click(function(){ 
+			var ff = new FormData();
+			ff.append('html1', $('#downloadreport').html());
+			$('#embedPDF').attr('data', '');
+			//	ff.append('html2',$('#link-list').html()); 
+			postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+				jQuery.noConflict();
+				$('#embedPDF').attr('data', data);
+				$('#myModalprint').modal();
+			});
+		}); */
+		
+		
+		
+		function printDiv(downloadreport) {
+		    var printContents = document.getElementById(downloadreport).innerHTML;
+		       jQuery.noConflict();
+		    var originalContents = document.body.innerHTML;
+		    document.body.innerHTML = printContents;
+
+		    window.print(); 
+			    document.body.innerHTML = originalContents;
+			    location.reload();
+			    var l=new Loading();
+			  	   
+		}
+
+// 		function printDiv(downloadreport) {
+//			var mywindow = window.open('', 'PRINT','height=auto,width=auto');
+//			mywindow.document.write('<html><head><title>' + "Composite Reports" + '</title>');
+//			mywindow.document.write('</head><body >');
+//			mywindow.document.write(document.getElementById(downloadreport).innerHTML);
+//			mywindow.document.write('</body></html>');
+//			mywindow.document.close();
+//			mywindow.focus();
+//			mywindow.print();
+//			mywindow.close();
+//			return true;
+//		}
+		
+		function downloadexcelfucn(){
+			var table = $('#tableexcel');
+			if(table && table.length){
+				var preserveColors = false;	jQuery.noConflict();
+				$(table).table2excel({
+					exclude: ".noExl",
+					name: "report",
+					filename: "Composite Reports " + moment(new Date(),'MM/DD/YYYY').format('YYYY/MM/DD') + ".xls",
+					fileext: ".xls",
+					exclude_img: true,
+					exclude_links: true,
+					exclude_inputs: true,
+					preserveColors: preserveColors
+				});
+			}
+		}
+		
+		
+	</script>
+	
+		<script th:inline="javascript">
+	var modalid = null;
+	
+	
+	function downloadlist(id) {
+		modalid = '#myModal'+id;
+		var ff = new FormData();
+		var printdata = '#printdata'+id;
+		var mymodal = '#myModal'+id;
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	function downloadlistCompact(id) {
+		modalid = '#myModalCompact'+id;
+		var ff = new FormData();
+		var printdata = '#printdataCompact'+id;
+		var mymodal = '#myModalCompact'+id;
+		
+		ff.append('html1', $(printdata).html());
+		$('#embedPDF').attr('data', '');
+		//	ff.append('html2',$('#link-list').html()); 
+		postdata('/de/departmentalEnquiry/downloadorder/', ff, function (data) {
+			jQuery.noConflict();
+			$('#embedPDF').attr('data', data);
+//			$(mymodal).click();
+	//		$("#modal .close").click()
+			$(mymodal).modal('toggle');
+			$('#myModalprint').modal();
+		});
+	}
+	
+	$('.close').click(function(){
+		$('#myModalprint').modal('hide');
+		$(modalid).modal('hide');
+		$('.modal-backdrop').remove();
+	});
+	
+	
+	
+	
+	
+	</script>
+	<script th:inline="javascript">
+	function previewdetail(id) {
+		modaliddetail = '#myModal'+id;
+		modalidcompq = '#myModalCompact'+id;
+		$(modaliddetail).modal();
+		$(modalidcompq).modal('hide');
+	}
+	
+/* 	$('select').select2({
+		placeholder: 'Select an option',
+		allowClear: true
+	}); */
+	
+	var selections = $("#division :selected").val();
+	var districtId = /*[[${{district}}]]*/;
+	$('#district').empty();
+	$('#district').append('<option value="">Select</option>');
+	if(selections != null && selections != '') {
+		
+		getdata('/de/departmentalEnquiry/getDistrictjson/'+selections, function(data) {
+			$.each(data, function (i, d) {
+				// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+				if(districtId != null && districtId == d.id) {
+					$('#district').append('<option value="' + d.id + '" selected>' + d.name + '</option>');
+				} else {
+					$('#district').append('<option value="' + d.id + '">' + d.name + '</option>');
+				}
+			});
+		});
+	} else {
+		$('#district').append('<option value="">Select</option>');
+	}
+	$('#division').change(function () {
+		var selections = $("#division :selected").val();
+		$('#district').empty();
+		$('#district').append('<option value="">Select</option>');
+		getdata('/de/departmentalEnquiry/getDistrictjson/'+selections, function(data) {
+			$.each(data, function (i, d) {
+				// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+				if(districtId != null && districtId == d.id) {
+					$('#district').append('<option value="' + d.id + '" selected>' + d.name + '</option>');
+				} else {
+					$('#district').append('<option value="' + d.id + '">' + d.name + '</option>');
+				}
+			});
+		});
+	});
+	
+	var globalorg = /*[[${{globalOrg}}]]*/;
+	var misConductType = /*[[${{misConductType}}]]*/;
+	var rulesapplicable = /*[[${{rulesapplicable}}]]*/;
+	var gender = /*[[${{gender}}]]*/;
+	var serviceGroup = /*[[${{serviceGroup}}]]*/;
+	var division = /*[[${{division}}]]*/;
+	var district = /*[[${{district}}]]*/;
+	
+	
+	$('#globalOrg').val(globalorg);
+	if(globalorg != '' && globalorg != null) {
+		$('#globalOrg').css('background-color','#ffe3bf');
+	} else {
+		$('#globalOrg').css('background-color','');
+	}
+	
+	
+	$('#misConductType').val(misConductType);	
+	if(misConductType != '' && misConductType != null) {
+		$('#misConductType').css('background-color','#ffe3bf');
+	} else {
+		$('#misConductType').css('background-color','');
+	}
+	
+	$('#ruleApplicable').val(rulesapplicable);
+	if(rulesapplicable != '' && rulesapplicable != null) {
+		$('#ruleApplicable').css('background-color','#ffe3bf');
+	} else {
+		$('#ruleApplicable').css('background-color','');
+	}
+	
+	
+	$('#division').val(division);
+	if(division != '' && division != null) {
+		$('#division').css('background-color','#ffe3bf');
+	} else {
+		$('#division').css('background-color','');
+	}
+	
+	$('#district').val(district);
+	if(district != '' && district != null) {
+		$('#district').css('background-color','#ffe3bf');
+	} else {
+		$('#district').css('background-color','');
+	}
+	
+	$('#gender').val(gender);
+
+	if(gender != '' && gender != null) {
+		$('#gender').css('background-color','#ffe3bf');
+	} else {
+		$('#gender').css('background-color','');
+	}
+	
+	$('#servicegroup').val(serviceGroup);
+	if(serviceGroup != '' && serviceGroup != null) {
+		$('#servicegroup').css('background-color','#ffe3bf');
+	} else {
+		$('#servicegroup').css('background-color','');
+	}
+		
+	var selections = $("#division :selected").val();
+	var districtId = /*[[${{district}}]]*/;
+	$('#district').empty();
+	$('#district').append('<option value="">Select</option>');
+	if(selections != null && selections != '') {
+		
+		getdata('/de/departmentalEnquiry/getDistrictjson/'+selections, function(data) {
+			$.each(data, function (i, d) {
+				// You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+				if(districtId != null && districtId == d.id) {
+					$('#district').append('<option value="' + d.id + '" selected>' + d.name + '</option>');
+				} else {
+					$('#district').append('<option value="' + d.id + '">' + d.name + '</option>');
+				}
+			});
+		});
+	} else {
+		$('#district').append('<option value="">Select</option>');
+	}
+
+</script>
+	<div th:replace="fragments/ehrms_footer.html :: footer"></div>
+</body>
+
+</html>

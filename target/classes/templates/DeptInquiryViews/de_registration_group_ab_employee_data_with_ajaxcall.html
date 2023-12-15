@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>departmental enquiry</title>
+</head>
+	<div  th:fragment="EmployeeGroupABFrag" >
+		<div>
+			<div style="margin-top: 1%;margin-left: -14px;">
+				<div>
+					<div class="row">
+						<div class="col-lg grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body" style="width: 103%;">
+									
+									
+									<div class="row table-responsive  from-group"  id="groupA">
+										<h4 ><span th:text="#{de.groupa.cases.labels}"></span></h4>
+										
+										<table class="table table-bordered table-sm">
+											<caption></caption>
+											<thead>
+												<tr align="center">
+													<th></th>
+													<th scope="row" class="text-wrap"><span th:text="#{de.total.cases.labels}"></span></th>
+													<!-- <th scope="row" class="text-wrap">Total Employees
+														Involved</th> -->													
+													<th scope="row" class="text-wrap"><span th:text="#{majorPenalty}">Major Penalty </span></th>
+													<th scope="row" class="text-wrap"><span  th:text="#{minorPenalty}">Minor Penalty</span></th>
+													
+													<th scope="row" class="text-wrap"><span  th:text="#{de.dateofactual.suspension}">Suspension</span></th>
+													<th><span  th:text="#{enter.search.item.prosecution}">Prosecution</span></th>
+													<th scope="row" class="text-wrap"><span  th:text="#{retired}">Retired</span></th>
+													<!--<th scope="row" class="text-wrap">No. Of Employees
+														Reinstated</th>-->
+													<th scope="row" class="text-wrap"><span th:text="#{lessThan5Years}" >Less than 5 Years Old</span>
+														</th>
+													<th scope="row" class="text-wrap"><span th:text="#{moreThan5Years}" >More Than 5 Years Old</span></th>
+													<!--<th scope="row" class="text-wrap">No. Of
+														FinalOutcome Decided</th>-->
+												</tr>
+											</thead>
+											<tbody>
+												<tr align="center">
+													<td><a class="btn btn-sm" href="javascript:void(0);" style="cursor: default !important;color: blue;"><strong><center><span th:text="#{de.statisticsofcases}"></span></center></strong></a></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.countCaseNo])}">
+														<!-- <a  class="btn btn-primary"
+														th:href="@{|/departmentalEnquiry/getTotalCaseGroupA/1?viewreport=true&sort-field=caseNo&sort-dir=asc&search=|}"
+														  th:text="${#aggregates.sum(dataList.![dataA.countCaseNo])}"></a> -->
+													</td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.major])}" ></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.minor])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.numberSuspended])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.numberOfCasesWithProsecution])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.numberOfCasesWithRetiredEmp])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.lessThan5years])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.greaterThan5years])}"></td>
+													</tr>
+												<tr align="center">
+													<td><a class="btn btn-sm" href="javascript:void(0);" style="cursor: default !important;color: blue;"><strong><center><span th:text="#{de.employeedetails.label}"></span></center></strong></a></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.totalemployee])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.employeeCountMajor])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.employeeCountMinor])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.numberSuspended])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.employeeCountProsecutionCases])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.employeeCountRetiredCases])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.employeeCountLessThan5years])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataA.employeeCountGreaterThan5years])}"></td>
+												</tr>													
+											</tbody>
+										</table>
+									</div>
+									
+									
+									<div class="row table-responsive  from-group"  id="groupB"  >
+										<h4><span th:text="#{de.groupb.cases.labels}"></span></h4>
+										
+										<table class="table table-bordered table-sm">
+											<caption></caption>
+											<thead>
+												<tr align="center">
+													<!-- <th scope="row" width="5%" class="text-wrap">Sr. No.</th> -->
+													<th></th>
+													<th scope="row" class="text-wrap"><center><span th:text="#{de.total.cases.labels}"></span></center></th>
+													<!-- <th scope="row" class="text-wrap">Total Employees
+														Involved</th> -->													
+													<th scope="row" class="text-wrap"><span th:text="#{majorPenalty}">Major Penalty </span></th>
+													<th scope="row" class="text-wrap"><span  th:text="#{minorPenalty}">Minor Penalty</span></th>
+													
+													<th scope="row" class="text-wrap"><span  th:text="#{de.dateofactual.suspension}">Suspension</span></th>
+													<th><span  th:text="#{enter.search.item.prosecution}">Prosecution</span></th>
+													<th scope="row" class="text-wrap"><span  th:text="#{retired}">Retired</span></th>
+													<!--<th scope="row" class="text-wrap">No. Of Employees
+														Reinstated</th>-->
+													<th scope="row" class="text-wrap"><span th:text="#{lessThan5Years}" >Less than 5 Years Old</span>
+														</th>
+													<th scope="row" class="text-wrap"><span th:text="#{moreThan5Years}" >More Than 5 Years Old</span></th>
+													<!--<th scope="row" class="text-wrap">No. Of
+														FinalOutcome Decided</th>-->
+												</tr>
+											</thead>
+											<tbody>
+											<tr align="center">
+												<td><a class="btn btn-sm" href="javascript:void(0);" style="cursor: default !important;color: blue;"><strong><center><span th:text="#{de.statisticsofcases}"></span></center></strong></a></td>
+												<td th:text="${#aggregates.sum(dataList.![dataB.countCaseNo])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataB.major])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataB.minor])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataB.numberSuspended])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataB.numberOfCasesWithProsecution])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataB.numberOfCasesWithRetiredEmp])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataB.lessThan5years])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataB.greaterThan5years])}"></td>
+												</tr>
+											<tr align="center">
+													<td><a class="btn btn-sm" href="javascript:void(0);" style="cursor: default !important;color: blue;"><strong><center><span th:text="#{de.employeedetails.label}"></span></center></strong></a></td>
+													<td th:text="${#aggregates.sum(dataList.![dataB.totalemployee])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataB.employeeCountMajor])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataB.employeeCountMinor])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataB.numberSuspended])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataB.employeeCountProsecutionCases])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataB.employeeCountRetiredCases])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataB.employeeCountLessThan5years])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataB.employeeCountGreaterThan5years])}"></td>
+												</tr>	
+												
+											</tbody>
+										</table>
+									</div>
+									
+									
+									<div class="row table-responsive  from-group"  id="common" >
+										<h4 style="margin-top: 4px;"><span th:text="#{de.grpAandB.labels}"></span></h4>
+										
+										<table class="table table-bordered table-sm">
+											<caption></caption>
+											<thead>
+												<tr align="center">
+												<!-- 	<th scope="row" width="5%" class="text-wrap">Sr. No.</th> -->
+													<th></th>
+													<th scope="row" class="text-wrap"><span th:text="#{de.total.cases.labels}"></span></th>
+													<!-- <th scope="row" class="text-wrap">Total Employees
+														Involved</th> -->													
+													<th scope="row" class="text-wrap"><span th:text="#{majorPenalty}">Major Penalty </span></th>
+													<th scope="row" class="text-wrap"><span  th:text="#{minorPenalty}">Minor Penalty</span></th>
+													
+													<th scope="row" class="text-wrap"><span  th:text="#{de.dateofactual.suspension}">Suspension</span></th>
+													<th><span  th:text="#{enter.search.item.prosecution}">Prosecution</span></th>
+													<th scope="row" class="text-wrap"><span  th:text="#{retired}">Retired</span></th>
+													<!--<th scope="row" class="text-wrap">No. Of Employees
+														Reinstated</th>-->
+													<th scope="row" class="text-wrap"><span th:text="#{lessThan5Years}" >Less than 5 Years Old</span>
+														</th>
+													<th scope="row" class="text-wrap"><span th:text="#{moreThan5Years}" >More Than 5 Years Old</span></th>
+													<!--<th scope="row" class="text-wrap">No. Of
+														FinalOutcome Decided</th>-->
+												</tr>
+											</thead>
+											<tbody>
+											<tr align="center">
+												<td><a class="btn btn-sm" href="javascript:void(0);" style="cursor: default !important;color: blue;"><strong><center><span th:text="#{de.statisticsofcases}"></span></center></strong></a></td>
+												<td th:text="${#aggregates.sum(dataList.![dataAB.countCaseNo])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataAB.major])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataAB.minor])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataAB.numberSuspended])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataAB.numberOfCasesWithProsecution])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataAB.numberOfCasesWithRetiredEmp])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataAB.lessThan5years])}"></td>
+												<td th:text="${#aggregates.sum(dataList.![dataAB.greaterThan5years])}"></td>
+												<!--<td>5</td>-->
+												</tr>
+												<tr align="center">
+													<td><a class="btn btn-sm" href="javascript:void(0);"style="cursor: default !important;color: blue;"><strong><center><span th:text="#{de.employeedetails.label}"></span></center></strong></a></td>
+													<td th:text="${#aggregates.sum(dataList.![dataAB.totalemployee])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataAB.employeeCountMajor])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataAB.employeeCountMinor])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataAB.numberSuspended])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataAB.employeeCountProsecutionCases])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataAB.employeeCountRetiredCases])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataAB.employeeCountLessThan5years])}"></td>
+													<td th:text="${#aggregates.sum(dataList.![dataAB.employeeCountGreaterThan5years])}"></td>
+												</tr>	
+												
+											</tbody>
+										</table>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+			</div>
+
+		</div>
+
+	
+
+</html>

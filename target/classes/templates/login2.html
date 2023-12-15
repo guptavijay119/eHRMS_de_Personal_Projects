@@ -1,0 +1,142 @@
+<link type="text/css" rel="stylesheet" th:href="@{/othercontent/jquery-ui.min.css}">
+<link type="text/css" rel="stylesheet" th:href="@{/othercontent/bootstrap.min.css}">
+<script type="text/javascript" th:src="@{/othercontent/jquery-3.5.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/othercontent/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/othercontent/bootstrap.bundle.min.js}"></script>
+	<link type="text/css" rel="stylesheet" th:href="@{/othercontent/select2.min.css}">
+			<script type="text/javascript" th:src="@{/othercontent/select2.min.js}"></script>
+
+<!------ Include the above in your HEAD tag ---------->
+<style>
+body {
+    font-family: "Lato", sans-serif;
+}
+
+
+
+.main-head{
+    height: 150px;
+    background: #FFF;
+   
+}
+
+.sidenav {
+    height: 100%;
+    background-color: #000;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+
+.main {
+    padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+}
+
+@media screen and (max-width: 450px) {
+    .login-form{
+        margin-top: 10%;
+    }
+
+    .register-form{
+        margin-top: 10%;
+    }
+}
+
+@media screen and (min-width: 768px){
+    .main{
+        margin-left: 40%; 
+    }
+
+    .sidenav{
+        width: 40%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+    }
+
+    .login-form{
+        margin-top: 50%;
+    }
+
+    .register-form{
+        margin-top: 20%;
+    }
+}
+
+
+.login-main-text{
+    margin-top: 20%;
+    padding: 60px;
+    color: #fff;
+}
+
+.login-main-text h2{
+    font-weight: 300;
+}
+
+.btn-black{
+    background-color: #000 !important;
+    color: #fff;
+}
+
+</style>
+<div class="sidenav">
+         <div class="login-main-text">
+            <h2>Application<br> Login Page</h2>
+            <p>Login or register from here to access.</p>
+            <p>Visitor Count: <span th:text="${visitorcount}"></span></p>
+         </div>
+      </div>
+      <div class="main">
+         <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+               <form th:action="@{/login}" method="post" autocomplete="off" th:object="${user}">
+					<div th:if="${param.error}">
+						<div class="alert alert-danger">Invalid username or
+							password.</div>
+					</div>
+					<div th:if="${param.logout}">
+						<div class="alert alert-info">You have been logged out.</div>
+					</div>
+					<div class="form-group">
+						<label for="username">Username</label>: <input type="text"
+							id="username" name="username" class="form-control"
+							autofocus="autofocus" placeholder="Username"/>
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>: <input type="password"
+							id="password" name="password" class="form-control"
+							placeholder="Password" />
+					</div>
+					<div class="form-group">
+						<label for="department">Department</label>: 
+						<select id="department" name="organization"
+							class="form-control" 
+							 required="required">
+							<option value="">Select</option>
+							<option th:each="org : ${globalOrgList}"
+								th:value="${org}" th:text="${org}" th:selected="${org} ==${department}"></option>
+						</select>
+					</div>
+
+					
+					<div class="form-group">
+						<div class="row">
+							<div class="col-sm-6 col-sm offset-1">
+								<input type="submit" name="login-submit" id="login-submit"
+									class="form-control btn btn-primary" value="Log In" />
+							</div>
+						</div>
+					</div>
+				</form>
+						<script>
+		$('#department').select2();
+		</script>
+            </div>
+         </div>
+      </div>

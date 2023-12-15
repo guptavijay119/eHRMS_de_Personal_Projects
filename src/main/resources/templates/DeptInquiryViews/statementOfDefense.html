@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div id="headerid"></div>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+    <div id="sidebarid"></div>
+
+    <div class="container">
+        <div id="toperid"></div>
+
+        <div class="card-header col-sm-12">
+            <h5>Statement of Defense Details</h5>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="statementDefenseReceived" style="margin: 10px">Statement of Defense Received?</label>
+                <!-- <div>
+					<input type="radio" id="chargesheet" style="margin: 10px">Yes
+					<input type="radio" id="chargesheet1" style="margin: 10px">No
+				</div> -->
+                &nbsp;
+                <div>
+                    &nbsp;
+                    &nbsp;
+                    <input class="radio-inline" type="radio" name="statementDefenseReceived"
+                        id="statementDefenseReceivedYes" value="statementDefenseReceivedYes" checked> Yes
+                    <input class="radio-inline" type="radio" name="statementDefenseReceived"
+                        id="statementDefenseReceivedNo" value="statementDefenseReceivedNo"> No
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="dateRecieptStatement">Date of Reciept of Statement</label>
+                <input type="date" class="form-control" id="dateRecieptStatement" placeholder="" value="" required>
+
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="uploadStatementCopy">Upload Statement Copy</label>
+                <input type="file">
+            </div>
+        </div>
+
+        <br>
+        <div class="text-center">
+            <button type="button" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/fontawesome.min.js"
+        integrity="sha512-5qbIAL4qJ/FSsWfIq5Pd0qbqoZpk5NcUVeAAREV2Li4EKzyJDEGlADHhHOSSCw0tHP7z3Q4hNHJXa81P92borQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/jquery-3.2.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarid').load('sidebar.html');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#headerid').load('headers.html');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#toperid').load('topers.html');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+
+	<div class="table-responsive">
+		<table class="table table-bordered dark table-sm">
+			<thead>
+				<tr>
+					<th width="5%" class="text-wrap"><center>Sr No.</center></th>
+					<th width="5%" class="text-wrap"><a
+						th:href="@{|/departmentalEnquiry/reportsforAllFields/${currentPage}?search=${search}&viewreport=${viewreport}&sort-field=caseNo&sort-dir=${reverseSortDir}|}">
+							<center>Case No.</center>
+					</a></th>
+					<th th:if="${viewreport ne null && viewreport}" class="text-wrap">
+						<a
+						th:href="@{|/departmentalEnquiry/reportsforAllFields/${currentPage}?search=${search}&viewreport=${viewreport}&sort-field=employeeList.firstName&sort-dir=${reverseSortDir}|}">
+							<center>Names</center>
+					</a>
+					</th>
+
+					<th class="text-wrap"><a
+						th:href="@{|/departmentalEnquiry/reportsforAllFields/${currentPage}?search=${search}&viewreport=${viewreport}&sort-field=ruleApplicable&sort-dir=${reverseSortDir}|}">
+							<center>Rule Applicable</center>
+					</a></th>
+
+
+					<th class="text-wrap"><a
+						th:href="@{|/departmentalEnquiry/reportsforAllFields/${currentPage}?search=${search}&viewreport=${viewreport}&sort-field=misConductType&sort-dir=${reverseSortDir}|}">
+							<center>Type of Misconduct</center>
+					</a></th>
+
+					<th th:if="${viewreport ne null && viewreport}" class="text-wrap">
+						<a
+						th:href="@{|/departmentalEnquiry/reportsforAllFields/${currentPage}?search=${search}&viewreport=${viewreport}&sort-field=chargeSheetList.chargesheetDate&sort-dir=${reverseSortDir}|}">
+							<center>Chargesheet Date</center>
+					</a>
+					</th>
+					<th th:if="${viewreport ne null && viewreport}" class="text-wrap">
+						<a
+						th:href="@{|/departmentalEnquiry/reportsforAllFields/${currentPage}?search=${search}&viewreport=${viewreport}&sort-field=globalorg&sort-dir=${reverseSortDir}|}">
+							<center>Department Name</center>
+					</a>
+					</th>
+
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr th:each="article,iStat:${caseDetailsAllRecords}">
+					<td th:text="${pageIndex+iStat.index}" class="text-wrap"></td>
+
+					<td class="text-wrap"><span th:text="${article.caseNo}"></span>
+					</td>
+
+					<td class="text-wrap" th:if="${viewreport ne null && viewreport}">
+						<span th:if="${!article.employeeNames.isEmpty()}"
+						th:each="arti,istate:${article.employeeNames}"><span
+							th:text="${istate.index+1}"></span>.<span th:text="${arti}"></span>
+							<br> </span>
+					</td>
+
+
+					<td class="text-wrap"><span th:if="${article.ruleApplicable}"
+						th:text="${article.ruleApplicable.ruleName}"></span></td>
+
+
+
+					<td class="text-wrap"><span
+						th:if="${article.misConductType ne null}"
+						th:text="${article.misConductType.misconductName}"></span></td>
+
+					<td th:if="${viewreport ne null && viewreport}" class="text-wrap">
+						<span
+						th:if="${article.chargeSheetList ne null and !article.chargeSheetList.isEmpty()}"
+						th:each="arti:${article.chargeSheetList}"><span
+							th:text="${#temporals.format(arti.chargesheetDate, 'dd-MM-yyyy')}"></span><br>
+					</span> <span
+						th:unless="${article.chargeSheetList ne null and !article.chargeSheetList.isEmpty()}"></span>
+					</td>
+
+
+					<td th:if="${viewreport ne null && viewreport}" class="text-wrap">
+						<span th:if="${article.globalorg ne null}"> <span
+							th:text="${article.globalorg.globalOrgName}"></span>
+					</span>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+
+</body>

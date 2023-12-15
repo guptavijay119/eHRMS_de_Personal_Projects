@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+	<title>Form</title>
+</head>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+	<table class="table table-bordered table-sm table-responsive" id="link-listss"
+		th:fragment="commonreservationtablebig">
+		<caption></caption>
+		<thead>
+			<tr>
+				<th scope="row"><span th:text="#{ListEmployee.index}"></span></th>
+				<th scope="row"></th>
+				<th scope="row">1</th>
+				<th scope="row">2</th>
+				<th scope="row">3</th>
+				<th scope="row">4</th>
+				<th scope="row">5</th>
+				<th scope="row">6</th>
+				<th scope="row">7</th>
+				<th scope="row">8</th>
+				<th scope="row">9</th>
+				<th scope="row">10</th>
+				<th scope="row">11</th>
+				<th scope="row">12</th>
+				<th scope="row">13</th>
+				<th scope="row">14</th>
+				<th scope="row" th:if="${notice ne null and notice.finalApproved}"></th>
+				<th scope="row" th:if="${notice ne null and notice.finalApproved}">15</th>
+				<th scope="row" th:if="${notice ne null and notice.finalApproved}">16</th>
+				<th scope="row" th:if="${notice ne null and notice.finalApproved}">17</th>
+				<th scope="row" th:if="${notice ne null and notice.finalApproved}">18</th>
+			</tr>
+			<tr>
+				<th scope="row" class="text-wrap"></th>
+				<th scope="row" class="text-wrap" th:text="#{Form.category}">Category</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.santioned}">Sanctioned Post</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.filledpost}">Filled Post</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.tobefilled}">To be filled (1-2)</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.adjustment}">Adjustment</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.Vacancy by formula filled post}">Vacancy by
+					formula filled post</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.backlog}">Backlog (5-2)</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.Current Vacancy posts}">Current Vacancy posts
+					(4-6)</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.Post available letter demand}">post available
+					letter demand(6+7)</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.percentGR}">50% by GR (3)</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.Previous Proposals}">Previous Proposals</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.Current Vacancy}">Current Vacancy (9-10)</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.expectedvacancy}">Expected Vacancy</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.extravacancy}">Extra Vacancy</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.totalvacancytobefilled}">Total Vacancy(11+12)</th>
+				<th scope="row" th:if="${notice ne null and notice.finalApproved}"></th>
+				<th scope="row" class="text-wrap" th:text="#{Form.handicapped}"
+					th:if="${notice ne null and notice.finalApproved}">
+					Handicapped</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.sports}"
+					th:if="${notice ne null and notice.finalApproved}">Sportsman
+				</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.widow}"
+					th:if="${notice ne null and notice.finalApproved}">widow</th>
+				<th scope="row" class="text-wrap" th:text="#{Form.exServiceman}"
+					th:if="${notice ne null and notice.finalApproved}">
+					Ex-Serviceman</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="cates,iStat: ${notice.vacancyDistributionList}">
+				<td class="custom-td"><span th:text="${iStat.index+1}"></span></td>
+				<td class="text-wrap" style="background-color: #804000;color: #ffffff;">
+					<span th:text="${cates.caste.regionalText}"></span>
+					<input type="hidden" th:field="${notice.vacancyDistributionList[__${iStat.index}__].caste}"
+						th:value="${cates.caste}">
+					<input type="hidden" th:field="${notice.vacancyDistributionList[__${iStat.index}__].id}"
+						th:value="${cates.id}">
+				</td>
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].sanctionedPost}"
+						th:value="${cates.sanctionedPost}" class="form-control" readonly></td>
+						
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].fillePost}"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].fillePost}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"  th:value="${cates.fillePost}" class="form-control"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'fillePost')">
+				</td>
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].tobeFilled}"
+						th:value="${cates.tobeFilled}" class="form-control" readonly></td>
+						
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].adjustment}"
+						th:value="${cates.adjustment}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].adjustment}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'adjustment')"></td>
+						
+				<td><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].vacancyByFormulaFilledPost}"
+						th:value="${cates.vacancyByFormulaFilledPost}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].vacancyByFormulaFilledPost}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'vacancyByFormulaFilledPost')"></td>
+						
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].backlog}"
+						th:value="${cates.backlog}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].backlog}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'backlog')"></td>
+						
+				<td><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].currentVacancycPosts}"
+						th:value="${cates.currentVacancycPosts}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].currentVacancycPosts}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'currentVacancycPosts')"></td>
+						
+				<td><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].postAvailableLetterDemand}"
+						th:value="${cates.postAvailableLetterDemand}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].postAvailableLetterDemand}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'postAvailableLetterDemand')"></td>
+						
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].percentGrPost}"
+						th:value="${cates.percentGrPost}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].percentGrPost}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'percentGrPost')"></td>
+						
+				<td><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].previousProposals}"
+						th:value="${cates.previousProposals}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].previousProposals}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'previousProposals')"></td>
+						
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].currentVacancy}"
+						th:value="${cates.currentVacancy}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].currentVacancy}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'currentVacancy')"></td>
+						
+				<td><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].expectedVacancy}"
+						th:value="${cates.expectedVacancy}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].expectedVacancy}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'expectedVacancy')"></td>
+						
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].extraVacancy}"
+						th:value="${cates.extraVacancy}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].extraVacancy}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'extraVacancy')"></td>
+						
+				<td><input type="number" th:field="${notice.vacancyDistributionList[__${iStat.index}__].totalVacancy}"
+						th:value="${cates.totalVacancy}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].totalVacancy}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'totalVacancy')"></td>
+						
+				<td th:if="${notice ne null and notice.finalApproved}"></td>
+				
+				<td th:if="${notice ne null and notice.finalApproved}" class="alert alert-danger"><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].handiCapped}"
+						th:value="${cates.handiCapped}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].handiCapped}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'handiCapped')"></td>
+						
+				<td th:if="${notice ne null and notice.finalApproved}"><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].sports}"
+						th:value="${cates.sports}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].sports}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'sports')"></td>
+						
+				<td th:if="${notice ne null and notice.finalApproved}"><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].widow}" th:value="${cates.widow}"
+						class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].widow}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'widow')"></td>
+						
+				<td th:if="${notice ne null and notice.finalApproved}"><input type="number"
+						th:field="${notice.vacancyDistributionList[__${iStat.index}__].exServiceman}"
+						th:value="${cates.exServiceman}" class="form-control"
+						th:data-fillepost="${notice.vacancyDistributionList[__${iStat.index}__].exServiceman}"
+						th:data-casteid="${notice.vacancyDistributionList[__${iStat.index}__].caste.id}" 
+						th:data-index="${iStat.index}"
+						onchange="filledPostValidation(this.getAttribute('data-fillepost'),this.getAttribute('data-casteid'),this.getAttribute('data-index'),'exServiceman')"></td>
+
+
+			</tr>
+			<tr>
+				<td class="custom-td">12</td>
+				<td class="custom-td"><strong><span th:text="#{Form.totalCount}">Total Count</span></strong></td>
+				<td><input type="number" id="sanctionedPost"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![sanctionedPost])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="fillePost"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![fillePost])}" class="form-control"
+						readonly></td>
+				<td><input type="number" id="tobeFilled"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![tobeFilled])}" class="form-control"
+						readonly></td>
+				<td><input type="number" id="adjustment"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![adjustment])}" class="form-control"
+						readonly></td>
+				<td><input type="number" id="vacancyByFormulaFilledPost"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![vacancyByFormulaFilledPost])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="backlog"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![backlog])}" class="form-control"
+						readonly></td>
+				<td><input type="number" id="currentVacancycPosts"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![currentVacancycPosts])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="postAvailableLetterDemand"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![postAvailableLetterDemand])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="percentGrPost"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![percentGrPost])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="previousProposals"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![previousProposals])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="currentVacancy"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![currentVacancy])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="expectedVacancy"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![expectedVacancy])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="extraVacancy" th:value="${#aggregates.sum(notice.vacancyDistributionList.![extraVacancy])}"
+						class="form-control" readonly></td>
+				<td><input type="number" id="totalVacancy" th:value="${#aggregates.sum(notice.vacancyDistributionList.![totalVacancy])}"
+						class="form-control" readonly></td>
+				<td th:if="${notice ne null and notice.finalApproved}"></td>
+				<td th:if="${notice ne null and notice.finalApproved}"  class="alert alert-danger"><input type="number" id="handiCapped"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![handiCapped])}"
+						class="form-control "></td>
+				<td th:if="${notice ne null and notice.finalApproved}"><input type="number" id="sports"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![sports])}" class="form-control"
+						></td>
+				<td th:if="${notice ne null and notice.finalApproved}"><input type="number" id="widow"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![widow])}" class="form-control"
+						>
+				</td>
+				<td th:if="${notice ne null and notice.finalApproved}"><input type="number" id="exServiceman"
+						th:value="${#aggregates.sum(notice.vacancyDistributionList.![exServiceman])}"
+						class="form-control"></td>
+			</tr>
+		</tbody>
+	</table>
+
+	
+</body>
+
+</html>

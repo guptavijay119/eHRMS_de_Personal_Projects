@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<th:block th:include="fragments/ehrms_headerlib.html :: headerlib"></th:block>
+
+<head>
+<title>Previous Proposal</title> 
+</head>
+
+<style>
+::-webkit-input-placeholder { /* Edge */
+	color: red;
+}
+
+:-ms-input-placeholder { /* Internet Explorer */
+	color: red;
+}
+
+::placeholder {
+	color: red;
+}
+</style>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+
+
+	<div class="form-group" th:fragment="formdetailfragment">
+		<div class="form-group required">
+			<label for="subject" class="control-label">
+			<span th:text=#{Form.Subject}></span>:</label> 
+				<input type="text" id="subject" th:field="*{subject}" th:attrappend="readonly=${notice.proposalState ne 'NEW'}?'readonly'"
+					required="required" class="form-control" placeholder="Enter Subject" minlength="5">
+			<p class="alert alert-danger" th:if="${#fields.hasErrors('subject')}"
+				th:errors="*{subject}">Subject Error</p>
+		</div>
+		<div class="form-group table-responsive text-center">
+
+			<table
+				th:replace="commonfragments/recruitmenttoptable.html::recruitmenttoptable">
+			</table>
+		</div>
+
+
+		<div class="form-group table-responsive text-center"
+			th:replace="commonfragments/previousproposal.html::previousproposal"></div>
+
+
+
+		<div
+			class="from-group table-responsive-sm text-center justify-content-center"
+			th:if="${!#lists.isEmpty(notice.vacancyDistributionList)}">
+			<p class="alert alert-danger" th:if="${vacancyerror ne null}"
+				th:text="${vacancyerror}">Extra vacancy Error</p>
+			<!--<span th:text="#{Form.Vertical vacancy}"></span>:-->
+			<span><button type="button" class="btn btn-primary"
+					onclick="showreservation1()" id="showreservation">
+					<span th:text="#{Form.showreservation}"></span>
+				</button></span> <span><button type="button" class="btn btn-primary"
+					onclick="hidereservation1()" id="hidereservation">
+					<span th:text="#{Form.hidereservation}"></span>
+				</button></span>
+			<table th:replace="commonfragments/commonreservationtablebig.html :: commonreservationtablebig" id="link-listss"></table>
+		</div>
+
+		<div class="from-group table-responsive-sm text-center justify-content-center" th:if="${!#lists.isEmpty(notice.vacancySmallClass)}">
+			<p class="alert alert-danger" th:if="${vacancyerror ne null}" th:text="${vacancyerror}">Extra vacancy Error</p>
+
+			<span>
+			<button type="button" class="btn btn-primary" onclick="showreservationsmall()" id="showreservation2">
+					<span th:text="#{Form.showreservation}"></span></button></span> 
+					<span><button type="button" class="btn btn-primary" onclick="hidereservationsmall()" id="hidereservation2">
+					<span th:text="#{Form.hidereservation}"></span>
+				</button></span>
+			<table id="link-listssx" th:replace="commonfragments/commonreservationtablesmall.html :: commonreservationtablesmall">
+			</table>
+		</div>
+
+		<div class="form-group"></div>
+
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2" 
+		th:if="${proposalList != null and !proposalList.isEmpty()}">
+			<span th:text="#{Form.History Info}"></span>
+		</button>
+		<br /> <br />
+		<div class="form-group" th:if="${!notice.finalApprovedHori}">
+			<label><span th:text=#{Form.Editor}></span>:</label>
+			<textarea id="editor" th:field="*{info}"></textarea>
+			<p class="alert alert-danger" th:if="${#fields.hasErrors('info')}"
+				th:errors="*{info}">Extra vacancy Error</p>
+		</div>
+		<div class="form-group" th:if="${!notice.finalApprovedHori}">
+			<label for="file"><span th:text=#{FormDepartment.upload}></span></label>
+			<input type="file" accept=".pdf" name="FileUpload1" multiple="multiple" class="form-control" id="FileUpload1">
+			<br>
+			<p class="alert alert-danger" th:if="${fileNameNotFound ne null}"
+				th:text="${fileNameNotFound}">Designation Error</p>
+		</div>
+
+		<div class="form-group" th:if="${notice.nextAuth=='16B' && !notice.finalApprovedHori}" sec:authorize="hasAnyRole('ROLE_DEPARTMENT')">
+			<label for="file"><span th:text=#{Form.excelupload}></span></label> 
+				<input type="file" name="FileUpload2" class="form-control" id="FileUpload2"><br>
+			<p class="alert alert-danger" th:if="${fileNameNotFound ne null}" th:text="${fileNameNotFound}">Designation Error</p>
+		</div>
+
+		<div class="form-group" th:style="${(notice.authority == 'DEP' or notice.authority =='')? 'display:none' : 'display:block'}">
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="option1" name="option1" class="custom-control-input" value=true th:field="*{approved}">
+				<label class="custom-control-label" for="option1">
+				<span th:text="#{Form.Approved}"></span></label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="option2" name="option2" class="custom-control-input" value=false th:field="*{approved}">
+				<label class="custom-control-label" for="option2">
+				<span th:text="#{Form.Not Approved}"></span></label>
+			</div>
+		</div>
+		<div class="from-group table-responsive justify-content-center"
+			th:if="${notice.id ne null and notice.id >0 and !#lists.isEmpty(notice.files)}">
+			<strong><span th:text="#{Form.viewuploaded}"></span></strong>
+			<table class="table table-bordered table-sm">
+				<caption></caption>
+				<thead>
+					<tr>
+						<th scope="row" th:text="#{ListEmployee.index}" style="width: 5%"></th>
+						<th scope="row"><span th:text="#{ApplicationForm.filename}"></span>
+						</th>
+						<th scope="row" th:text="#{masterData.creadedBy}"></th>
+						<th scope="row" th:text="#{Form.uploadeddate}"></th>
+						<th scope="row" style="width: 10%" th:text="#{masterData.Delete}" th:if="${!notice.finalApprovedHori}">Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="file,iStat:${notice.files}"
+						th:if="${file.AuthorityName ne 'MPSC'}">
+						<td th:text="${iStat.index+1}"></td>
+						<td><a target="_blank"
+							th:href="@{|/recruitmentmpsc/getProposalFile/${file.id}|}"><span
+								th:attr="id=${file.id}"
+								th:utext="${#strings.substringAfter(file.fileName,'_')}"></span></a>
+
+						</td>
+						<td th:text="${file.createdBy}"></td>
+						<td
+							th:text="${#temporals.format(file.createdDate, 'dd-MM-yyyy HH:mm')}"></td>
+						<td  th:if="${!notice.finalApprovedHori}">
+							<button type="button" id="removefile"
+								th:if="${#authentication.principal.username == file.createdBy}"
+								onclick="removefileajax(this.getAttribute('data-id'))"
+								th:attr="data-id=${file.id}">
+								<img alt=""
+									src='data:image/png;base64,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' />
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+		<!-- Modal print modal -->
+		<div class="modal fade" id="myModalprint" role="dialog">
+			<div class="modal-dialog modal-xl">
+				Modal content
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title"></h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="card">
+							<div class="card-body">
+								<div id="embeds"></div>
+								<object id="embedPDF" accept="application/pdf" width="100%"
+									height="500" style="height: 85vh;">
+									<span th:text="#{Form.error.nodocumentfound}"></span>
+								</object>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="myModalFormDetails" role="dialog">
+			<div class="modal-dialog modal-xl">
+				Proposal Details
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body container" id="printdata">
+
+						<head th:replace="commonfragments/printheader.html::printheader"><title></title></head>
+						<fieldset class="border p-2 field_set">
+							<legend class="w-auto">
+								<strong>1.</strong>
+							</legend>
+							
+							<table class="table table-bordered" id="staticPropx">
+								<thead>
+									<tr>
+									    <th width="20%" scope="row"></th>
+									    <th scope="row"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									  <td><span th:text=#{Form.Subject}></span></td>
+									  <td><span th:text=${notice.subject}></span></td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>	
+						<br>
+						<fieldset class="border p-2 field_set">
+							<legend class="w-auto">
+								<strong>2.</strong>
+							</legend>
+						
+							<table class="table table-bordered" id="staticPropx">
+								<caption></caption>
+								<thead>
+									<tr>
+										<th scope="row" width="10%"><span th:text="#{ApplicantsList.index}"></span></th>
+										<th scope="row"><span th:text="#{description}"></span></th>
+										<th scope="row" width="20%"><span th:text="#{ProposedCalculatedvalue}"></span></th>
+										
+<!-- 										<th scope="row" width="5%">Index</th> -->
+<!-- 										<th scope="row">Description</th> -->
+<!-- 										<th scope="row" width="40%">Proposed/Calculated value</th> -->
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr class="text-wrap">
+										<td>1.</td>
+										<td><span th:text="#{Form.Noticeid}"></span></td>
+										<td><span th:text="${notice.id}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>2.</td>
+										<td><span th:text="#{EmployeeDetail.servicegroup}"></span></td>
+										<td><span th:text="${notice.designationObj.serviceGroupId.regionalText}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>3.</td>
+										<td><span th:text="#{Form.Designation}"></span></td>
+										<td><span th:text="${notice.designationObj.regionalText}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>4.</td>
+										<td><span th:text="#{Form.totalSanctionedByDesignation}"></span></td>
+										<td><span th:text="${notice.totalSanctionedByDesignation}"></span></td>
+									</tr>
+
+									<tr class="text-wrap">
+										<td>5.</td>
+										<td><span th:text="#{Form.sanctionedByRecruitmentRules}"></span></td>
+										<td><span th:text="${notice.sanctionedByRecruitmentRules}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>6.</td>
+										<td><span th:text="#{Form.filledPostByRecruitmentRules}"></span></td>
+										<td><span th:text="${notice.filledPostByRecruitment}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>7.</td>
+										<td><span th:text="#{Form.actualvacancy}"></span><span class="font-weight-bold">(5-6)</span></td>
+										<td><span th:text="${notice.actualVacancy}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>8.</td>
+										<td><span th:text="#{Form.expectedvacancy}"></span></td>
+										<td><span th:text="${notice.expectedvacancy}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>9.</td>
+										<td><span th:text="#{Form.extravacancy}"></span></td>
+										<td><span th:text="${notice.extravacancy}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>10.</td>
+										<td><span th:text="#{Form.vacancy}"></span><span>(7+8+9)</span></td>
+										<td><span th:text="${notice.totalvacancy}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>11.</td>
+										<td><span th:text="#{Form.grVacancy4}"></span><span> (4% of step 5)</span></td>
+										<td><span th:text="${notice.grVacancy4}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>12.</td>
+										<td><span th:text="#{Form.grVacancy50}"></span><span> (50% of step 10)</span></td>
+										<td><span th:text="${notice.grVacancy50}"></span></td>
+									</tr>
+									<tr class="text-wrap">
+										<td>13.</td>
+										<td><span th:text="#{Form.actualvacancyminimum}"></span></td>
+										<td><span th:text="${notice.minimumActualVacancy}"></span></td>
+									</tr>
+								</tbody>
+							</table>
+                     </fieldset>
+
+<!-- 						<div class="form-group table-responsive text-center" -->
+<!-- 							th:replace="commonfragments/previousproposal.html::previousproposal"></div> -->
+<div class="row table-responsive-sm text-center justify-content-center" th:if="${!#lists.isEmpty(previousproposal)}">
+		<b><span th:text="#{Form.previousproposal}">:</span></b>
+		<table class="table table-bordered table-sm" id="previousProposal">
+			<caption></caption>
+			<thead>
+				<tr>
+					<th scope="row" class="text-wrap"><span th:text=#{inbox.Noticeid}></span></th>
+					<th scope="row" class="text-wrap"><span th:text="#{inbox.Designation}"></span></th>
+					<th scope="row" class="text-wrap"><span th:text=#{inbox.Subject}></span></th>
+					<th scope="row" class="text-wrap"><span th:text=#{inbox.Date}></span></th>
+					<th scope="row" class="text-wrap"><span th:text="#{inbox.status}"></span></th>
+					<th scope="row" class="text-wrap"><span th:text="#{inbox.From}"></span></th>
+					<th scope="row" class="text-wrap"><span th:text="#{inbox.Current Authority}">Current Authority</span></th>
+					<th scope="row" class="text-wrap"><span th:text="#{Form.vacancy}">Total Vacancy</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="article : ${previousproposal}">
+					<td th:text="${article.id}" class="text-wrap"></td>
+					<td th:text="${article.designationObj.regionalText}" class="text-wrap"></td>
+					<td th:text="${article.subject}" class="text-wrap"></td>
+					<td th:text="${#temporals.format(article.date, 'dd-MM-yyyy')}" class="text-wrap"></td>
+					<td th:switch="${{article.proposalState}}" class="text-wrap">
+						<div th:case="'NEW'"><span th:text="#{constants.__${article.proposalState}__}"></span></div>
+						<div th:case="'APPROVED'"><span th:text="#{constants.__${article.proposalState}__}"></span></div>
+						<div th:case="'REJECTED'"><span th:text="#{constants.__${article.proposalState}__}"></span></div>
+						<div th:case="'PENDING'"><span th:text="#{constants.__${article.proposalState}__}"></span></div>
+					</td>
+
+					<td th:switch="${{article.from}}" class="text-wrap">
+						<div th:case="'DEP'"><span th:text="#{constants.__${article.from}__}"></span></div>
+						<div th:case="'AA'"><span th:text="#{constants.__${article.from}__}"></span></div>
+						<div th:case="'16B'"><span th:text="#{constants.__${article.from}__}"></span></div>
+						<div th:case="'VAC'"><span th:text="#{constants.__${article.from}__}"></span></div>
+					</td>
+					<!-- <td th:switch="${{article.authority}}" class="text-wrap">
+						<a href="javascript:void(0);" th:case="'DEP'" class="btn btn-outline-primary btn-sm"><span
+								th:text="#{constants.__${article.authority}__}"></span></a>
+						<a href="javascript:void(0);" th:case="'AA'" class="btn btn-outline-primary btn-sm"><span
+								th:text="#{constants.__${article.authority}__}"></span></a>
+						<a href="javascript:void(0);" th:case="'16B'" class="btn btn-outline-primary btn-sm"><span
+								th:text="#{constants.__${article.authority}__}"></span></a>
+						<a href="javascript:void(0);" th:case="'VAC'" class="btn btn-outline-primary btn-sm"><span
+								th:text="#{constants.__${article.authority}__}"></span></a>
+					</td> -->
+					<td class="text-wrap" th:switch="${{article.authority}}">
+						<div th:case="'DEP'"><span th:if="${article.departmentId ne null}" th:text="${article.departmentId.regionalText}"></span></div> 
+						<div th:case="'AA'"><span th:text="#{constants.__${article.authority}__}"></span></div>
+						<div th:case="'16B'"><span th:text="#{constants.__${article.authority}__}"></span></div>
+						<div th:case="'VAC'"><span th:text="#{constants.__${article.authority}__}"></span></div>
+						<div th:case="*"><span th:text="#{constants.__${article.authority}__}"></span></div>
+					</td>
+					<td th:text="${article.minimumActualVacancy}" class="text-wrap"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+
+<!-- 						<div -->
+<!-- 							class="from-group text-center justify-content-center" -->
+<!-- 							th:if="${!#lists.isEmpty(notice.vacancyDistributionList)}"> -->
+
+                        <br>
+						<fieldset class="border p-2 field_set">
+							<legend class="w-auto">
+								<strong>3.</strong>
+							</legend>
+                            <table class="table-bordered" width="100%" id="modaltablebig">
+								
+								<tbody>
+									<tr>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td"><span th:text="#{ListEmployee.index}"></span></td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td"></td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">1</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">2</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">3</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">4</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">5</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">6</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">7</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">8</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">9</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">10</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">11</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">12</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">13</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td">14</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td" th:if="${notice ne null and notice.finalApproved}"></td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td" th:if="${notice ne null and notice.finalApproved}">15</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td" th:if="${notice ne null and notice.finalApproved}">16</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td" th:if="${notice ne null and notice.finalApproved}">17</td>
+										<td scope="row" width="1%" class="text-wrap text-center custom-td" th:if="${notice ne null and notice.finalApproved}">18</td>
+									</tr>
+									<tr>
+										<td scope="row" class="text-wrap custom-td"></td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.category}">Category</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.santioned}">Sanctioned Post</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.filledpost}">Filled Post</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.tobefilled}">To be filled (1-2)</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.adjustment}">Adjustment</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.Vacancy by formula filled post}">Vacancy by formula filled post</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.backlog}">Backlog (5-2)</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.Current Vacancy posts}">Current Vacancy posts (4-6)</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.Post available letter demand}">post available letter demand(6+7)</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.percentGR}">50% by GR (3)</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.Previous Proposals}">Previous Proposals</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.Current Vacancy}">Current Vacancy (9-10)</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.expectedvacancy}">Expected Vacancy</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.extravacancy}">Extra Vacancy</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.totalvacancytobefilled}">Total Vacancy(11+12)</td>
+										<td scope="row" class="text-wrap custom-td" th:if="${notice ne null and notice.finalApproved}"></td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.handicapped}" th:if="${notice ne null and notice.finalApproved}">Handicapped</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.sports}" th:if="${notice ne null and notice.finalApproved}">Sportsman </td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.widow}" th:if="${notice ne null and notice.finalApproved}">widow</td>
+										<td scope="row" class="text-wrap custom-td" th:text="#{Form.exServiceman}" th:if="${notice ne null and notice.finalApproved}"> Ex-Serviceman</td>
+									</tr>
+<!-- 								</thead> -->
+<!-- 								<tbody> -->
+									<tr   th:each="cates,iStat: ${notice.vacancyDistributionList}">
+										<td scope="row" class="text-wrap text-center custom-td"><span th:text="${iStat.index+1}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.caste.regionalText}"></span> </td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.sanctionedPost}"></span> </td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.fillePost}"></span></td>
+										<td scope="row" class="text-wrap text-center"> <span th:text="${cates.tobeFilled}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.adjustment}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.vacancyByFormulaFilledPost}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.backlog}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.currentVacancycPosts}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.postAvailableLetterDemand}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.percentGrPost}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.previousProposals}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.currentVacancy}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.expectedVacancy}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.extraVacancy}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${cates.totalVacancy}"></span></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"><span th:text="${cates.handiCapped}"></span></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"><span th:text="${cates.sports}"></span></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"><span th:text="${cates.widow}"></span></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"><span th:text="${cates.exServiceman}"></span></td>
+									</tr>
+									<tr>
+										<td scope="row" class="text-wrap text-center custom-td">12</td>
+										<td scope="row" class="text-wrap text-center custom-td"><span th:text="#{Form.totalCount}">Total Count</span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![sanctionedPost])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![fillePost])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![tobeFilled])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![adjustment])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![vacancyByFormulaFilledPost])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![backlog])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![currentVacancycPosts])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![postAvailableLetterDemand])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![percentGrPost])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![previousProposals])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![currentVacancy])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![expectedVacancy])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![extraVacancy])}"></span></td>
+										<td scope="row" class="text-wrap text-center"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![totalVacancy])}"></span></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![handiCapped])}"></span></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![sports])}"></span></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![widow])}"></span></td>
+										<td scope="row" class="text-wrap text-center" th:if="${notice ne null and notice.finalApproved}"><span th:text="${#aggregates.sum(notice.vacancyDistributionList.![exServiceman])}"></span></td>
+									</tr>
+								</tbody>
+							</table>
+							</fieldset>
+<!-- 						</div> -->
+
+						<div
+							class="from-group table-responsive-sm text-center justify-content-center"
+							th:if="${!#lists.isEmpty(notice.vacancySmallClass)}">
+
+							<table id="link-listssx"
+								th:replace="commonfragments/commonreservationtablesmall.html :: commonreservationtablesmall">
+							</table>
+						</div>
+						 <br>
+						<fieldset class="border p-2 field_set">
+							<legend class="w-auto">
+								<strong>4.</strong>
+							</legend>
+							
+							<table class="table" >
+										<caption></caption>
+										<thead>
+											<tr>
+												<th scope="row" width="90%"><span th:text="#{ApplicationForm.Remarks}"></span></th>
+												<th scope="row" width="10%"><span th:text="#{model.editedby}"></span></th>
+												
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="history:${proposalList}">
+											    <td class="text-wrap" width="90%"><span th:utext="${history.info}"></span></td>	
+												<td class="text-wrap" width="10%"><span th:text="${history.lastModifiedBy}"></span></td>												
+											</tr>
+										</tbody>
+									</table>
+						</fieldset>
+						
+					</div>
+					<div class="btn-toolbar mr-1" role="toolbar"
+							aria-label="Basic example">
+							<button type="button" class="btn btn-primary" id="downloadList">
+								<span th:text="#{inbox.viewPDF}"></span>
+							</button>
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

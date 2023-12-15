@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Application Form</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta charset="UTF-8" />
+    </head>
+    <body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+    	Dear,<br><br>
+    	 <p> Mr./Mrs/Ms. <strong><span th:text="${name}"></span></strong></p>
+    	<p>Application Form generated against vacancy of deceased/injured employee <strong><span th:text="${employeename}"></span></strong></p>
+    	<p> for applying use below information :<br><br> 
+    	<Strong><span>Application Form URL</span>:
+    	<a href="javascript:void();" target="_private"
+	    	th:href="@{|${baseURL}/compassionate/authApplicationForm?department=${department}|}">
+	    	<span th:text="${baseURL}+'/compassionate/authApplicationForm?department='+${department}"></span>
+	    </a></Strong> <br><br>
+	    
+    	Authorization Code :
+	    	<Strong><span th:text="${authCode}"></span></Strong> <br><br>
+	   	Employee's Sevaarth Id</p>
+<!-- 	   	<strong> -->
+<!--         <p> -->
+<!--             <span>Regards, </span> -->
+<!--             <br/> -->
+<!--             <em>Recruitment Department</em> -->
+<!--         </p> -->
+<!--         </strong> -->
+        
+         <p>
+            <span>Regards, </span>
+            <br/>
+        </p>
+        <strong>
+        <p>
+            <em>Recruitment Department</em>
+        </p>
+        </strong>
+    </body>
+</html>

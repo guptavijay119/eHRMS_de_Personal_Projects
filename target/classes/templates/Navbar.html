@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="header::header">
+</head>
+<title>Navbar</title>
+
+<body sec:authorize="isAuthenticated()"   th:with="isAdmin = ${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')},currentUser = ${#authentication.getPrincipal().getUsername()}">
+
+	<!--Navbar-->
+	<nav th:fragment="Navbar"
+		class="navbar navbar-expand-lg navbar-dark default-color">
+		
+		<div class="col-sm-1"> <img alt="Image of Maharashtra State Logo"
+			th:src="@{/image/maharashtralogo.png}" title="Maharashtra State Logo"
+			class="indiaem" style="margin-left: -15px;" tabindex="-1">
+		</div>
+		<!-- Navbar brand -->
+		<div class="col-sm-3">
+			<h2>
+				<a class="navanchor" th:href="@{'/'}"   th:text="#{ehrms.loginPageHeader.name}"></a>
+			</h2>
+		</div>
+
+		<!-- Collapse button -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#basicExampleNav" aria-controls="basicExampleNav"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<!-- Collapsible content -->
+		<div class="collapse navbar-collapse" id="basicExampleNav">
+		
+		<ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">		        
+				     <div class="col-sm-3" sec:authorize="isAuthenticated()" style="color: white;">
+						<span th:text="#{Welcome}" ></span> 
+						<span sec:authentication="principal.username">User</span><br> 
+						<span><a class="custom-anchor" th:href="@{/logout}">Logout</a></span>
+					</div>		        
+		      </li>
+		      <li class="nav-item active" style="color:white;">
+		        <div class="col-sm-6"><div class="row">Language :
+		        	<a th:href="@{''(lang=en)}"
+						class="custom-anchor">English</a> | <a th:href="@{''(lang=mr)}"
+							class="custom-anchor">मराठी</a>
+		        </div>  
+		        	<div class="row">
+			        						
+		        	</div>  
+		        </div>
+		      </li>
+		      
+		    </ul>
+		    <ul class="navbar-nav ml-auto nav-flex-icons">
+		      <li class="nav-item avatar">
+		        <div class="ellipse"><b><span
+				th:text="#{Government of Maharashtra}"></span></b>
+				</div> 
+					
+		      </li>
+				<li class="nav-item avatar"> 
+					<div class="col-sm-2"> <img
+						alt="Image of Government of India Emblem"
+						th:src="@{/image/india-emblem-f.png}"
+						style="width: 4em; margin-left: -11px;"
+						title="Government of India Emblem" class="indiaem" tabindex="-1">
+					</div>
+		      </li>		      
+		    </ul>
+		<!-- Collapsible content -->
+		</div>
+	</nav>
+	<!--/.Navbar-->
+
+</body>
+</html>
